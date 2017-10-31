@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityCommon;
 
 public class SettingsWindow : EditorWindow
 {
@@ -58,11 +57,13 @@ public class SettingsWindow : EditorWindow
 
         var jsonString = File.ReadAllText(path);
         var startMarker = "{\"installed\":";
-        if (!jsonString.StartsWithFast(startMarker))
+        if (!jsonString.StartsWith(startMarker))
         {
             Debug.LogError("Specified file is not valid. Make sure to setup Drive API to be used with installed platforms.");
             return;
         }
-        GoogleDriveSettings.Credentials = AuthCredentials.FromJson(jsonString.GetAfter(startMarker).GetBeforeLast("}"));
+        // Extracting auth json object from the initial json string.
+        var authJson = jsonString.Substring(startMarker.Length, jsonString.Length - startMarker.Length - 1);
+        GoogleDriveSettings.Credentials = AuthCredentials.FromJson(authJson);
     }
 }
