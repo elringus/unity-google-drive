@@ -2,31 +2,26 @@
 using UnityEditor;
 using UnityEngine;
 
-public class SettingsWindow : EditorWindow
+[CustomEditor(typeof(GoogleDriveSettings)), InitializeOnLoad]
+public class GoogleDriveSettingsEditor : Editor
 {
-    [MenuItem("Edit/Project Settings/Google Drive")]
-    private static void OpenSettingsWindow ()
+    protected GoogleDriveSettings TargetSettings { get { return target as GoogleDriveSettings; } }
+
+    private SerializedProperty authCredentials;
+
+    static GoogleDriveSettingsEditor ()
     {
-        var window = GetWindow<SettingsWindow>();
-        window.Show();
+        GoogleDriveSettings.LoadFromResources();
     }
 
-    private void OnGUI ()
+    private void OnEnable ()
     {
-        EditorGUILayout.LabelField("Google Drive Settings", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("Sensitive data is stored in editor's PlayerPrefs and won't be exposed in project assets.", MessageType.Info);
+        authCredentials = serializedObject.FindProperty("_authCredentials");
+    }
 
-        EditorGUILayout.Space();
-
-        EditorGUILayout.TextField("Client ID", GoogleDriveSettings.Credentials.ClientId);
-        EditorGUILayout.TextField("Project ID", GoogleDriveSettings.Credentials.ProjectId);
-        EditorGUILayout.TextField("Auth URI", GoogleDriveSettings.Credentials.AuthUri);
-        EditorGUILayout.TextField("Token URI", GoogleDriveSettings.Credentials.TokenUri);
-        EditorGUILayout.TextField("x509 URI", GoogleDriveSettings.Credentials.AuthProviderX509CertUrl);
-        EditorGUILayout.TextField("Client Secret", GoogleDriveSettings.Credentials.ClientSecret);
-        if (GoogleDriveSettings.Credentials.RedirectUris != null)
-            for (int i = 0; i < GoogleDriveSettings.Credentials.RedirectUris.Count; i++)
-                EditorGUILayout.TextField("Redirect URI #" + (i + 1), GoogleDriveSettings.Credentials.RedirectUris[i]);
+    public override void OnInspectorGUI ()
+    {
+        EditorGUILayout.PropertyField(authCredentials, true);
 
         EditorGUILayout.Space();
 
@@ -64,6 +59,6 @@ public class SettingsWindow : EditorWindow
         }
         // Extracting auth json object from the initial json string.
         var authJson = jsonString.Substring(startMarker.Length, jsonString.Length - startMarker.Length - 1);
-        GoogleDriveSettings.Credentials = AuthCredentials.FromJson(authJson);
+        TargetSettings.AuthCredentials = AuthCredentials.FromJson(authJson);
     }
 }

@@ -2,29 +2,29 @@
 
 public class GoogleDriveSettings : ScriptableObject
 {
-    public static AuthCredentials Credentials { get { return GetCredentials(); } set { SetCredentials(value); } }
+    public AuthCredentials AuthCredentials { get { return _authCredentials; } set { _authCredentials = value; } }
 
-    private const string CREDENTIALS_KEY = "GoogleDriveCredentials";
+    [SerializeField] private AuthCredentials _authCredentials;
 
-    #pragma warning disable 0169
-    [SerializeField, HideInInspector] private AuthCredentials cachedCredentials;
-    #pragma warning restore
-
-    private static AuthCredentials GetCredentials ()
+    public static GoogleDriveSettings LoadFromResources ()
     {
-        #if UNITY_EDITOR
-        if (PlayerPrefs.HasKey(CREDENTIALS_KEY))
-            return AuthCredentials.FromJson(PlayerPrefs.GetString(CREDENTIALS_KEY));
-        else return new AuthCredentials();
-        #else
-        return cachedCredentials;
-        #endif
-    }
+        var settings = Resources.Load<GoogleDriveSettings>("GoogleDriveSettings");
 
-    private static void SetCredentials (AuthCredentials credentials)
-    {
-        #if UNITY_EDITOR
-        PlayerPrefs.SetString(CREDENTIALS_KEY, credentials.ToJson());
-        #endif
+        if (!settings)
+        {
+            #if UNITY_EDITOR
+            settings = CreateInstance<GoogleDriveSettings>();
+            System.IO.Directory.CreateDirectory(Application.dataPath + "/UnityGoogleDrive/Resources");
+            UnityEditor.AssetDatabase.CreateAsset(settings, "Assets/UnityGoogleDrive/Resources/GoogleDriveSettings.asset");
+            UnityEditor.AssetDatabase.Refresh();
+            UnityEditor.AssetDatabase.SaveAssets();
+            Debug.Log("Google Drive settings file didn't exist and was created.");
+            UnityEditor.Selection.activeObject = settings;
+            #else
+            Debug.LogError("Google Drive settings file not found.");
+            #endif
+        }
+
+        return settings;
     }
 }

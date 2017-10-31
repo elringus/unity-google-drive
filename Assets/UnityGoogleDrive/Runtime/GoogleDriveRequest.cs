@@ -24,12 +24,15 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
     #endif
     public bool IsDone { get { return webRequest.isDone && isDone; } }
 
+    protected static GoogleDriveSettings Settings { get; private set; }
+
     private UnityWebRequest webRequest;
     private GoogleDriveRequestAsyncOperation<T> asyncOperation;
     private bool isDone;
 
     public GoogleDriveRequest (string url, string method)
     {
+        if (!Settings) Settings = GoogleDriveSettings.LoadFromResources();
         webRequest = new UnityWebRequest(url, method);
     }
 
