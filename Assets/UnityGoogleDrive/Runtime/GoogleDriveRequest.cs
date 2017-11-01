@@ -18,16 +18,16 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
     public event Action<T> OnDone;
 
     #if UNITY_2017_2_OR_NEWER
-    public bool IsError { get { return WebRequest.isNetworkError || WebRequest.isHttpError; } }
+    public virtual bool IsError { get { return WebRequest.isNetworkError || WebRequest.isHttpError; } }
     #else
-    public bool IsError { get { return webRequest.isError; } }
+    public virtual bool IsError { get { return webRequest.isError; } }
     #endif
-    public bool IsDone { get { return webRequest.isDone && isDone; } }
+    public virtual bool IsDone { get { return webRequest.isDone && isDone; } }
 
     protected static GoogleDriveSettings Settings { get; private set; }
 
     private UnityWebRequest webRequest;
-    private GoogleDriveRequestAsyncOperation<T> asyncOperation;
+    private GoogleDriveRequestAsyncOperation<T> requestAsyncOperation;
     private bool isDone;
 
     public GoogleDriveRequest (string url, string method)
@@ -38,8 +38,8 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
 
     public GoogleDriveRequestAsyncOperation<T> Send ()
     {
-        if (asyncOperation != null) return null;
-        asyncOperation = new GoogleDriveRequestAsyncOperation<T>(this);
+        if (requestAsyncOperation != null) return null; // Request is already running.
+        requestAsyncOperation = new GoogleDriveRequestAsyncOperation<T>(this);
 
         OnBeforeSend(webRequest);
 
@@ -47,18 +47,18 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
         WebRequest.SendWebRequest().completed += OnWebRequestDone;
         #else
         webRequest.Send();
-        WaitForWebRequest();
+        WaitForResponse();
         #endif
 
-        return asyncOperation;
+        return requestAsyncOperation;
     }
 
-    public void Abort ()
+    public virtual void Abort ()
     {
         webRequest.Abort();
     }
 
-    public void Dispose ()
+    public virtual void Dispose ()
     {
         webRequest.Dispose();
     }
@@ -79,16 +79,16 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
     #if !UNITY_2017_2_OR_NEWER
     private UnityEngine.GameObject containerObject;
 
-    private void WaitForWebRequest ()
+    private void WaitForResponse ()
     {
         containerObject = new UnityEngine.GameObject("GoogleDriveRequest");
         containerObject.hideFlags = UnityEngine.HideFlags.DontSave;
         UnityEngine.Object.DontDestroyOnLoad(containerObject);
         var coroutineContainer = containerObject.AddComponent<CoroutineContainer>();
-        coroutineContainer.StartCoroutine(CheckWebRequestRoutine());
+        coroutineContainer.StartCoroutine(WaitForResponseRoutine());
     }
 
-    private IEnumerator CheckWebRequestRoutine ()
+    private IEnumerator WaitForResponseRoutine ()
     {
         while (!webRequest.isDone) yield return null;
         OnWebRequestDone();
