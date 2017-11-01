@@ -84,3 +84,6 @@ $RECYCLE.BIN/
 
 # Allow dlls for plugins and 3rd party assets
 !*.dll 
+
+# Ignore sensitive data
+GoogleDriveSettings.asset
