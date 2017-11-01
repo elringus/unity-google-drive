@@ -86,5 +86,5 @@ $RECYCLE.BIN/
 !*.dll 
 
 # Ignore sensitive data
-GoogleDriveSettings.asset
-GoogleDriveSettings.asset.meta
+/Assets/UnityGoogleDrive/Resources/*
+/Assets/UnityGoogleDrive/Resources.meta
