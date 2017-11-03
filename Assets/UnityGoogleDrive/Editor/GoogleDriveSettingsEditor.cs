@@ -70,7 +70,7 @@ public class GoogleDriveSettingsEditor : Editor
             return;
         }
 
-        const string START_MARKER = "{\"installed\":";
+        const string START_MARKER = "{\"web\":";
         var jsonString = File.ReadAllText(path);
         if (!jsonString.StartsWith(START_MARKER))
         {

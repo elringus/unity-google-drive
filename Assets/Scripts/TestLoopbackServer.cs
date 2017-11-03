@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class TestDownload : MonoBehaviour
+public class TestLoopbackServer : MonoBehaviour
 {
     private void Start ()
     {
-        new DownloadRequest().Send();
+        
     }
 
 }
