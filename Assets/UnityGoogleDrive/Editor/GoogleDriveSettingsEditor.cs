@@ -17,10 +17,12 @@ public class GoogleDriveSettingsEditor : Editor
         {
             settings = CreateInstance<GoogleDriveSettings>();
             Directory.CreateDirectory(Application.dataPath + "/UnityGoogleDrive/Resources");
-            AssetDatabase.CreateAsset(settings, "Assets/UnityGoogleDrive/Resources/GoogleDriveSettings.asset");
+            const string path = "Assets/UnityGoogleDrive/Resources/GoogleDriveSettings.asset";
+            AssetDatabase.CreateAsset(settings, path);
             AssetDatabase.Refresh();
             AssetDatabase.SaveAssets();
-            Debug.Log("Google Drive settings file didn't exist and was created.");
+            Debug.Log(string.Format("Google Drive settings file didn't exist and was created at: {0}\n" +
+                "You're free to move it, just make sure it stays in the root of a 'Resources' folder.", path));
         }
         return settings;
     }
@@ -52,13 +54,13 @@ public class GoogleDriveSettingsEditor : Editor
         if (GUILayout.Button("Create Google Drive API app"))
             Application.OpenURL(@"https://console.developers.google.com/start/api?id=drive");
 
-        if (GUILayout.Button("Upload credentials JSON..."))
-            UploadCredentialsJson(EditorUtility.OpenFilePanel("Select Google Drive credentials JSON file", "", "json"));
+        if (GUILayout.Button("Parse credentials JSON..."))
+            ParseCredentialsJson(EditorUtility.OpenFilePanel("Select Drive API app credentials JSON file", "", "json"));
 
         serializedObject.ApplyModifiedProperties();
     }
 
-    private void UploadCredentialsJson (string path)
+    private void ParseCredentialsJson (string path)
     {
         if (string.IsNullOrEmpty(path)) return;
 
