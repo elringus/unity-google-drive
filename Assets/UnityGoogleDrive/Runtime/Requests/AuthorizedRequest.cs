@@ -42,7 +42,7 @@ public abstract class AuthorizedRequest<T> : GoogleDriveRequest<T> where T : Aut
         // Create the OAuth 2.0 authorization request.
         var authRequest = string.Format("{0}?response_type=code&scope=openid%20profile&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
             Settings.AuthCredentials.AuthUri,
-            Uri.EscapeDataString(Settings.AuthCredentials.RedirectUris[1]),
+            System.Uri.EscapeDataString(Settings.AuthCredentials.RedirectUris[1]),
             Settings.AuthCredentials.ClientId,
             authState,
             codeChallenge,

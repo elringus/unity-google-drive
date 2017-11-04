@@ -1,13 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class LoopbackServer : NetworkServerSimple
+/// <summary>
+/// Provides auth and refresh tokens using local loopback method to retrieve authorization code.
+/// Implementation based on: https://github.com/googlesamples/oauth-apps-for-windows.
+/// </summary>
+public class LoopbackAuthProvider : NetworkServerSimple, IAuthProvider
 {
-    public LoopbackServer ()
+    public event Action<IAuthProvider> OnDone;
+
+    public bool IsDone { get; private set; }
+    public bool IsError { get; private set; }
+    public string AccessToken { get; private set; } 
+    public string RefreshToken { get; private set; }
+
+    private string authorizationCode;
+
+    public LoopbackAuthProvider ()
     {
-        Debug.Log("LoopbackServer: Created");
+        
+    }
+
+    public AuthProviderYeildInstruction ProvideAuth (AuthCredentials authCredentials)
+    {
+        return null;
     }
 
     public override void OnConnected (NetworkConnection conn)
@@ -33,6 +50,8 @@ public class LoopbackServer : NetworkServerSimple
 
     public override void OnDataError (NetworkConnection conn, byte error)
     {
+        base.OnDataError(conn, error);
+
         Debug.Log("LoopbackServer: OnDataError conn: " + conn.ToString() + " error: " + error.ToString());
     }
 

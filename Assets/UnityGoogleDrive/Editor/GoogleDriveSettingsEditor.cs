@@ -8,6 +8,10 @@ public class GoogleDriveSettingsEditor : Editor
     protected GoogleDriveSettings TargetSettings { get { return target as GoogleDriveSettings; } }
 
     private SerializedProperty authCredentials;
+    private SerializedProperty sharedRefreshToken;
+
+    private GUIContent authCredentialsContent = new GUIContent("Authorization Credentials", "Google Drive API application credentials used to authorize requests.");
+    private GUIContent sharedRefreshTokenContent = new GUIContent("Shared Refresh Token", "Used to provide shared access to the authorized user's drive.");
 
     [InitializeOnLoadMethod]
     private static GoogleDriveSettings GetOrCreateSettings ()
@@ -37,6 +41,7 @@ public class GoogleDriveSettingsEditor : Editor
     private void OnEnable ()
     {
         authCredentials = serializedObject.FindProperty("authCredentials");
+        sharedRefreshToken = serializedObject.FindProperty("sharedRefreshToken");
     }
 
     public override void OnInspectorGUI ()
@@ -47,15 +52,20 @@ public class GoogleDriveSettingsEditor : Editor
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(authCredentials, true);
+        EditorGUILayout.PropertyField(authCredentials, authCredentialsContent, true);
+        EditorGUILayout.PropertyField(sharedRefreshToken, sharedRefreshTokenContent);
 
         EditorGUILayout.Space();
 
         if (GUILayout.Button("Create Google Drive API app"))
             Application.OpenURL(@"https://console.developers.google.com/start/api?id=drive");
 
-        if (GUILayout.Button("Parse credentials JSON..."))
+        if (GUILayout.Button("Parse credentials JSON file..."))
             ParseCredentialsJson(EditorUtility.OpenFilePanel("Select Drive API app credentials JSON file", "", "json"));
+
+        using (new EditorGUI.DisabledScope(!TargetSettings.AuthCredentials.ContainsSensitiveData()))
+            if (GUILayout.Button("Retrieve shared refresh token"))
+                Application.OpenURL(@"https://console.developers.google.com");
 
         serializedObject.ApplyModifiedProperties();
     }

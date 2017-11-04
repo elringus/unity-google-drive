@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class DownloadRequest : AuthorizedRequest<DownloadRequest>
+public class DownloadRequest : GoogleDriveRequest<DownloadRequest>
 {
     public DownloadRequest ()
-        : base("", UnityWebRequest.kHttpVerbGET) { }
+        : base(@"https://www.googleapis.com/drive/v3/about", UnityWebRequest.kHttpVerbGET) { }
 
     protected override void OnBeforeSend (UnityWebRequest webRequest)
     {
         webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Content-Type", "text/plain");
     }
 
     protected override void OnBeforeDone (UnityWebRequest webRequest)
