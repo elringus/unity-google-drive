@@ -6,7 +6,7 @@ public class TestDownload : MonoBehaviour
 {
     private void Start ()
     {
-        new DownloadRequest().Send();
+        new DownloadRequest().Send().OnDone += request => print(request.Uri);
     }
 
 }

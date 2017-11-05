@@ -9,7 +9,7 @@ public class RedirectAuthProvider : IAuthProvider
     public string AccessToken { get; private set; }
     public string RefreshToken { get; private set; }
 
-    public AuthProviderYeildInstruction ProvideAuth (AuthCredentials authCredentials)
+    public void ProvideAuth (AuthCredentials authCredentials)
     {
         if (OnDone != null) OnDone.Invoke(this);
         throw new NotImplementedException();

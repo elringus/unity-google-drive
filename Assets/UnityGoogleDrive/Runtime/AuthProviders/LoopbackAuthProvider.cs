@@ -22,9 +22,9 @@ public class LoopbackAuthProvider : NetworkServerSimple, IAuthProvider
         
     }
 
-    public AuthProviderYeildInstruction ProvideAuth (AuthCredentials authCredentials)
+    public void ProvideAuth (AuthCredentials authCredentials)
     {
-        return null;
+        
     }
 
     public override void OnConnected (NetworkConnection conn)

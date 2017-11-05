@@ -13,11 +13,12 @@ public class UnityWebRequestRunner
     class CoroutineContainer : MonoBehaviour { }
 
     #pragma warning disable IDE1006 
-    public event Action completed;
+    public event Action<AsyncOperation> completed;
     #pragma warning restore IDE1006 
 
     public UnityWebRequest UnityWebRequest { get; private set; }
 
+    private AsyncOperation requestYield;
     private MonoBehaviour coroutineContainer;
     private GameObject containerObject;
     private Coroutine coroutine;
@@ -46,8 +47,7 @@ public class UnityWebRequestRunner
         }
 
         coroutine = coroutineContainer.StartCoroutine(RequestRoutine());
-
-        UnityWebRequest.Send();
+        requestYield = UnityWebRequest.Send();
     }
 
     public void Abort ()
@@ -74,7 +74,7 @@ public class UnityWebRequestRunner
     private void OnComplete ()
     {
         if (completed != null)
-            completed.Invoke();
+            completed.Invoke(requestYield);
         if (containerObject)
             UnityEngine.Object.Destroy(containerObject);
     }
