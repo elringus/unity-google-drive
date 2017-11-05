@@ -1,7 +1,7 @@
 ﻿using System;
 
 /// <summary>
-/// Implementation is able to retrieve access and refresh tokens using provided credentials.
+/// Implementation is able to retrieve access and refresh tokens using provided settings.
 /// </summary>
 public interface IAuthProvider
 {
@@ -12,5 +12,5 @@ public interface IAuthProvider
     string AccessToken { get; }
     string RefreshToken { get; }
 
-    void ProvideAuth (AuthCredentials authCredentials);
+    void ProvideAuth (GoogleDriveSettings googleDriveSettings);
 }

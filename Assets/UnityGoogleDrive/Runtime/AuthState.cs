@@ -16,15 +16,15 @@ public class AuthState
     private const string ACCESS_TOKEN_KEY = "GoogleDriveAccessToken";
     private const string REFRESH_TOKEN_KEY = "GoogleDriveRefreshToken";
 
-    private AuthCredentials credentials;
+    private GoogleDriveSettings settings;
     private IAuthProvider authProvider;
     private AccessTokenRefresher accessTokenRefresher;
 
-    public AuthState (AuthCredentials authCredentials, string sharedRefreshToken = null)
+    public AuthState (GoogleDriveSettings googleDriveSettings)
     {
-        credentials = authCredentials;
-        if (!string.IsNullOrEmpty(sharedRefreshToken))
-            RefreshToken = sharedRefreshToken;
+        settings = googleDriveSettings;
+        if (!string.IsNullOrEmpty(settings.SharedRefreshToken))
+            RefreshToken = settings.SharedRefreshToken;
     }
 
     public void RefreshAccessToken ()
@@ -54,7 +54,7 @@ public class AuthState
         #endif
 
         authProvider.OnDone += HandleAuthProviderDone;
-        authProvider.ProvideAuth(credentials);
+        authProvider.ProvideAuth(settings);
     }
 
     private void HandleAuthProviderDone (IAuthProvider provider)
@@ -63,7 +63,7 @@ public class AuthState
 
         if (provider.IsError)
         {
-            Debug.LogError("Failed to execute Google Drive auth procedure. Check application settings and credentials.");
+            Debug.LogError("Failed to execute Google Drive authorization procedure. Check application settings and credentials.");
             // TODO: Handle auth procedure fail for running requests.
         }
         else
@@ -78,7 +78,7 @@ public class AuthState
     {
         accessTokenRefresher = new AccessTokenRefresher();
         accessTokenRefresher.OnDone += HandleAccessTokenRefresherDone;
-        accessTokenRefresher.RefreshAccessToken(credentials, RefreshToken);
+        accessTokenRefresher.RefreshAccessToken(settings, RefreshToken);
     }
 
     private void HandleAccessTokenRefresherDone (AccessTokenRefresher refresher)

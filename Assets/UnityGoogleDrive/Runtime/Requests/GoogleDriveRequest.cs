@@ -36,11 +36,8 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
         Uri = uri;
         Method = method;
 
-        if (Settings == null)
-            Settings = GoogleDriveSettings.LoadFromResources();
-
-        if (AuthState == null)
-            AuthState = new AuthState(Settings.AuthCredentials, Settings.SharedRefreshToken);
+        if (Settings == null) Settings = GoogleDriveSettings.LoadFromResources();
+        if (AuthState == null) AuthState = new AuthState(Settings);
     }
 
     /// <summary>
@@ -88,7 +85,7 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
         }
 
         webRequest = new UnityWebRequest(Uri, Method);
-        webRequest.SetRequestHeader("Authorization", string.Format("Authorization: Bearer {0}", AuthState.AccessToken));
+        webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthState.AccessToken));
         webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
 
         OnBeforeSend(webRequest);

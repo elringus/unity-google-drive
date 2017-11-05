@@ -9,9 +9,11 @@ public class GoogleDriveSettingsEditor : Editor
 
     private SerializedProperty authCredentials;
     private SerializedProperty sharedRefreshToken;
+    private SerializedProperty loopbackResponseHtml;
 
     private GUIContent authCredentialsContent = new GUIContent("Authorization Credentials", "Google Drive API application credentials used to authorize requests.");
     private GUIContent sharedRefreshTokenContent = new GUIContent("Shared Refresh Token", "Used to provide shared access to the authorized user's drive.");
+    private GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
 
     [InitializeOnLoadMethod]
     private static GoogleDriveSettings GetOrCreateSettings ()
@@ -42,6 +44,7 @@ public class GoogleDriveSettingsEditor : Editor
     {
         authCredentials = serializedObject.FindProperty("authCredentials");
         sharedRefreshToken = serializedObject.FindProperty("sharedRefreshToken");
+        loopbackResponseHtml = serializedObject.FindProperty("loopbackResponseHtml");
     }
 
     public override void OnInspectorGUI ()
@@ -54,6 +57,7 @@ public class GoogleDriveSettingsEditor : Editor
 
         EditorGUILayout.PropertyField(authCredentials, authCredentialsContent, true);
         EditorGUILayout.PropertyField(sharedRefreshToken, sharedRefreshTokenContent);
+        EditorGUILayout.PropertyField(loopbackResponseHtml, loopbackResponseHtmlContent);
 
         EditorGUILayout.Space();
 
