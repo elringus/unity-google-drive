@@ -59,7 +59,7 @@ public class AuthCodeExchanger
         var response = JsonUtility.FromJson<ExchangeResponse>(exchangeRequest.downloadHandler.text);
         if (!string.IsNullOrEmpty(response.error))
         {
-            Debug.LogError(string.Format("{0}: {1}", response.error, response.error_description));
+            Debug.LogError(string.Format("UnityGoogleDrive: {0}: {1}", response.error, response.error_description));
             HandleExchangeComplete(true);
             return;
         }

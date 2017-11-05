@@ -21,7 +21,7 @@ public class GoogleDriveSettings : ScriptableObject
 
         if (!settings && !silent)
         {
-            Debug.LogError("Google Drive settings file not found. " +
+            Debug.LogError("UnityGoogleDrive: Settings file not found. " +
                 "Use 'Edit > Project Settings > Google Drive Settings' to create a new one.");
         }
 

@@ -3,6 +3,8 @@ using UnityEngine.Networking;
 
 public class DownloadRequest : GoogleDriveRequest<DownloadRequest>
 {
+    public string Result;
+
     public DownloadRequest ()
         : base(@"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbGET) { }
 
@@ -13,6 +15,6 @@ public class DownloadRequest : GoogleDriveRequest<DownloadRequest>
 
     protected override void OnBeforeDone (UnityWebRequest webRequest)
     {
-        Debug.Log("Downloaded: " + webRequest.downloadHandler.text);
+        Result = webRequest.downloadHandler.text;
     }
 }

@@ -55,7 +55,7 @@ public class AccessTokenRefresher
         var response = JsonUtility.FromJson<RefreshResponse>(refreshRequest.downloadHandler.text);
         if (!string.IsNullOrEmpty(response.error))
         {
-            Debug.LogError(string.Format("{0}: {1}", response.error, response.error_description));
+            Debug.LogError(string.Format("UnityGoogleDrive: {0}: {1}", response.error, response.error_description));
             HandleRefreshComplete(true);
             return;
         }

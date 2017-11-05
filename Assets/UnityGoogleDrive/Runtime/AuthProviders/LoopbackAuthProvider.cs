@@ -75,13 +75,13 @@ public class LoopbackAuthProvider : IAuthProvider
         // Check for errors.
         if (context.Request.QueryString.Get("error") != null)
         {
-            Debug.LogError(string.Format("OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
+            Debug.LogError(string.Format("UnityGoogleDrive: OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
             HandleProvideAuthComplete(true);
             return;
         }
         if (context.Request.QueryString.Get("code") == null || context.Request.QueryString.Get("state") == null)
         {
-            Debug.LogError("Malformed authorization response. " + context.Request.QueryString);
+            Debug.LogError("UnityGoogleDrive: Malformed authorization response. " + context.Request.QueryString);
             HandleProvideAuthComplete(true);
             return;
         }
@@ -94,7 +94,7 @@ public class LoopbackAuthProvider : IAuthProvider
         // this app made the request which resulted in authorization.
         if (incomingState != expectedState)
         {
-            Debug.LogError(string.Format("Received request with invalid state ({0}).", incomingState));
+            Debug.LogError(string.Format("UnityGoogleDrive: Received request with invalid state ({0}).", incomingState));
             HandleProvideAuthComplete(true);
             return;
         }
@@ -119,7 +119,7 @@ public class LoopbackAuthProvider : IAuthProvider
 
         if (authCodeExchanger.IsError)
         {
-            Debug.LogError("Failed to exchange authorization code.");
+            Debug.LogError("UnityGoogleDrive: Failed to exchange authorization code.");
             HandleProvideAuthComplete(true);
             return;
         }

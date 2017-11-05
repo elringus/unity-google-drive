@@ -63,7 +63,7 @@ public class AuthState
 
         if (provider.IsError)
         {
-            Debug.LogError("Failed to execute Google Drive authorization procedure. Check application settings and credentials.");
+            Debug.LogError("UnityGoogleDrive: Failed to execute authorization procedure. Check application settings and credentials.");
             // TODO: Handle auth procedure fail for running requests.
         }
         else
@@ -87,7 +87,7 @@ public class AuthState
 
         if (refresher.IsError)
         {
-            Debug.LogWarning("Failed to refresh Google Drive access token; executing full auth procedure.");
+            Debug.LogWarning("UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.");
             ExecuteAuthProvider();
         }
         else

@@ -27,7 +27,7 @@ public class GoogleDriveSettingsEditor : Editor
             AssetDatabase.CreateAsset(settings, path);
             AssetDatabase.Refresh();
             AssetDatabase.SaveAssets();
-            Debug.Log(string.Format("Google Drive settings file didn't exist and was created at: {0}\n" +
+            Debug.Log(string.Format("UnityGoogleDrive: Settings file didn't exist and was created at: {0}.\n" +
                 "You're free to move it, just make sure it stays in the root of a 'Resources' folder.", path));
         }
         return settings;
@@ -80,7 +80,7 @@ public class GoogleDriveSettingsEditor : Editor
 
         if (!File.Exists(path))
         {
-            Debug.LogError("Specified path to Google Drive credentials JSON file is not valid.");
+            Debug.LogError("UnityGoogleDrive: Specified path to credentials JSON file is not valid.");
             return;
         }
 
@@ -88,7 +88,7 @@ public class GoogleDriveSettingsEditor : Editor
         var jsonString = File.ReadAllText(path);
         if (!jsonString.StartsWith(START_MARKER))
         {
-            Debug.LogError("Specified file is not valid. Make sure to setup Drive API to be used with installed platforms.");
+            Debug.LogError("UnityGoogleDrive: Specified file is not valid. Make sure to setup Drive API to be used with installed platforms.");
             return;
         }
 

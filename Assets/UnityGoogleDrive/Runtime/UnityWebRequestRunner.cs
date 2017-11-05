@@ -34,14 +34,14 @@ public class UnityWebRequestRunner
     {
         if (UnityWebRequest == null)
         {
-            Debug.LogWarning("Attempted to start UnityWebRequestRunner with non-valid UnityWebRequest.");
+            Debug.LogWarning("UnityGoogleDrive: Attempted to start UnityWebRequestRunner with non-valid UnityWebRequest.");
             OnComplete();
             return;
         }
 
         if (!coroutineContainer || !coroutineContainer.gameObject.activeInHierarchy)
         {
-            Debug.LogWarning("Attempted to start UnityWebRequestRunner with non-valid container.");
+            Debug.LogWarning("UnityGoogleDrive: Attempted to start UnityWebRequestRunner with non-valid container.");
             OnComplete();
             return;
         }
