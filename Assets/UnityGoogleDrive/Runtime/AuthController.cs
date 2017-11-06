@@ -21,7 +21,7 @@ public class AuthController
 
         // WebGL doesn't support loopback method; using redirection scheme instead.
         #if UNITY_WEBGL && !UNITY_EDITOR
-        authProvider = new RedirectAccessTokenProvider(settings);
+        accessTokenProvider = new RedirectAccessTokenProvider(settings);
         #else
         accessTokenProvider = new LoopbackAccessTokenProvider(settings);
         #endif
