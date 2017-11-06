@@ -103,7 +103,7 @@ public class GoogleDriveSettingsEditor : Editor
         var jsonString = File.ReadAllText(path);
         if (!jsonString.StartsWith(START_MARKER))
         {
-            Debug.LogError("UnityGoogleDrive: Specified file is not valid. Make sure to setup Drive API to be used with installed platforms.");
+            Debug.LogError("UnityGoogleDrive: Specified file is not valid. Make sure to setup Drive API to be used with the web platform.");
             return;
         }
 
