@@ -15,13 +15,11 @@ public class GoogleDriveSettingsEditor : Editor
 
     private SerializedProperty authCredentials;
     private SerializedProperty accessScope;
-    private SerializedProperty sharedRefreshToken;
     private SerializedProperty loopbackResponseHtml;
 
     private GUIContent authCredentialsContent = new GUIContent("Authorization Credentials", "Google Drive API application credentials used to authorize requests.");
     private GUIContent accessScopeContent = new GUIContent("Access Scope", "Scope of access to the user's Google Drive the app will request.");
     private GUIContent[] accessScopeOptionsContent = new GUIContent[] { new GUIContent("Full"), new GUIContent("Readonly") };
-    private GUIContent sharedRefreshTokenContent = new GUIContent("Shared Refresh Token", "Used to provide shared access to the authorized user's drive.");
     private GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
 
     [InitializeOnLoadMethod]
@@ -53,7 +51,6 @@ public class GoogleDriveSettingsEditor : Editor
     {
         authCredentials = serializedObject.FindProperty("authCredentials");
         accessScope = serializedObject.FindProperty("accessScope");
-        sharedRefreshToken = serializedObject.FindProperty("sharedRefreshToken");
         loopbackResponseHtml = serializedObject.FindProperty("loopbackResponseHtml");
     }
 
@@ -67,7 +64,6 @@ public class GoogleDriveSettingsEditor : Editor
 
         EditorGUILayout.PropertyField(authCredentials, authCredentialsContent, true);
         AccessScopeGUI();
-        EditorGUILayout.PropertyField(sharedRefreshToken, sharedRefreshTokenContent);
         EditorGUILayout.PropertyField(loopbackResponseHtml, loopbackResponseHtmlContent);
 
         EditorGUILayout.Space();
@@ -82,10 +78,6 @@ public class GoogleDriveSettingsEditor : Editor
 
         if (GUILayout.Button("Parse credentials JSON file..."))
             ParseCredentialsJson(EditorUtility.OpenFilePanel("Select Drive API app credentials JSON file", "", "json"));
-
-        using (new EditorGUI.DisabledScope(!TargetSettings.AuthCredentials.ContainsSensitiveData()))
-            if (GUILayout.Button("Retrieve shared refresh token"))
-                Application.OpenURL(@"https://console.developers.google.com");
 
         serializedObject.ApplyModifiedProperties();
     }

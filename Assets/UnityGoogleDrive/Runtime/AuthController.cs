@@ -1,0 +1,53 @@
+﻿using System;
+using UnityEngine;
+
+/// <summary>
+/// Controls authorization procedures and provides token to access Google APIs.
+/// Implementation based on Google OAuth 2.0 protocol: https://developers.google.com/identity/protocols/OAuth2.
+/// </summary>
+public class AuthController
+{
+    public event Action OnAccessTokenRefreshed;
+
+    public string AccessToken { get { return accessTokenProvider.AccessToken; } }
+    public bool IsRefreshingAccessToken { get; private set; }
+
+    private GoogleDriveSettings settings;
+    private IAccessTokenProvider accessTokenProvider;
+
+    public AuthController (GoogleDriveSettings googleDriveSettings)
+    {
+        settings = googleDriveSettings;
+
+        // WebGL doesn't support loopback method; using redirection scheme instead.
+        #if UNITY_WEBGL && !UNITY_EDITOR
+        authProvider = new RedirectAccessTokenProvider(settings);
+        #else
+        accessTokenProvider = new LoopbackAccessTokenProvider(settings);
+        #endif
+
+        accessTokenProvider.OnDone += HandleAccessTokenProviderDone;
+    }
+
+    public void RefreshAccessToken ()
+    {
+        if (IsRefreshingAccessToken) return;
+        IsRefreshingAccessToken = true;
+        accessTokenProvider.ProvideAccessToken();
+    }
+
+    private void HandleAccessTokenProviderDone (IAccessTokenProvider provider)
+    {
+        if (provider.IsError)
+        {
+            Debug.LogError("UnityGoogleDrive: Failed to execute authorization procedure. Check application settings and credentials.");
+            // TODO: Handle auth procedure fail for running requests.
+        }
+        else
+        {
+            IsRefreshingAccessToken = false;
+            if (OnAccessTokenRefreshed != null)
+                OnAccessTokenRefreshed.Invoke();
+        }
+    }
+}

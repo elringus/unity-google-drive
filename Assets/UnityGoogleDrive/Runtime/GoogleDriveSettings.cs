@@ -10,12 +10,10 @@ public class GoogleDriveSettings : ScriptableObject
 
     public AuthCredentials AuthCredentials { get { return authCredentials; } }
     public string AccessScope { get { return accessScope; } }
-    public string SharedRefreshToken { get { return sharedRefreshToken; } }
     public string LoopbackResponseHtml { get { return loopbackResponseHtml; } }
 
     [SerializeField] private AuthCredentials authCredentials = null;
     [SerializeField] private string accessScope = FULL_ACCESS_SCOPE;
-    [SerializeField] private string sharedRefreshToken = null;
     [SerializeField] private string loopbackResponseHtml = "<html><h1>Please return to the app.</h1></html>";
 
     public static GoogleDriveSettings LoadFromResources (bool silent = false)

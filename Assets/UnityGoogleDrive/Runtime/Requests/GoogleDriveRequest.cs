@@ -26,7 +26,7 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
     public string Error { get; protected set; }
 
     protected static GoogleDriveSettings Settings { get; private set; }
-    protected static AuthState AuthState { get; private set; }
+    protected static AuthController AuthController { get; private set; }
 
     private UnityWebRequest webRequest;
     private GoogleDriveRequestYeildInstruction<T> yeildInstruction;
@@ -37,7 +37,7 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
         Method = method;
 
         if (Settings == null) Settings = GoogleDriveSettings.LoadFromResources();
-        if (AuthState == null) AuthState = new AuthState(Settings);
+        if (AuthController == null) AuthController = new AuthController(Settings);
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
         }
 
         webRequest = new UnityWebRequest(Uri, Method);
-        webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthState.AccessToken));
+        webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthController.AccessToken));
         webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
 
         OnBeforeSend(webRequest);
@@ -116,13 +116,13 @@ public abstract class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveR
 
     private void HandleUnauthorizedResponse ()
     {
-        AuthState.OnAccessTokenRefreshed += HandleAccessTokenRefreshed;
-        AuthState.RefreshAccessToken();
+        AuthController.OnAccessTokenRefreshed += HandleAccessTokenRefreshed;
+        AuthController.RefreshAccessToken();
     }
 
     private void HandleAccessTokenRefreshed ()
     {
-        AuthState.OnAccessTokenRefreshed -= HandleAccessTokenRefreshed;
+        AuthController.OnAccessTokenRefreshed -= HandleAccessTokenRefreshed;
         SendWebRequest();
     }
 }
