@@ -75,6 +75,11 @@ public class GoogleDriveSettingsEditor : Editor
         if (GUILayout.Button("Create Google Drive API app"))
             Application.OpenURL(@"https://console.developers.google.com/start/api?id=drive");
 
+        using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(TargetSettings.AuthCredentials.ProjectId)))
+            if (GUILayout.Button("Manage Google Drive API app"))
+                Application.OpenURL(string.Format(@"https://console.developers.google.com/apis/credentials?project={0}", 
+                    TargetSettings.AuthCredentials.ProjectId));
+
         if (GUILayout.Button("Parse credentials JSON file..."))
             ParseCredentialsJson(EditorUtility.OpenFilePanel("Select Drive API app credentials JSON file", "", "json"));
 
