@@ -45,11 +45,11 @@ public class LoopbackAuthProvider : IAuthProvider
 
         // Create the OAuth 2.0 authorization request.
         // https://developers.google.com/identity/protocols/OAuth2WebServer#creatingclient
-        var authRequest = string.Format("{0}?response_type=code&scope={1}%20profile&redirect_uri={2}&client_id={3}&state={4}&code_challenge={5}&code_challenge_method={6}" +
+        var authRequest = string.Format("{0}?response_type=code&scope={1}&redirect_uri={2}&client_id={3}&state={4}&code_challenge={5}&code_challenge_method={6}" +
                 "&access_type=offline" + // Forces to return a refresh token at the auth code exchange phase.
                 "&approval_prompt=force", // Forces to show consent screen for each auth request. Needed to return refresh tokens on consequent auth runs.
             settings.AuthCredentials.AuthUri,
-            GoogleDriveSettings.FULL_ACCESS_SCOPE,
+            settings.AccessScope,
             Uri.EscapeDataString(redirectUri),
             settings.AuthCredentials.ClientId,
             expectedState,

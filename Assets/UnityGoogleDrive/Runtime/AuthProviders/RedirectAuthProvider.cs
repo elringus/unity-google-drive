@@ -1,5 +1,9 @@
 ﻿using System;
 
+/// <summary>
+/// Provides auth and refresh tokens using redirect method to retrieve authorization code.
+/// Protocol: https://developers.google.com/identity/protocols/OAuth2WebServer#obtainingaccesstokens.
+/// </summary>
 public class RedirectAuthProvider : IAuthProvider
 {
     public event Action<IAuthProvider> OnDone;

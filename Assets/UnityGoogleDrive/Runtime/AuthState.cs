@@ -47,7 +47,8 @@ public class AuthState
 
     private void ExecuteAuthProvider ()
     {
-        #if UNITY_WEBGL // WebGL doesn't support loopback method; using redirection scheme.
+        // WebGL doesn't support loopback method; using redirection scheme instead.
+        #if UNITY_WEBGL && !UNITY_EDITOR
         authProvider = new RedirectAuthProvider();
         #else
         authProvider = new LoopbackAuthProvider();

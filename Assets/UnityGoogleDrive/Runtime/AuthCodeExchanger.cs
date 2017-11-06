@@ -31,7 +31,7 @@ public class AuthCodeExchanger
         tokenRequestForm.AddField("client_id", googleDriveSettings.AuthCredentials.ClientId);
         tokenRequestForm.AddField("code_verifier", codeVerifier);
         tokenRequestForm.AddField("client_secret", googleDriveSettings.AuthCredentials.ClientSecret);
-        tokenRequestForm.AddField("scope", GoogleDriveSettings.FULL_ACCESS_SCOPE);
+        tokenRequestForm.AddField("scope", googleDriveSettings.AccessScope);
         tokenRequestForm.AddField("grant_type", "authorization_code");
 
         exchangeRequest = UnityWebRequest.Post(tokenRequestURI, tokenRequestForm);

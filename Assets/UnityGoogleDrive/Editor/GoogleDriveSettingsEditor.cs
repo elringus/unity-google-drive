@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,11 +8,19 @@ public class GoogleDriveSettingsEditor : Editor
 {
     protected GoogleDriveSettings TargetSettings { get { return target as GoogleDriveSettings; } }
 
+    private static readonly string[] ACCESS_SCOPE_OPTIONS = new string[] {
+        GoogleDriveSettings.FULL_ACCESS_SCOPE,
+        GoogleDriveSettings.READONLY_ACCESS_SCOPE
+    };
+
     private SerializedProperty authCredentials;
+    private SerializedProperty accessScope;
     private SerializedProperty sharedRefreshToken;
     private SerializedProperty loopbackResponseHtml;
 
     private GUIContent authCredentialsContent = new GUIContent("Authorization Credentials", "Google Drive API application credentials used to authorize requests.");
+    private GUIContent accessScopeContent = new GUIContent("Access Scope", "Scope of access to the user's Google Drive the app will request.");
+    private GUIContent[] accessScopeOptionsContent = new GUIContent[] { new GUIContent("Full"), new GUIContent("Readonly") };
     private GUIContent sharedRefreshTokenContent = new GUIContent("Shared Refresh Token", "Used to provide shared access to the authorized user's drive.");
     private GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
 
@@ -43,6 +52,7 @@ public class GoogleDriveSettingsEditor : Editor
     private void OnEnable ()
     {
         authCredentials = serializedObject.FindProperty("authCredentials");
+        accessScope = serializedObject.FindProperty("accessScope");
         sharedRefreshToken = serializedObject.FindProperty("sharedRefreshToken");
         loopbackResponseHtml = serializedObject.FindProperty("loopbackResponseHtml");
     }
@@ -56,6 +66,7 @@ public class GoogleDriveSettingsEditor : Editor
         EditorGUILayout.Space();
 
         EditorGUILayout.PropertyField(authCredentials, authCredentialsContent, true);
+        AccessScopeGUI();
         EditorGUILayout.PropertyField(sharedRefreshToken, sharedRefreshTokenContent);
         EditorGUILayout.PropertyField(loopbackResponseHtml, loopbackResponseHtmlContent);
 
@@ -72,6 +83,13 @@ public class GoogleDriveSettingsEditor : Editor
                 Application.OpenURL(@"https://console.developers.google.com");
 
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private void AccessScopeGUI ()
+    {
+        var selectedIndex = Array.IndexOf(ACCESS_SCOPE_OPTIONS, accessScope.stringValue);
+        selectedIndex = EditorGUILayout.Popup(accessScopeContent, selectedIndex, accessScopeOptionsContent);
+        accessScope.stringValue = ACCESS_SCOPE_OPTIONS[selectedIndex];
     }
 
     private void ParseCredentialsJson (string path)
