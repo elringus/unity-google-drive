@@ -15,7 +15,7 @@ public class TestDownload : MonoBehaviour
     private void OnGUI ()
     {
         if (request != null && !string.IsNullOrEmpty(request.Result))
-            GUILayout.TextArea(request.Result.Substring(0, 1000));
+            GUILayout.TextArea(request.Result.Substring(0, Mathf.Clamp(request.Result.Length, 0, 1000)));
         else GUILayout.TextArea(Time.realtimeSinceStartup.ToString());
     }
 }
