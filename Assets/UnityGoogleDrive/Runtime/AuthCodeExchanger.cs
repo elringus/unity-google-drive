@@ -19,19 +19,25 @@ public class AuthCodeExchanger
     public string AccesToken { get; private set; }
     public string RefreshToken { get; private set; }
 
+    private GoogleDriveSettings settings;
     private UnityWebRequest exchangeRequest;
 
-    public void ExchangeAuthCode (GoogleDriveSettings googleDriveSettings, string authorizationCode, string codeVerifier, string redirectUri)
+    public AuthCodeExchanger (GoogleDriveSettings googleDriveSettings)
     {
-        var tokenRequestURI = googleDriveSettings.AuthCredentials.TokenUri;
+        settings = googleDriveSettings;
+    }
+
+    public void ExchangeAuthCode (string authorizationCode, string codeVerifier, string redirectUri)
+    {
+        var tokenRequestURI = settings.AuthCredentials.TokenUri;
 
         var tokenRequestForm = new WWWForm();
         tokenRequestForm.AddField("code", authorizationCode);
         tokenRequestForm.AddField("redirect_uri", redirectUri);
-        tokenRequestForm.AddField("client_id", googleDriveSettings.AuthCredentials.ClientId);
+        tokenRequestForm.AddField("client_id", settings.AuthCredentials.ClientId);
         tokenRequestForm.AddField("code_verifier", codeVerifier);
-        tokenRequestForm.AddField("client_secret", googleDriveSettings.AuthCredentials.ClientSecret);
-        tokenRequestForm.AddField("scope", googleDriveSettings.AccessScope);
+        tokenRequestForm.AddField("client_secret", settings.AuthCredentials.ClientSecret);
+        tokenRequestForm.AddField("scope", settings.AccessScope);
         tokenRequestForm.AddField("grant_type", "authorization_code");
 
         exchangeRequest = UnityWebRequest.Post(tokenRequestURI, tokenRequestForm);

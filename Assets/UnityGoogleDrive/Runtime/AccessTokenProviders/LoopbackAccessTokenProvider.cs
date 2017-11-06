@@ -32,10 +32,10 @@ public class LoopbackAccessTokenProvider : IAccessTokenProvider
     {
         settings = googleDriveSettings;
 
-        accessTokenRefresher = new AccessTokenRefresher();
+        accessTokenRefresher = new AccessTokenRefresher(settings);
         accessTokenRefresher.OnDone += HandleAccessTokenRefreshed;
 
-        authCodeExchanger = new AuthCodeExchanger();
+        authCodeExchanger = new AuthCodeExchanger(settings);
         authCodeExchanger.OnDone += HandleAuthCodeExchanged;
     }
 
@@ -44,7 +44,7 @@ public class LoopbackAccessTokenProvider : IAccessTokenProvider
         // Refresh token isn't available; executing full auth procedure.
         if (string.IsNullOrEmpty(RefreshToken)) ExecuteFullAuth();
         // Using refresh token to issue a new access token.
-        else accessTokenRefresher.RefreshAccessToken(settings, RefreshToken);
+        else accessTokenRefresher.RefreshAccessToken(RefreshToken);
     }
 
     private void HandleProvideAccessTokenComplete (bool error = false)
@@ -157,7 +157,7 @@ public class LoopbackAccessTokenProvider : IAccessTokenProvider
         }
 
         // Exchange the authorization code for tokens.
-        authCodeExchanger.ExchangeAuthCode(settings, authorizationCode, codeVerifier, redirectUri);
+        authCodeExchanger.ExchangeAuthCode(authorizationCode, codeVerifier, redirectUri);
     }
 
     private int GetRandomUnusedPort ()

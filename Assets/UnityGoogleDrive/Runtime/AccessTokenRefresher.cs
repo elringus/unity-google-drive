@@ -18,15 +18,21 @@ public class AccessTokenRefresher
     public bool IsError { get; private set; }
     public string AccesToken { get; private set; }
 
+    private GoogleDriveSettings settings;
     private UnityWebRequest refreshRequest;
 
-    public void RefreshAccessToken (GoogleDriveSettings googleDriveSettings, string refreshToken)
+    public AccessTokenRefresher (GoogleDriveSettings googleDriveSettings)
     {
-        var refreshRequestURI = googleDriveSettings.AuthCredentials.TokenUri;
+        settings = googleDriveSettings;
+    }
+
+    public void RefreshAccessToken (string refreshToken)
+    {
+        var refreshRequestURI = settings.AuthCredentials.TokenUri;
 
         var refreshRequestForm = new WWWForm();
-        refreshRequestForm.AddField("client_id", googleDriveSettings.AuthCredentials.ClientId);
-        refreshRequestForm.AddField("client_secret", googleDriveSettings.AuthCredentials.ClientSecret);
+        refreshRequestForm.AddField("client_id", settings.AuthCredentials.ClientId);
+        refreshRequestForm.AddField("client_secret", settings.AuthCredentials.ClientSecret);
         refreshRequestForm.AddField("refresh_token", refreshToken);
         refreshRequestForm.AddField("grant_type", "refresh_token");
 
