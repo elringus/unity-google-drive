@@ -324,6 +324,10 @@ public class GoogleDriveFile
     }
 
     /// <summary>
+    /// Identifies what kind of resource this is. Value: the fixed string "drive#file".
+    /// </summary>
+    public string Kind { get { return "drive#file"; } }
+    /// <summary>
     /// The ID of the file.
     /// </summary>
     public string Id { get { return id; } set { id = value; } }
@@ -588,10 +592,6 @@ public class GoogleDriveFile
     /// Entries with null values are cleared in update and copy requests.
     /// </summary>
     public IDictionary<string, string> AppProperties { get { return appProperties; } }
-    /// <summary>
-    /// Identifies what kind of resource this is. Value: the fixed string "drive#file".
-    /// </summary>
-    public string Kind { get { return "drive#file"; } }
 
     [SerializeField] private string id = null;
     [SerializeField] private string name = null;

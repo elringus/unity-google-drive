@@ -47,6 +47,10 @@ public class GoogleDrivePermission
     }
 
     /// <summary>
+    /// Identifies what kind of resource this is. Value: the fixed string "drive#permission".
+    /// </summary>
+    public string Kind { get { return "drive#permission"; } }
+    /// <summary>
     /// The ID of this permission. This is a unique identifier for the grantee, and is 
     /// published in User resources as permissionId.
     /// </summary>
@@ -112,10 +116,6 @@ public class GoogleDrivePermission
     ///   - anyone
     /// </summary>
     public string Type { get { return type; } }
-    /// <summary>
-    /// Identifies what kind of resource this is. Value: the fixed string "drive#permission".
-    /// </summary>
-    public string Kind { get { return "drive#permission"; } }
 
     [SerializeField] private string id = null;
     [SerializeField] private bool? allowFileDiscovery = null;
@@ -128,5 +128,4 @@ public class GoogleDrivePermission
     [SerializeField] private string role = null;
     [SerializeField] private List<TeamDrivePermissionDetailsData> teamDrivePermissionDetails = null;
     [SerializeField] private string type = null;
-
 }
