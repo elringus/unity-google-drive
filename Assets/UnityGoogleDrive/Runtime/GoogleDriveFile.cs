@@ -7,13 +7,11 @@ using UnityEngine;
 
 /// <summary>
 /// The metadata for a file stored in Google Drive.
-/// Prototype: https://developers.google.com/drive/v3/reference/files#resource-representations.
+/// Prototype: https://developers.google.com/drive/v3/reference/files.
 /// </summary>
 [Serializable]
 public class GoogleDriveFile
 {
-    #region Internal types
-
     /// <summary>
     /// Additional information about the content of the file. 
     /// These fields are never populated in responses.
@@ -325,10 +323,6 @@ public class GoogleDriveFile
         [SerializeField] private int? width = null;
     }
 
-    #endregion
-
-    #region Public properties
-
     /// <summary>
     /// The ID of the file.
     /// </summary>
@@ -599,10 +593,6 @@ public class GoogleDriveFile
     /// </summary>
     public string Kind { get { return "drive#file"; } }
 
-    #endregion
-
-    #region Serialized fields
-
     [SerializeField] private string id = null;
     [SerializeField] private string name = null;
     [SerializeField] private string originalFilename = null;
@@ -654,6 +644,4 @@ public class GoogleDriveFile
     [SerializeField] private bool? modifiedByMe = null;
     [SerializeField] private string modifiedByMeTime = null;
     [SerializeField] private IDictionary<string, string> appProperties = null;
-
-    #endregion
 }
