@@ -93,14 +93,14 @@ public class GoogleDriveSettingsEditor : Editor
     {
         if (string.IsNullOrEmpty(path)) return;
 
-        if (!File.Exists(path))
+        if (!System.IO.File.Exists(path))
         {
             Debug.LogError("UnityGoogleDrive: Specified path to credentials JSON file is not valid.");
             return;
         }
 
         const string START_MARKER = "{\"web\":";
-        var jsonString = File.ReadAllText(path);
+        var jsonString = System.IO.File.ReadAllText(path);
         if (!jsonString.StartsWith(START_MARKER))
         {
             Debug.LogError("UnityGoogleDrive: Specified file is not valid. Make sure to setup Drive API to be used with the web platform.");

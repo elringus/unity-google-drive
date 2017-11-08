@@ -9,8 +9,7 @@ using UnityEngine;
 /// The metadata for a file stored in Google Drive.
 /// Prototype: https://developers.google.com/drive/v3/reference/files.
 /// </summary>
-[Serializable]
-public class GoogleDriveFile
+public class File : GoogleDriveData
 {
     /// <summary>
     /// Additional information about the content of the file. 
@@ -326,7 +325,7 @@ public class GoogleDriveFile
     /// <summary>
     /// Identifies what kind of resource this is. Value: the fixed string "drive#file".
     /// </summary>
-    public string Kind { get { return "drive#file"; } }
+    public override string Kind { get { return "drive#file"; } }
     /// <summary>
     /// The ID of the file.
     /// </summary>
@@ -408,7 +407,7 @@ public class GoogleDriveFile
     /// The full list of permissions for the file. This is only available if the requesting
     /// user can share the file. Not populated for Team Drive files.
     /// </summary>
-    public List<GoogleDrivePermission> Permissions { get { return permissions; } set { permissions = value; } }
+    public List<Permission> Permissions { get { return permissions; } set { permissions = value; } }
     /// <summary>
     /// A collection of arbitrary key-value pairs which are visible to all apps. Entries
     /// with null values are cleared in update and copy requests.
@@ -434,7 +433,7 @@ public class GoogleDriveFile
     /// <summary>
     /// The user who shared the file with the requesting user, if applicable.
     /// </summary>
-    public GoogleDriveUser SharingUser { get { return sharingUser; } }
+    public User SharingUser { get { return sharingUser; } }
     /// <summary>
     /// The list of spaces which contain the file. The currently supported values are
     /// 'drive', 'appDataFolder' and 'photos'.
@@ -473,7 +472,7 @@ public class GoogleDriveFile
     /// <summary>
     /// If the file has been explicitly trashed, the user who trashed it. Only populated for Team Drive files.
     /// </summary>
-    public GoogleDriveUser TrashingUser { get { return trashingUser; } }
+    public User TrashingUser { get { return trashingUser; } }
     /// <summary>
     /// Additional metadata about video media. This may not be available immediately upon upload.
     /// </summary>
@@ -517,7 +516,7 @@ public class GoogleDriveFile
     /// The owners of the file. Currently, only certain legacy files may have more than
     /// one owner. Not populated for Team Drive files.
     /// </summary>
-    public List<GoogleDriveUser> Owners { get { return owners; } }
+    public List<User> Owners { get { return owners; } }
     /// <summary>
     /// The ID of the file's head revision. This is currently only available for files
     /// with binary content in Drive.
@@ -574,7 +573,7 @@ public class GoogleDriveFile
     /// <summary>
     /// The last user to modify the file.
     /// </summary>
-    public GoogleDriveUser LastModifyingUser { get { return lastModifyingUser; } }
+    public User LastModifyingUser { get { return lastModifyingUser; } }
     /// <summary>
     /// Whether the file has been modified by this user.
     /// </summary>
@@ -606,12 +605,12 @@ public class GoogleDriveFile
     [SerializeField] private string createdTime = null;
     [SerializeField] private string modifiedTime = null;
     [SerializeField] private List<string> parents = null;
-    [SerializeField] private List<GoogleDrivePermission> permissions = null;
+    [SerializeField] private List<Permission> permissions = null;
     [SerializeField] private IDictionary<string, string> properties = null;
     [SerializeField] private long? quotaBytesUsed = null;
     [SerializeField] private bool? shared = null;
     [SerializeField] private string sharedWithMeTime = null;
-    [SerializeField] private GoogleDriveUser sharingUser = null;
+    [SerializeField] private User sharingUser = null;
     [SerializeField] private List<string> spaces = null;
     [SerializeField] private bool? starred = null;
     [SerializeField] private string teamDriveId = null;
@@ -619,7 +618,7 @@ public class GoogleDriveFile
     [SerializeField] private long? thumbnailVersion = null;
     [SerializeField] private bool? trashed = null;
     [SerializeField] private string trashedTime = null;
-    [SerializeField] private GoogleDriveUser trashingUser = null;
+    [SerializeField] private User trashingUser = null;
     [SerializeField] private VideoMediaMetadataData videoMediaMetadata = null;
     [SerializeField] private bool? viewedByMe = null;
     [SerializeField] private string viewedByMeTime = null;
@@ -628,7 +627,7 @@ public class GoogleDriveFile
     [SerializeField] private string webViewLink = null;
     [SerializeField] private bool? writersCanShare = null;
     [SerializeField] private List<string> permissionIds = null;
-    [SerializeField] private List<GoogleDriveUser> owners = null;
+    [SerializeField] private List<User> owners = null;
     [SerializeField] private string headRevisionId = null;
     [SerializeField] private CapabilitiesData capabilities = null;
     [SerializeField] private ContentHintsData contentHints = null;
@@ -640,7 +639,7 @@ public class GoogleDriveFile
     [SerializeField] private string iconLink = null;
     [SerializeField] private ImageMediaMetadataData imageMediaMetadata = null;
     [SerializeField] private bool? isAppAuthorized = null;
-    [SerializeField] private GoogleDriveUser lastModifyingUser = null;
+    [SerializeField] private User lastModifyingUser = null;
     [SerializeField] private bool? modifiedByMe = null;
     [SerializeField] private string modifiedByMeTime = null;
     [SerializeField] private IDictionary<string, string> appProperties = null;

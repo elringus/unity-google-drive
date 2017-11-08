@@ -7,8 +7,7 @@ using UnityEngine;
 /// A permission for a file. A permission grants a user, group, domain or the world access to a file or a folder hierarchy.
 /// Prototype: https://developers.google.com/drive/v3/reference/permissions.
 /// </summary>
-[Serializable]
-public class GoogleDrivePermission
+public class Permission : GoogleDriveData
 {
     [Serializable]
     public class TeamDrivePermissionDetailsData
@@ -49,7 +48,7 @@ public class GoogleDrivePermission
     /// <summary>
     /// Identifies what kind of resource this is. Value: the fixed string "drive#permission".
     /// </summary>
-    public string Kind { get { return "drive#permission"; } }
+    public override string Kind { get { return "drive#permission"; } }
     /// <summary>
     /// The ID of this permission. This is a unique identifier for the grantee, and is 
     /// published in User resources as permissionId.
