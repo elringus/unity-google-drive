@@ -5,7 +5,7 @@ using UnityEngine;
 /// Yield instruction to suspend coroutines while GoogleDriveRequest is running.
 /// </summary>
 /// <typeparam name="T">Type of the request the instruction is serving for.</typeparam>
-public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction where T : GoogleDriveRequest<T>
+public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction where T : GoogleDriveData
 {
     /// <summary>
     /// Event invoked when corresponding request is done running.
@@ -22,10 +22,10 @@ public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction wher
         GoogleDriveRequest.OnDone += HandleRequestDone;
     }
 
-    private void HandleRequestDone (T request)
+    private void HandleRequestDone (T response)
     {
         GoogleDriveRequest.OnDone -= HandleRequestDone;
         if (OnDone != null)
-            OnDone.Invoke(request);
+            OnDone.Invoke(response);
     }
 }
