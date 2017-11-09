@@ -1,9 +1,9 @@
 ﻿
 /// <summary>
-/// A Google Drive resource data representation.
+/// Base class for a Google Drive resource data representation and associated methods.
 /// </summary>
 [System.Serializable]
-public abstract class GoogleDriveData
+public abstract class GoogleDriveResource
 {
     /// <summary>
     /// Identifies what kind of resource this is.

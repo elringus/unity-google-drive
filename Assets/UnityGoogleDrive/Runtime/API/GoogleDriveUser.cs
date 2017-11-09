@@ -3,7 +3,7 @@
 /// <summary>
 /// Information about a Google Drive user.
 /// </summary>
-public class User : GoogleDriveData
+public class GoogleDriveUser : GoogleDriveResource
 {
     /// <summary>
     /// Identifies what kind of resource this is. Value: the fixed string "drive#user".

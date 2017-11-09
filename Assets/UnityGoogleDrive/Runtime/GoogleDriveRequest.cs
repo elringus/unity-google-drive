@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 /// <summary>
-/// Base class for all the requests intended to communicate with the Google Drive API. 
-/// Handles basic networking and authorization flow.
+/// A request intended to communicate with the Google Drive API. 
+/// Handles base networking and authorization flow.
 /// </summary>
 /// <typeparam name="T">Type of the response data.</typeparam>
-public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveData
+public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
 {
     /// <summary>
     /// Event invoked when the request is done running.
@@ -18,6 +18,8 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveData
     public string Uri { get; private set; }
     public string Method { get; private set; }
     public T Response { get; protected set; }
+    public float Progress { get { return webRequestYeild.progress; } }
+    public int Priority { get { return webRequestYeild.priority; } set { webRequestYeild.priority = value; } }
     public bool IsRunning { get { return yeildInstruction != null && !IsDone; } }
     public bool IsDone { get; protected set; }
     public bool IsError { get; protected set; }
@@ -26,8 +28,9 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveData
     protected static GoogleDriveSettings Settings { get; private set; }
     protected static AuthController AuthController { get; private set; }
 
-    private UnityWebRequest webRequest;
-    private GoogleDriveRequestYeildInstruction<T> yeildInstruction;
+    private UnityWebRequest webRequest = null;
+    private AsyncOperation webRequestYeild = null;
+    private GoogleDriveRequestYeildInstruction<T> yeildInstruction = null;
 
     public GoogleDriveRequest (string uri, string method)
     {
@@ -96,7 +99,7 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveData
 
         OnBeforeSend(webRequest);
 
-        webRequest.RunWebRequest().completed += HandleWebRequestDone;
+        webRequest.RunWebRequest(webRequestYeild).completed += HandleWebRequestDone;
     }
 
     private void HandleWebRequestDone (AsyncOperation requestYeild)

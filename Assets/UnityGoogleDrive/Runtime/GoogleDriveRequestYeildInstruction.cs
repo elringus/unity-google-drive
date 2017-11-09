@@ -4,8 +4,8 @@ using UnityEngine;
 /// <summary>
 /// Yield instruction to suspend coroutines while GoogleDriveRequest is running.
 /// </summary>
-/// <typeparam name="T">Type of the request the instruction is serving for.</typeparam>
-public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction where T : GoogleDriveData
+/// <typeparam name="T">Type of the response data of the request the instruction is serving for.</typeparam>
+public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction where T : GoogleDriveResource
 {
     /// <summary>
     /// Event invoked when corresponding request is done running.
@@ -14,6 +14,8 @@ public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction wher
     public event Action<T> OnDone;
 
     public override bool keepWaiting { get { return !GoogleDriveRequest.IsDone; } }
+    public float Progress { get { return GoogleDriveRequest.Progress; } }
+    public int Priority { get { return GoogleDriveRequest.Priority; } set { GoogleDriveRequest.Priority = value; } }
     public GoogleDriveRequest<T> GoogleDriveRequest { get; private set; }
 
     public GoogleDriveRequestYeildInstruction (GoogleDriveRequest<T> googleDriveRequest)

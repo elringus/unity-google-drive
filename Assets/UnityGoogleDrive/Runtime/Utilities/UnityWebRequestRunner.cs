@@ -8,12 +8,16 @@ using UnityEngine.Networking;
 /// Wrapper to use UnityWebRequest in event-driven manner.
 /// In Unity 2017.2 'completed' event was introduced, which should be used instead. 
 /// </summary>
-public class UnityWebRequestRunner
+public class UnityWebRequestRunner : AsyncOperation
 {
     class CoroutineContainer : MonoBehaviour { }
 
     #pragma warning disable IDE1006 
     public event Action<AsyncOperation> completed;
+    public new bool isDone { get { return requestYield.isDone; } }
+    public new float progress { get { return requestYield.progress; } }
+    public new int priority { get { return requestYield.priority; } set { requestYield.priority = value; } }
+    public new bool allowSceneActivation { get { return requestYield.allowSceneActivation; } set { requestYield.allowSceneActivation = value; } }
     #pragma warning restore IDE1006 
 
     public UnityWebRequest UnityWebRequest { get; private set; }
@@ -92,15 +96,20 @@ public class UnityWebRequestRunner
 public static class UnityWebRequestExtensions
 {
     #if UNITY_2017_2_OR_NEWER
-    public static UnityWebRequestAsyncOperation RunWebRequest (this UnityWebRequest unityWebRequest)
+    public static UnityWebRequestAsyncOperation RunWebRequest (this UnityWebRequest unityWebRequest, AsyncOperation outAsyncOperation = null)
     {
-        return unityWebRequest.SendWebRequest();
+        var webAsync = unityWebRequest.SendWebRequest();
+        if (outAsyncOperation != null)
+            outAsyncOperation = webAsync;
+        return webAsync;
     }
     #else
-    public static UnityWebRequestRunner RunWebRequest (this UnityWebRequest unityWebRequest)
+    public static UnityWebRequestRunner RunWebRequest (this UnityWebRequest unityWebRequest, AsyncOperation outAsyncOperation = null)
     {
         var runner = new UnityWebRequestRunner(unityWebRequest);
         runner.Run();
+        if (outAsyncOperation != null)
+            outAsyncOperation = runner;
         return runner;
     }
     #endif

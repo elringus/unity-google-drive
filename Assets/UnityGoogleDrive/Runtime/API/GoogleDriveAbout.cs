@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Information about the user, the user's Drive, and system capabilities.
+/// Prototype: https://developers.google.com/drive/v3/reference/about.
 /// </summary>
-public class About : GoogleDriveData
+public class GoogleDriveAbout : GoogleDriveResource
 {
     /// <summary>
     /// The user's storage quota limits and usage. All fields are measured in bytes.
     /// </summary>
+    [System.Serializable]
     public class StorageQuotaData
     {
         /// <summary>
@@ -35,6 +38,7 @@ public class About : GoogleDriveData
         [SerializeField] private long? usageInDriveTrash = null;
     }
 
+    [System.Serializable]
     public class TeamDriveThemesData
     {
         /// <summary>
@@ -94,7 +98,7 @@ public class About : GoogleDriveData
     /// <summary>
     /// The authenticated user.
     /// </summary>
-    public User User { get { return user; } }
+    public GoogleDriveUser User { get { return user; } }
 
     [SerializeField] private bool? appInstalled = null;
     [SerializeField] private IDictionary<string, IList<string>> exportFormats = null;
@@ -104,5 +108,13 @@ public class About : GoogleDriveData
     [SerializeField] private long? maxUploadSize = null;
     [SerializeField] private StorageQuotaData storageQuota = null;
     [SerializeField] private List<TeamDriveThemesData> teamDriveThemes = null;
-    [SerializeField] private User user = null;
+    [SerializeField] private GoogleDriveUser user = null;
+
+    /// <summary>
+    /// Gets information about the user, the user's Drive, and system capabilities.
+    /// </summary>
+    public static GoogleDriveRequest<GoogleDriveAbout> Get ()
+    {
+        return new GoogleDriveRequest<GoogleDriveAbout>(@"https://www.googleapis.com/drive/v3/about", UnityWebRequest.kHttpVerbGET);
+    }
 }

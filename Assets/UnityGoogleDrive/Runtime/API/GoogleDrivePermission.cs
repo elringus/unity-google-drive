@@ -7,7 +7,7 @@ using UnityEngine;
 /// A permission for a file. A permission grants a user, group, domain or the world access to a file or a folder hierarchy.
 /// Prototype: https://developers.google.com/drive/v3/reference/permissions.
 /// </summary>
-public class Permission : GoogleDriveData
+public class GoogleDrivePermission : GoogleDriveResource
 {
     [Serializable]
     public class TeamDrivePermissionDetailsData
