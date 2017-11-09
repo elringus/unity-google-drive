@@ -16,7 +16,7 @@ public class GoogleDrivePermission : GoogleDriveResource
         /// Whether this permission is inherited. This field is always populated. 
         /// This is an output-only field.
         /// </summary>
-        public bool? Inherited { get { return inherited; } }
+        public bool Inherited { get { return inherited; } }
         /// <summary>
         /// The ID of the item from which this permission is inherited. 
         /// This is an output-only field and is only populated for members of the Team Drive.
@@ -39,7 +39,7 @@ public class GoogleDrivePermission : GoogleDriveResource
         /// </summary>
         public string TeamDrivePermissionType { get { return teamDrivePermissionType; } }
 
-        [SerializeField] private bool? inherited = null;
+        [SerializeField] private bool inherited = false;
         [SerializeField] private string inheritedFrom = null;
         [SerializeField] private string role = null;
         [SerializeField] private string teamDrivePermissionType = null;
@@ -58,12 +58,12 @@ public class GoogleDrivePermission : GoogleDriveResource
     /// Whether the permission allows the file to be discovered through search. 
     /// This is only applicable for permissions of type domain or anyone.
     /// </summary>
-    public bool? AllowFileDiscovery { get { return allowFileDiscovery; } }
+    public bool AllowFileDiscovery { get { return allowFileDiscovery; } }
     /// <summary>
     /// Whether the account associated with this permission has been deleted. 
     /// This field only pertains to user and group permissions.
     /// </summary>
-    public bool? Deleted { get { return deleted; } }
+    public bool Deleted { get { return deleted; } }
     /// <summary>
     /// A displayable name for users, groups or domains.
     /// </summary>
@@ -117,8 +117,8 @@ public class GoogleDrivePermission : GoogleDriveResource
     public string Type { get { return type; } }
 
     [SerializeField] private string id = null;
-    [SerializeField] private bool? allowFileDiscovery = null;
-    [SerializeField] private bool? deleted = null;
+    [SerializeField] private bool allowFileDiscovery = false;
+    [SerializeField] private bool deleted = false;
     [SerializeField] private string displayName = null;
     [SerializeField] private string domain = null;
     [SerializeField] private string emailAddress = null;

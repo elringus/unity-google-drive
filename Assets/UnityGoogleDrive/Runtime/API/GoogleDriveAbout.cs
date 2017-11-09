@@ -18,24 +18,24 @@ public class GoogleDriveAbout : GoogleDriveResource
         /// The usage limit, if applicable. 
         /// This will not be present if the user has unlimited storage.
         /// </summary>
-        public long? Limit { get { return limit; } }
+        public long Limit { get { return limit; } }
         /// <summary>
         /// The total usage across all services.
         /// </summary>
-        public long? Usage { get { return usage; } }
+        public long Usage { get { return usage; } }
         /// <summary>
         /// The usage by all files in Google Drive.
         /// </summary>
-        public long? UsageInDrive { get { return usageInDrive; } }
+        public long UsageInDrive { get { return usageInDrive; } }
         /// <summary>
         /// The usage by trashed files in Google Drive.
         /// </summary>
-        public long? UsageInDriveTrash { get { return usageInDriveTrash; } }
+        public long UsageInDriveTrash { get { return usageInDriveTrash; } }
 
-        [SerializeField] private long? limit = null;
-        [SerializeField] private long? usage = null;
-        [SerializeField] private long? usageInDrive = null;
-        [SerializeField] private long? usageInDriveTrash = null;
+        [SerializeField] private long limit = -1;
+        [SerializeField] private long usage = -1;
+        [SerializeField] private long usageInDrive = -1;
+        [SerializeField] private long usageInDriveTrash = -1;
     }
 
     [System.Serializable]
@@ -66,7 +66,7 @@ public class GoogleDriveAbout : GoogleDriveResource
     /// <summary>
     /// Whether the user has installed the requesting app.
     /// </summary>
-    public bool? AppInstalled { get { return appInstalled; } }
+    public bool AppInstalled { get { return appInstalled; } }
     /// <summary>
     /// A map of source MIME type to possible targets for all supported exports.
     /// </summary>
@@ -82,11 +82,11 @@ public class GoogleDriveAbout : GoogleDriveResource
     /// <summary>
     /// A map of maximum import sizes by MIME type, in bytes.
     /// </summary>
-    public IDictionary<string, long?> MaxImportSizes { get { return maxImportSizes; } }
+    public IDictionary<string, long> MaxImportSizes { get { return maxImportSizes; } }
     /// <summary>
     /// The maximum upload size in bytes.
     /// </summary>
-    public long? MaxUploadSize { get { return maxUploadSize; } }
+    public long MaxUploadSize { get { return maxUploadSize; } }
     /// <summary>
     /// The user's storage quota limits and usage. All fields are measured in bytes.
     /// </summary>
@@ -100,12 +100,12 @@ public class GoogleDriveAbout : GoogleDriveResource
     /// </summary>
     public GoogleDriveUser User { get { return user; } }
 
-    [SerializeField] private bool? appInstalled = null;
+    [SerializeField] private bool appInstalled = false;
     [SerializeField] private IDictionary<string, IList<string>> exportFormats = null;
     [SerializeField] private List<string> folderColorPalette = null;
     [SerializeField] private IDictionary<string, IList<string>> importFormats = null;
-    [SerializeField] private IDictionary<string, long?> maxImportSizes = null;
-    [SerializeField] private long? maxUploadSize = null;
+    [SerializeField] private IDictionary<string, long> maxImportSizes = null;
+    [SerializeField] private long maxUploadSize = -1;
     [SerializeField] private StorageQuotaData storageQuota = null;
     [SerializeField] private List<TeamDriveThemesData> teamDriveThemes = null;
     [SerializeField] private GoogleDriveUser user = null;
