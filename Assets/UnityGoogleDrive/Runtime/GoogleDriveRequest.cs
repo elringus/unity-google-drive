@@ -18,11 +18,10 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
     public string Uri { get; private set; }
     public string Method { get; private set; }
     public T Response { get; protected set; }
-    public float Progress { get { return webRequestYeild.progress; } }
-    public int Priority { get { return webRequestYeild.priority; } set { webRequestYeild.priority = value; } }
+    public float Progress { get { return webRequestYeild != null ? webRequestYeild.progress : 0; } }
     public bool IsRunning { get { return yeildInstruction != null && !IsDone; } }
     public bool IsDone { get; protected set; }
-    public bool IsError { get; protected set; }
+    public bool IsError { get { return !string.IsNullOrEmpty(Error); } }
     public string Error { get; protected set; }
 
     protected static GoogleDriveSettings Settings { get; private set; }
@@ -111,10 +110,16 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
         }
 
         Error = webRequest.error;
-        IsError = !string.IsNullOrEmpty(Error);
 
-        if (!string.IsNullOrEmpty(webRequest.downloadHandler.text))
-            Response = JsonUtility.FromJson<T>(webRequest.downloadHandler.text);
+        var responseText = webRequest.downloadHandler.text;
+        if (!string.IsNullOrEmpty(responseText))
+        {
+            var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
+            if (apiError.IsError) Error += apiError.Error.Message;
+            if (!IsError) Response = JsonUtility.FromJson<T>(responseText);
+        }
+
+        if (IsError) Debug.LogError("UnityGoogleDrive: " + Error);
 
         OnBeforeDone(webRequest);
 

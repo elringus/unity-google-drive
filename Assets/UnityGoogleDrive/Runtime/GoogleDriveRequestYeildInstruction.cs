@@ -15,7 +15,6 @@ public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction wher
 
     public override bool keepWaiting { get { return !GoogleDriveRequest.IsDone; } }
     public float Progress { get { return GoogleDriveRequest.Progress; } }
-    public int Priority { get { return GoogleDriveRequest.Priority; } set { GoogleDriveRequest.Priority = value; } }
     public GoogleDriveRequest<T> GoogleDriveRequest { get; private set; }
 
     public GoogleDriveRequestYeildInstruction (GoogleDriveRequest<T> googleDriveRequest)
