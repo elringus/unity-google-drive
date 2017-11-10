@@ -11,7 +11,7 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
 {
     /// <summary>
     /// Event invoked when the request is done running.
-    /// Make sure to check for IsError before using the result.
+    /// Make sure to check for IsError before using the response data.
     /// </summary>
     public event Action<T> OnDone;
 

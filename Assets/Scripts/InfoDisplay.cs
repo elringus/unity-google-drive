@@ -12,7 +12,7 @@ public class InfoDisplay : MonoBehaviour
 
     private void OnGUI ()
     {
-        GUILayout.Label("Google Drive Info");
+        GUILayout.Label("Google Drive Info\n==============");
 
         if (request.IsRunning)
         {

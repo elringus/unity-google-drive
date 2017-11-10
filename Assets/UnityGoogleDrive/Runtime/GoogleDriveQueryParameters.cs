@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 /// <summary>
-/// Query parameters that apply to all Drive API operations.
+/// Query parameters that apply to all Google Drive API operations.
 /// Prototype: https://developers.google.com/drive/v3/web/query-parameters.
 /// </summary>
 public class GoogleDriveQueryParameters 

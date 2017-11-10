@@ -9,7 +9,7 @@ public class GoogleDriveRequestYeildInstruction<T> : CustomYieldInstruction wher
 {
     /// <summary>
     /// Event invoked when corresponding request is done running.
-    /// Make sure to check for IsError before using the result.
+    /// Make sure to check for IsError before using the response data.
     /// </summary>
     public event Action<T> OnDone;
 
