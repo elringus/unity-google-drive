@@ -7,6 +7,7 @@ using UnityEngine;
 /// The metadata for a file stored in Google Drive.
 /// Prototype: https://developers.google.com/drive/v3/reference/files.
 /// </summary>
+[Serializable]
 public class GoogleDriveFile : GoogleDriveResource
 {
     /// <summary>

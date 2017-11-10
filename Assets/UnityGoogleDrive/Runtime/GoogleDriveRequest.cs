@@ -17,6 +17,7 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
 
     public string Uri { get; private set; }
     public string Method { get; private set; }
+    public GoogleDriveQueryParameters QueryParameters { get; private set; }
     public T Response { get; protected set; }
     public float Progress { get { return webRequestYeild != null ? webRequestYeild.progress : 0; } }
     public bool IsRunning { get { return yeildInstruction != null && !IsDone; } }
@@ -31,10 +32,11 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
     private AsyncOperation webRequestYeild = null;
     private GoogleDriveRequestYeildInstruction<T> yeildInstruction = null;
 
-    public GoogleDriveRequest (string uri, string method)
+    public GoogleDriveRequest (string uri, string method, GoogleDriveQueryParameters queryParameters = null)
     {
         Uri = uri;
         Method = method;
+        QueryParameters = queryParameters;
 
         if (Settings == null) Settings = GoogleDriveSettings.LoadFromResources();
         if (AuthController == null) AuthController = new AuthController(Settings);
@@ -94,11 +96,12 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
         webRequest = new UnityWebRequest(Uri, Method);
         webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthController.AccessToken));
         webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
+        if (QueryParameters != null) webRequest.url += QueryParameters.GenerateRequestPayload();
         webRequest.downloadHandler = new DownloadHandlerBuffer();
 
         OnBeforeSend(webRequest);
 
-        webRequest.RunWebRequest(webRequestYeild).completed += HandleWebRequestDone;
+        webRequest.RunWebRequest(ref webRequestYeild).completed += HandleWebRequestDone;
     }
 
     private void HandleWebRequestDone (AsyncOperation requestYeild)

@@ -3,6 +3,7 @@
 /// <summary>
 /// Information about a Google Drive user.
 /// </summary>
+[System.Serializable]
 public class GoogleDriveUser : GoogleDriveResource
 {
     /// <summary>

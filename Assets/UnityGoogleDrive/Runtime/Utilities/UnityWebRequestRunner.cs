@@ -14,15 +14,11 @@ public class UnityWebRequestRunner : AsyncOperation
 
     #pragma warning disable IDE1006 
     public event Action<AsyncOperation> completed;
-    public new bool isDone { get { return requestYield.isDone; } }
-    public new float progress { get { return requestYield.progress; } }
-    public new int priority { get { return requestYield.priority; } set { requestYield.priority = value; } }
-    public new bool allowSceneActivation { get { return requestYield.allowSceneActivation; } set { requestYield.allowSceneActivation = value; } }
     #pragma warning restore IDE1006 
 
     public UnityWebRequest UnityWebRequest { get; private set; }
+    public AsyncOperation RequestYield { get; private set; }
 
-    private AsyncOperation requestYield;
     private MonoBehaviour coroutineContainer;
     private GameObject containerObject;
     private Coroutine coroutine;
@@ -51,7 +47,7 @@ public class UnityWebRequestRunner : AsyncOperation
         }
 
         coroutine = coroutineContainer.StartCoroutine(RequestRoutine());
-        requestYield = UnityWebRequest.Send();
+        RequestYield = UnityWebRequest.Send();
     }
 
     public void Abort ()
@@ -78,7 +74,7 @@ public class UnityWebRequestRunner : AsyncOperation
     private void OnComplete ()
     {
         if (completed != null)
-            completed.Invoke(requestYield);
+            completed.Invoke(RequestYield);
         if (containerObject)
             UnityEngine.Object.Destroy(containerObject);
     }
@@ -96,20 +92,29 @@ public class UnityWebRequestRunner : AsyncOperation
 public static class UnityWebRequestExtensions
 {
     #if UNITY_2017_2_OR_NEWER
-    public static UnityWebRequestAsyncOperation RunWebRequest (this UnityWebRequest unityWebRequest, AsyncOperation outAsyncOperation = null)
+    public static UnityWebRequestAsyncOperation RunWebRequest (this UnityWebRequest unityWebRequest)
     {
         var webAsync = unityWebRequest.SendWebRequest();
-        if (outAsyncOperation != null)
-            outAsyncOperation = webAsync;
+        return webAsync;
+    }
+    public static UnityWebRequestAsyncOperation RunWebRequest (this UnityWebRequest unityWebRequest, ref AsyncOperation outAsyncOperation)
+    {
+        var webAsync = unityWebRequest.SendWebRequest();
+        outAsyncOperation = webAsync;
         return webAsync;
     }
     #else
-    public static UnityWebRequestRunner RunWebRequest (this UnityWebRequest unityWebRequest, AsyncOperation outAsyncOperation = null)
+    public static UnityWebRequestRunner RunWebRequest (this UnityWebRequest unityWebRequest)
     {
         var runner = new UnityWebRequestRunner(unityWebRequest);
         runner.Run();
-        if (outAsyncOperation != null)
-            outAsyncOperation = runner;
+        return runner;
+    }
+    public static UnityWebRequestRunner RunWebRequest (this UnityWebRequest unityWebRequest, ref AsyncOperation outAsyncOperation)
+    {
+        var runner = new UnityWebRequestRunner(unityWebRequest);
+        runner.Run();
+        outAsyncOperation = runner.RequestYield;
         return runner;
     }
     #endif

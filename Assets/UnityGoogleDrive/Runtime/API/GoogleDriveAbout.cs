@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -6,12 +7,13 @@ using UnityEngine.Networking;
 /// Information about the user, the user's Drive, and system capabilities.
 /// Prototype: https://developers.google.com/drive/v3/reference/about.
 /// </summary>
+[Serializable]
 public class GoogleDriveAbout : GoogleDriveResource
 {
     /// <summary>
     /// The user's storage quota limits and usage. All fields are measured in bytes.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class StorageQuotaData
     {
         /// <summary>
@@ -38,7 +40,7 @@ public class GoogleDriveAbout : GoogleDriveResource
         [SerializeField] private long usageInDriveTrash = -1;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class TeamDriveThemesData
     {
         /// <summary>
@@ -113,8 +115,12 @@ public class GoogleDriveAbout : GoogleDriveResource
     /// <summary>
     /// Gets information about the user, the user's Drive, and system capabilities.
     /// </summary>
-    public static GoogleDriveRequest<GoogleDriveAbout> Get ()
+    /// <param name="fields">Specify fields to return. Only user and storageQuota fields are returned by default.</param>
+    public static GoogleDriveRequest<GoogleDriveAbout> Get (List<string> fields = null)
     {
-        return new GoogleDriveRequest<GoogleDriveAbout>(@"https://www.googleapis.com/drive/v3/about", UnityWebRequest.kHttpVerbGET);
+        var queryParams = new GoogleDriveQueryParameters();
+        if (fields != null) queryParams.Fields = fields;
+        else queryParams.Fields = new List<string> { "user", "storageQuota" };
+        return new GoogleDriveRequest<GoogleDriveAbout>(@"https://www.googleapis.com/drive/v3/about", UnityWebRequest.kHttpVerbGET, queryParams);
     }
 }
