@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Data
 {
     /// <summary>
     /// The metadata for a file stored in Google Drive.
-    /// Prototype: https://developers.google.com/drive/v3/reference/files.
+    /// Prototype: https://developers.google.com/drive/v3/reference/files#resource-representations.
     /// </summary>
     [Serializable]
     public class File : GoogleDriveData

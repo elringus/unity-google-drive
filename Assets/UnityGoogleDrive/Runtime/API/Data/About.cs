@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Data
 {
     /// <summary>
     /// Information about the user, the user's Drive, and system capabilities.
-    /// Prototype: https://developers.google.com/drive/v3/reference/about.
+    /// Prototype: https://developers.google.com/drive/v3/reference/about#resource-representations.
     /// </summary>
     [Serializable]
     public class About : GoogleDriveData
