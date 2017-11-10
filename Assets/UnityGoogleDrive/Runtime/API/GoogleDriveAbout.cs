@@ -19,7 +19,10 @@ public static class GoogleDriveAbout
     /// <summary>
     /// Gets information about the user, the user's Drive, and system capabilities.
     /// </summary>
-    /// <param name="fields">Specify fields to return. Only user and storageQuota fields are returned by default.</param>
+    /// <param name="fields">
+    /// Specify fields to return. Only <see cref="Data.About.User"/> and 
+    /// <see cref="Data.About.StorageQuota"/> fields are returned by default.
+    /// </param>
     public static GetRequest Get (List<string> fields = null)
     {
         var queryParams = new GoogleDriveQueryParameters();
