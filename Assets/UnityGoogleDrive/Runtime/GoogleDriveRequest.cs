@@ -6,19 +6,20 @@ using UnityEngine.Networking;
 /// A request intended to communicate with the Google Drive API. 
 /// Handles base networking and authorization flow.
 /// </summary>
-/// <typeparam name="T">Type of the response data.</typeparam>
-public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
+/// <typeparam name="TQuery">Type of the query parameters.</typeparam>
+/// <typeparam name="TData">Type of the response data.</typeparam>
+public class GoogleDriveRequest<TQuery, TData> : IDisposable where TQuery : GoogleDriveQueryParameters where TData : Data.GoogleDriveData
 {
     /// <summary>
     /// Event invoked when the request is done running.
     /// Make sure to check for IsError before using the response data.
     /// </summary>
-    public event Action<T> OnDone;
+    public event Action<TData> OnDone;
 
     public string Uri { get; private set; }
     public string Method { get; private set; }
-    public GoogleDriveQueryParameters QueryParameters { get; private set; }
-    public T Response { get; protected set; }
+    public TQuery QueryParameters { get; private set; }
+    public TData Response { get; protected set; }
     public float Progress { get { return webRequestYeild != null ? webRequestYeild.progress : 0; } }
     public bool IsRunning { get { return yeildInstruction != null && !IsDone; } }
     public bool IsDone { get; protected set; }
@@ -30,9 +31,9 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
 
     private UnityWebRequest webRequest = null;
     private AsyncOperation webRequestYeild = null;
-    private GoogleDriveRequestYeildInstruction<T> yeildInstruction = null;
+    private GoogleDriveRequestYeildInstruction<TQuery, TData> yeildInstruction = null;
 
-    public GoogleDriveRequest (string uri, string method, GoogleDriveQueryParameters queryParameters = null)
+    public GoogleDriveRequest (string uri, string method, TQuery queryParameters = null)
     {
         Uri = uri;
         Method = method;
@@ -49,11 +50,11 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
     /// A yeild instruction indicating the progress/completion state of the request.
     /// Yield this object to wait until the request is done or use OnDone event.
     /// </returns>
-    public GoogleDriveRequestYeildInstruction<T> Send ()
+    public GoogleDriveRequestYeildInstruction<TQuery, TData> Send ()
     {
         if (!IsRunning)
         {
-            yeildInstruction = new GoogleDriveRequestYeildInstruction<T>(this);
+            yeildInstruction = new GoogleDriveRequestYeildInstruction<TQuery, TData>(this);
             SendWebRequest();
         }
         return yeildInstruction;
@@ -119,7 +120,7 @@ public class GoogleDriveRequest<T> : IDisposable where T : GoogleDriveResource
         {
             var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
             if (apiError.IsError) Error += apiError.Error.Message;
-            if (!IsError) Response = JsonUtility.FromJson<T>(responseText);
+            if (!IsError) Response = JsonUtility.FromJson<TData>(responseText);
         }
 
         if (IsError) Debug.LogError("UnityGoogleDrive: " + Error);

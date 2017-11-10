@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 /// <summary>
-/// Query parameters that apply to all Google Drive API operations.
+/// Query parameters that apply to all Google Drive API methods.
 /// Prototype: https://developers.google.com/drive/v3/web/query-parameters.
 /// </summary>
 public class GoogleDriveQueryParameters 
@@ -33,19 +33,23 @@ public class GoogleDriveQueryParameters
 
     public string GenerateRequestPayload ()
     {
-        var queryParams = new List<string>();
+        var queryParameters = new List<string>();
 
         if (!string.IsNullOrEmpty(Alt))
-            queryParams.Add(string.Format("alt={0}", Alt));
+            queryParameters.Add(string.Format("alt={0}", Alt));
         if (Fields != null && Fields.Count > 0)
-            queryParams.Add(string.Format("fields={0}", string.Join("%2C", Fields.ToArray())));
+            queryParameters.Add(string.Format("fields={0}", string.Join("%2C", Fields.ToArray())));
         if (PrettyPrint.HasValue)
-            queryParams.Add(string.Format("prettyPrint={0}", PrettyPrint.Value ? "true" : "false"));
+            queryParameters.Add(string.Format("prettyPrint={0}", PrettyPrint.Value ? "true" : "false"));
         if (!string.IsNullOrEmpty(QuotaUser))
-            queryParams.Add(string.Format("quotaUser={0}", QuotaUser));
+            queryParameters.Add(string.Format("quotaUser={0}", QuotaUser));
         if (!string.IsNullOrEmpty(UserIp))
-            queryParams.Add(string.Format("userIp={0}", UserIp));
+            queryParameters.Add(string.Format("userIp={0}", UserIp));
 
-        return queryParams.Count > 0 ? string.Format("?{0}", string.Join("&", queryParams.ToArray())) : string.Empty;
+        AddQueryParameters(ref queryParameters);
+
+        return queryParameters.Count > 0 ? string.Format("?{0}", string.Join("&", queryParameters.ToArray())) : string.Empty;
     }
+
+    protected virtual void AddQueryParameters (ref List<string> queryParameters) { }
 }

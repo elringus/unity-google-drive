@@ -59,7 +59,13 @@ public class LoopbackAccessTokenProvider : IAccessTokenProvider
     {
         if (refresher.IsError)
         {
-            Debug.LogWarning("UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.");
+            if (Debug.isDebugBuild)
+            {
+                var message = "UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.";
+                if (!string.IsNullOrEmpty(refresher.Error))
+                    message += string.Format("\nDetails: {0}", refresher.Error);
+                Debug.Log(message);
+            }
             ExecuteFullAuth();
         }
         else

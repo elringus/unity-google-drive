@@ -16,6 +16,7 @@ public class AccessTokenRefresher
 
     public bool IsDone { get; private set; }
     public bool IsError { get; private set; }
+    public string Error { get; private set; }
     public string AccesToken { get; private set; }
 
     private GoogleDriveSettings settings;
@@ -61,7 +62,7 @@ public class AccessTokenRefresher
         var response = JsonUtility.FromJson<RefreshResponse>(refreshRequest.downloadHandler.text);
         if (!string.IsNullOrEmpty(response.error))
         {
-            Debug.LogError(string.Format("UnityGoogleDrive: {0}: {1}", response.error, response.error_description));
+            Error = string.Format("{0}: {1}", response.error, response.error_description);
             HandleRefreshComplete(true);
             return;
         }
