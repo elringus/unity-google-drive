@@ -117,6 +117,8 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
 
     private void SendWebRequest ()
     {
+        IsDone = false;
+
         if (webRequest != null)
         {
             webRequest.Abort();
@@ -126,7 +128,7 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
         webRequest = new UnityWebRequest(Uri, Method);
         webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthController.AccessToken));
         webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
-        webRequest.url += string.Concat("?", GenerateQueryString());
+        webRequest.url = string.Concat(webRequest.url, "?", GenerateQueryString());
         webRequest.downloadHandler = new DownloadHandlerBuffer();
 
         OnBeforeSend(webRequest);

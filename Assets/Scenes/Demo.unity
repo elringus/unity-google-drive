@@ -139,10 +139,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WindowRect:
     serializedVersion: 2
-    x: 300
+    x: 270
     y: 10
-    width: 800
-    height: 600
+    width: 680
+    height: 580
 --- !u!4 &536088167
 Transform:
   m_ObjectHideFlags: 0
