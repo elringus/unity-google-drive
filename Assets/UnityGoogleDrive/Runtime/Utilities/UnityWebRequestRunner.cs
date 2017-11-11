@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 #if !UNITY_2017_2_OR_NEWER
 /// <summary>
-/// Wrapper to use UnityWebRequest in event-driven manner.
+/// Wrapper to use <see cref="UnityEngine.Networking.UnityWebRequest"/> in event-driven manner.
 /// In Unity 2017.2 'completed' event was introduced, which should be used instead. 
 /// </summary>
 public class UnityWebRequestRunner : AsyncOperation
