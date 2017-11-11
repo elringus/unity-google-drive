@@ -97,7 +97,7 @@ public class GoogleDriveRequest<TQuery, TData> : IDisposable where TQuery : Goog
         webRequest = new UnityWebRequest(Uri, Method);
         webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthController.AccessToken));
         webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
-        if (QueryParameters != null) webRequest.url += QueryParameters.GenerateRequestPayload();
+        if (QueryParameters != null) webRequest.url += string.Concat("?", QueryParameters.ToQueryString());
         webRequest.downloadHandler = new DownloadHandlerBuffer();
 
         OnBeforeSend(webRequest);

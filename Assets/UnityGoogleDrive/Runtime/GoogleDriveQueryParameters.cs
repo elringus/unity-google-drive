@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Query parameters that apply to all Google Drive API methods.
@@ -31,25 +34,42 @@ public class GoogleDriveQueryParameters
     /// </summary>
     public string UserIp { get; set; }
 
-    public string GenerateRequestPayload ()
+    /// <summary>
+    /// Generates an HTML request query string using declared properties.
+    /// </summary>
+    public string ToQueryString ()
     {
-        var queryParameters = new List<string>();
+        // Get all properties on the object.
+        var properties = GetType().GetProperties()
+            .Where(property => property.CanRead)
+            .Where(property => property.GetValue(this, null) != null)
+            .ToDictionary(property => 
+            // Convert first letter of the property name to lower case.
+            Char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1), 
+            property => property.GetValue(this, null));
 
-        if (!string.IsNullOrEmpty(Alt))
-            queryParameters.Add(string.Format("alt={0}", Alt));
-        if (Fields != null && Fields.Count > 0)
-            queryParameters.Add(string.Format("fields={0}", string.Join("%2C", Fields.ToArray())));
-        if (PrettyPrint.HasValue)
-            queryParameters.Add(string.Format("prettyPrint={0}", PrettyPrint.Value ? "true" : "false"));
-        if (!string.IsNullOrEmpty(QuotaUser))
-            queryParameters.Add(string.Format("quotaUser={0}", QuotaUser));
-        if (!string.IsNullOrEmpty(UserIp))
-            queryParameters.Add(string.Format("userIp={0}", UserIp));
+        // Get names for all IEnumerable properties (excl. string).
+        var propertyNames = properties
+            .Where(property => !(property.Value is string) && property.Value is IEnumerable)
+            .Select(property => property.Key).ToList();
 
-        AddQueryParameters(ref queryParameters);
+        // Concat all IEnumerable properties into a comma separated string.
+        foreach (var propertyName in propertyNames)
+        {
+            var valueType = properties[propertyName].GetType();
+            var valueElemType = valueType.IsGenericType
+                                    ? valueType.GetGenericArguments()[0]
+                                    : valueType.GetElementType();
+            if (valueElemType.IsPrimitive || valueElemType == typeof(string))
+            {
+                var enumerable = properties[propertyName] as IEnumerable;
+                properties[propertyName] = string.Join(",", enumerable.Cast<string>().ToArray());
+            }
+        }
 
-        return queryParameters.Count > 0 ? string.Format("?{0}", string.Join("&", queryParameters.ToArray())) : string.Empty;
+        // Concat all key/value pairs into a string separated by ampersand.
+        return string.Join("&", properties.Select(x => string.Concat(
+            Uri.EscapeDataString(x.Key), "=", 
+            Uri.EscapeDataString(x.Value.ToString()))).ToArray());
     }
-
-    protected virtual void AddQueryParameters (ref List<string> queryParameters) { }
 }
