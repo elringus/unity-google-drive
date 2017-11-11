@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class InfoDisplay : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class InfoDisplay : MonoBehaviour
     private void UpdateInfo ()
     {
         request = GoogleDriveAbout.Get();
+        request.Fields = new List<string> { "user", "storageQuota" };
         request.Send();
     }
 }
