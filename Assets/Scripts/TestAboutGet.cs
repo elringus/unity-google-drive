@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class InfoDisplay : MonoBehaviour
+public class TestAboutGet : MonoBehaviour
 {
     public Rect WindowRect = new Rect(0, 0, 250, 0);
 

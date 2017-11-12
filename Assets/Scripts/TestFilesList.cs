@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class FilesDisplay : MonoBehaviour
+public class TestFilesList : MonoBehaviour
 {
     public Rect WindowRect = new Rect(300, 0, 500, 0);
     public int ResultsPerPage = 100;
@@ -18,7 +18,7 @@ public class FilesDisplay : MonoBehaviour
 
     private void OnGUI ()
     {
-        GUILayout.Window(1, WindowRect, InfoWindowGUI, "Google Drive Files List");
+        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Files List");
     }
 
     private void InfoWindowGUI (int windowId)
@@ -53,7 +53,7 @@ public class FilesDisplay : MonoBehaviour
             listRequest.Q = string.Format("name contains '{0}'", query);
         if (!string.IsNullOrEmpty(nextPageToken))
             listRequest.PageToken = nextPageToken;
-        listRequest.Send().OnDone += GenerateFilesList;
+        listRequest.Send().OnDone += BuildResultString;
     }
 
     private bool NextPageExists ()
@@ -63,7 +63,7 @@ public class FilesDisplay : MonoBehaviour
             !string.IsNullOrEmpty(listRequest.Response.NextPageToken);
     }
 
-    private void GenerateFilesList (Data.FileList fileList)
+    private void BuildResultString (Data.FileList fileList)
     {
         result = string.Empty;
 
