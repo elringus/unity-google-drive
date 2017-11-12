@@ -4,14 +4,16 @@ using UnityEngine;
 public class FilesDisplay : MonoBehaviour
 {
     public Rect WindowRect = new Rect(300, 0, 500, 0);
+    public int ResultsPerPage = 100;
 
     private GoogleDriveFiles.ListRequest listRequest;
     private string result;
+    private string query = string.Empty;
     private Vector2 scrollPos;
 
     private void Start ()
     {
-        UpdateInfo();
+        ListFiles();
     }
 
     private void OnGUI ()
@@ -21,6 +23,7 @@ public class FilesDisplay : MonoBehaviour
 
     private void InfoWindowGUI (int windowId)
     {
+
         if (listRequest.IsRunning)
         {
             GUILayout.Label(string.Format("Loading: {0:P2}", listRequest.Progress));
@@ -32,15 +35,32 @@ public class FilesDisplay : MonoBehaviour
             GUILayout.EndScrollView();
         }
 
-        if (GUILayout.Button("Refresh"))
-            UpdateInfo();
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("File name:", GUILayout.Width(70));
+        query = GUILayout.TextField(query);
+        if (GUILayout.Button("Search", GUILayout.Width(100))) ListFiles();
+        if (NextPageExists() && GUILayout.Button(">>", GUILayout.Width(50)))
+            ListFiles(listRequest.Response.NextPageToken);
+        GUILayout.EndHorizontal();
     }
 
-    private void UpdateInfo ()
+    private void ListFiles (string nextPageToken = null)
     {
         listRequest = GoogleDriveFiles.List();
-        listRequest.Fields = new List<string> { "files(name, size, createdTime)" };
+        listRequest.Fields = new List<string> { "nextPageToken, files(name, size, createdTime)" };
+        listRequest.PageSize = ResultsPerPage;
+        if (!string.IsNullOrEmpty(query))
+            listRequest.Q = string.Format("name contains '{0}'", query);
+        if (!string.IsNullOrEmpty(nextPageToken))
+            listRequest.PageToken = nextPageToken;
         listRequest.Send().OnDone += GenerateFilesList;
+    }
+
+    private bool NextPageExists ()
+    {
+        return listRequest != null && 
+            listRequest.Response != null && 
+            !string.IsNullOrEmpty(listRequest.Response.NextPageToken);
     }
 
     private void GenerateFilesList (Data.FileList fileList)
