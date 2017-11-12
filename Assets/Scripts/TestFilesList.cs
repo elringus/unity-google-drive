@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class TestFilesList : MonoBehaviour
 {
-    public Rect WindowRect = new Rect(300, 0, 500, 0);
+    public Rect WindowRect = new Rect(10, 10, 940, 580);
+    [Range(1, 1000)]
     public int ResultsPerPage = 100;
 
-    private GoogleDriveFiles.ListRequest listRequest;
-    private string result;
+    private GoogleDriveFiles.ListRequest request;
+    private Dictionary<string, string> results;
     private string query = string.Empty;
     private Vector2 scrollPos;
 
@@ -23,15 +24,21 @@ public class TestFilesList : MonoBehaviour
 
     private void InfoWindowGUI (int windowId)
     {
-
-        if (listRequest.IsRunning)
+        if (request.IsRunning)
         {
-            GUILayout.Label(string.Format("Loading: {0:P2}", listRequest.Progress));
+            GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
         }
-        else if (!string.IsNullOrEmpty(result))
+        else if (results != null)
         {
             scrollPos = GUILayout.BeginScrollView(scrollPos);
-            GUILayout.Label(result);
+            foreach (var result in results)
+            {
+                GUILayout.Label(result.Value);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("ID:", GUILayout.Width(20));
+                GUILayout.TextField(result.Key);
+                GUILayout.EndHorizontal();
+            }
             GUILayout.EndScrollView();
         }
 
@@ -40,37 +47,40 @@ public class TestFilesList : MonoBehaviour
         query = GUILayout.TextField(query);
         if (GUILayout.Button("Search", GUILayout.Width(100))) ListFiles();
         if (NextPageExists() && GUILayout.Button(">>", GUILayout.Width(50)))
-            ListFiles(listRequest.Response.NextPageToken);
+            ListFiles(request.Response.NextPageToken);
         GUILayout.EndHorizontal();
     }
 
     private void ListFiles (string nextPageToken = null)
     {
-        listRequest = GoogleDriveFiles.List();
-        listRequest.Fields = new List<string> { "nextPageToken, files(name, size, createdTime)" };
-        listRequest.PageSize = ResultsPerPage;
+        request = GoogleDriveFiles.List();
+        request.Fields = new List<string> { "nextPageToken, files(id, name, size, createdTime)" };
+        request.PageSize = ResultsPerPage;
         if (!string.IsNullOrEmpty(query))
-            listRequest.Q = string.Format("name contains '{0}'", query);
+            request.Q = string.Format("name contains '{0}'", query);
         if (!string.IsNullOrEmpty(nextPageToken))
-            listRequest.PageToken = nextPageToken;
-        listRequest.Send().OnDone += BuildResultString;
+            request.PageToken = nextPageToken;
+        request.Send().OnDone += BuildResults;
+    }
+
+    private void BuildResults (Data.FileList fileList)
+    {
+        results = new Dictionary<string, string>();
+
+        foreach (var file in fileList.Files)
+        {
+            var fileInfo = string.Format("Name: {0} Size: {1:0}MB Created: {2:dd.MM.yyyy}",
+                file.Name,
+                file.Size * .000001f,
+                file.CreatedTime);
+            results.Add(file.Id, fileInfo);
+        }
     }
 
     private bool NextPageExists ()
     {
-        return listRequest != null && 
-            listRequest.Response != null && 
-            !string.IsNullOrEmpty(listRequest.Response.NextPageToken);
-    }
-
-    private void BuildResultString (Data.FileList fileList)
-    {
-        result = string.Empty;
-
-        foreach (var file in fileList.Files)
-            result += string.Format("Name: {0} Size: {1:0}MB Created: {2:dd.MM.yyyy}\n",
-                file.Name,
-                file.Size * .000001f,
-                file.CreatedTime);
+        return request != null && 
+            request.Response != null && 
+            !string.IsNullOrEmpty(request.Response.NextPageToken);
     }
 }

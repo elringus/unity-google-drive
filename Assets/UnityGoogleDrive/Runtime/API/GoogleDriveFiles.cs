@@ -7,6 +7,49 @@
 public static class GoogleDriveFiles
 {
     /// <summary>
+    /// Gets a file's metadata by ID.
+    /// </summary>
+    public class GetRequest : GoogleDriveRequest<Data.File>
+    {
+        /// <summary>
+        /// Whether the requesting application supports Team Drives. (Default: false) 
+        /// </summary>
+        [QueryParameter] public bool SupportsTeamDrives { get; set; }
+
+        public GetRequest (string fileId)
+            : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET) { }
+    }
+
+    /// <summary>
+    /// Downloads a file's content by ID.
+    /// </summary>
+    public class DownloadRequest : GetRequest
+    {
+        /// <summary>
+        /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
+        /// </summary>
+        [QueryParameter] public bool AcknowledgeAbuse { get; set; }
+
+        public DownloadRequest (string fileId)
+            : base(fileId)
+        {
+            Alt = "media";
+            Response = new Data.File() { Id = fileId };
+        }
+
+        public DownloadRequest (Data.File file)
+            : this(file.Id)
+        {
+            Response = file;
+        }
+
+        protected override void HandleResponseData (DownloadHandler downloadHandler)
+        {
+            Response.Content = downloadHandler.data;
+        }
+    }
+
+    /// <summary>
     /// Lists or searches files.
     /// </summary>
     public class ListRequest : GoogleDriveRequest<Data.FileList>
@@ -63,6 +106,34 @@ public static class GoogleDriveFiles
 
         public ListRequest ()
             : base(@"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbGET) { }
+    }
+
+    /// <summary>
+    /// Gets a file's metadata by ID.
+    /// </summary>
+    /// <param name="fileId">The ID of the file.</param>
+    public static GetRequest Get (string fileId)
+    {
+        return new GetRequest(fileId);
+    }
+
+    /// <summary>
+    /// Downloads a file's content by ID.
+    /// Only <see cref="Data.File.Id"/> and <see cref="Data.File.Content"/> fields will be returned on success.
+    /// </summary>
+    /// <param name="fileId">The ID of the file to download content for.</param>
+    public static DownloadRequest Download (string fileId)
+    {
+        return new DownloadRequest(fileId);
+    }
+
+    /// <summary>
+    /// Downloads a file's content by ID of the provided file.
+    /// </summary>
+    /// <param name="fileId">The file to download content for. File's <see cref="Data.File.Id"/> field must be valid.</param>
+    public static DownloadRequest Download (Data.File file)
+    {
+        return new DownloadRequest(file);
     }
 
     /// <summary>

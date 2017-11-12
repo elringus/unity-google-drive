@@ -332,6 +332,10 @@ namespace Data
         /// </summary>
         public string Id { get { return id; } set { id = value; } }
         /// <summary>
+        /// The raw content of the file.
+        /// </summary>
+        public byte[] Content { get; set; }
+        /// <summary>
         /// The name of the file. This is not necessarily unique within a folder. Note that
         /// for immutable items such as the top level folders of Team Drives, My Drive root
         /// folder, and Application Data folder the name is constant.

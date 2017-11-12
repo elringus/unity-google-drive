@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TestAboutGet : MonoBehaviour
 {
-    public Rect WindowRect = new Rect(0, 0, 250, 0);
+    public Rect WindowRect = new Rect(10, 10, 940, 580);
 
     private GoogleDriveAbout.GetRequest request;
          

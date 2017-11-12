@@ -7,8 +7,8 @@ namespace UnityCommon
     
     public class SceneSwitcher : MonoBehaviour 
     {
-        private const int BUTTON_HEIGHT = 50;
-        private const int BUTTON_WIDTH = 150;
+        private const int BUTTON_HEIGHT = 25;
+        private const int BUTTON_WIDTH = 100;
     
         private void OnGUI ()
     	{

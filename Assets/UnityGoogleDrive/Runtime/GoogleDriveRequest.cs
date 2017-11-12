@@ -105,15 +105,16 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
         webRequest.Dispose();
     }
 
-    /// <summary>
-    /// Invoked before sending the request.
-    /// </summary>
-    protected virtual void OnBeforeSend (UnityWebRequest webRequest) { }
-
-    /// <summary>
-    /// Invoked before completing the request.
-    /// </summary>
-    protected virtual void OnBeforeDone (UnityWebRequest webRequest) { }
+    protected virtual void HandleResponseData (DownloadHandler downloadHandler)
+    {
+        var responseText = downloadHandler.text;
+        if (!string.IsNullOrEmpty(responseText))
+        {
+            var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
+            if (apiError.IsError) Error += apiError.Error.Message;
+            if (!IsError) Response = JsonUtility.FromJson<TData>(responseText);
+        }
+    }
 
     private void SendWebRequest ()
     {
@@ -131,8 +132,6 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
         webRequest.url = string.Concat(webRequest.url, "?", GenerateQueryString());
         webRequest.downloadHandler = new DownloadHandlerBuffer();
 
-        OnBeforeSend(webRequest);
-
         webRequest.RunWebRequest(ref webRequestYeild).completed += HandleWebRequestDone;
     }
 
@@ -146,17 +145,9 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
 
         Error = webRequest.error;
 
-        var responseText = webRequest.downloadHandler.text;
-        if (!string.IsNullOrEmpty(responseText))
-        {
-            var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
-            if (apiError.IsError) Error += apiError.Error.Message;
-            if (!IsError) Response = JsonUtility.FromJson<TData>(responseText);
-        }
+        HandleResponseData(webRequest.downloadHandler);
 
         if (IsError) Debug.LogError("UnityGoogleDrive: " + Error);
-
-        OnBeforeDone(webRequest);
 
         IsDone = true;
 
