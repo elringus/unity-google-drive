@@ -1,4 +1,8 @@
-﻿using UnityEngine.Networking;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// The <see cref="Data.File"/> resource collection of methods.
@@ -6,6 +10,88 @@
 /// </summary>
 public static class GoogleDriveFiles
 {
+    /// <summary>
+    /// Creates a new file.
+    /// </summary>
+    public class CreateRequest : GoogleDriveRequest<Data.File>
+    {
+        /// <summary>
+        /// The type of upload request to the /upload URI. Acceptable values are:
+        ///   - media - Simple upload. Upload the media only, without any metadata.
+        ///   - multipart - Multipart upload. Upload both the media and its metadata, in a single request.
+        ///   - resumable - Resumable upload. Upload the file in a resumable fashion.
+        /// </summary>
+        [QueryParameter] public string UploadType { get; private set; }
+        /// <summary>
+        /// Whether to ignore the domain's default visibility settings for the created file.
+        /// Domain administrators can choose to make all uploaded files visible to the domain
+        /// by default; this parameter bypasses that behavior for the request. Permissions
+        /// are still inherited from parent folders.
+        /// </summary>
+        [QueryParameter] public bool? IgnoreDefaultVisibility { get; set; }
+        /// <summary>
+        /// Whether to set the 'keepForever' field in the new head revision. This is only 
+        /// applicable to files with binary content in Drive.
+        /// </summary>
+        [QueryParameter] public bool? KeepRevisionForever { get; set; }
+        /// <summary>
+        /// A language hint for OCR processing during image import (ISO 639-1 code).
+        /// </summary>
+        [QueryParameter] public string OcrLanguage { get; set; }
+        /// <summary>
+        /// Whether the requesting application supports Team Drives.
+        /// </summary>
+        [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+        /// <summary>
+        /// Whether to use the uploaded content as indexable text.
+        /// </summary>
+        [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
+
+        private Data.File file;
+
+        public CreateRequest (Data.File file)
+            : base(file.Content != null ? @"https://www.googleapis.com/upload/drive/v3/files" : 
+                  @"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbPOST)
+        {
+            this.file = file;
+            if (file.Content != null)
+                UploadType = "multipart";
+        }
+
+        protected override UnityWebRequest CreateWebRequest ()
+        {
+            byte[] bytes;
+            var stream = new MemoryStream();
+            bytes = Encoding.ASCII.GetBytes("--foo_bar_baz\n");
+            stream.Write(bytes, 0, bytes.Length);
+            bytes = Encoding.ASCII.GetBytes("Content-Type: application/json; charset=UTF-8\n\n");
+            stream.Write(bytes, 0, bytes.Length);
+            bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(file) + "\n\n");
+            stream.Write(bytes, 0, bytes.Length);
+            bytes = Encoding.ASCII.GetBytes("--foo_bar_baz\n");
+            stream.Write(bytes, 0, bytes.Length);
+            bytes = Encoding.ASCII.GetBytes(string.Format("Content-Type: {0}\n\n", !string.IsNullOrEmpty(file.MimeType) ? file.MimeType : "application/octet-stream"));
+            stream.Write(bytes, 0, bytes.Length);
+            stream.Write(file.Content, 0, file.Content.Length);
+            bytes = Encoding.ASCII.GetBytes("\n--foo_bar_baz--\n");
+            stream.Write(bytes, 0, bytes.Length);
+            var data = stream.ToArray();
+
+            //var lolol = Encoding.UTF8.GetString(data);
+
+            //var boundary = UnityWebRequest.GenerateBoundary();
+            //var metadata = new MultipartFormDataSection(null, JsonUtility.ToJson(file), "application/json; charset=UTF-8");
+            //var content = new MultipartFormDataSection(null, file.Content, !string.IsNullOrEmpty(file.MimeType) ? file.MimeType : "application/octet-stream");
+            //var data = UnityWebRequest.SerializeFormSections(new List<IMultipartFormSection> { metadata, content }, Encoding.ASCII.GetBytes(boundary));
+
+            var webRequest = base.CreateWebRequest();
+            webRequest.uploadHandler = new UploadHandlerRaw(data);
+            webRequest.SetRequestHeader("Content-Type", "multipart/related; boundary=foo_bar_baz");
+
+            return webRequest;
+        }
+    }
+
     /// <summary>
     /// Gets a file's metadata by ID.
     /// </summary>
@@ -106,6 +192,15 @@ public static class GoogleDriveFiles
 
         public ListRequest ()
             : base(@"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbGET) { }
+    }
+
+    /// <summary>
+    /// Creates a new file.
+    /// </summary>
+    /// <param name="fileId">The file to create. Provide <see cref="Data.File.Content"/> field to upload the content of the file.</param>
+    public static CreateRequest Create (Data.File file)
+    {
+        return new CreateRequest(file);
     }
 
     /// <summary>

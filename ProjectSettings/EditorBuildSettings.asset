@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestFilesDownload.unity
     guid: f11a9ba9822f0b34ab47045ffceee18b
+  - enabled: 1
+    path: Assets/Scenes/TestFilesCreate.unity
+    guid: 2cf450ec146bc5b4299efdc922f12ac3

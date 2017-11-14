@@ -105,6 +105,16 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
         webRequest.Dispose();
     }
 
+    protected virtual UnityWebRequest CreateWebRequest ()
+    {
+        var webRequest = new UnityWebRequest(Uri, Method);
+        webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthController.AccessToken));
+        webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
+        webRequest.url = string.Concat(webRequest.url, "?", GenerateQueryString());
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        return webRequest;
+    }
+
     protected virtual void HandleResponseData (DownloadHandler downloadHandler)
     {
         var responseText = downloadHandler.text;
@@ -126,12 +136,7 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
             webRequest.Dispose();
         }
 
-        webRequest = new UnityWebRequest(Uri, Method);
-        webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthController.AccessToken));
-        webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
-        webRequest.url = string.Concat(webRequest.url, "?", GenerateQueryString());
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-
+        webRequest = CreateWebRequest();
         webRequest.RunWebRequest(ref webRequestYeild).completed += HandleWebRequestDone;
     }
 
