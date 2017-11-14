@@ -47,7 +47,7 @@ public class TestFilesList : MonoBehaviour
         query = GUILayout.TextField(query);
         if (GUILayout.Button("Search", GUILayout.Width(100))) ListFiles();
         if (NextPageExists() && GUILayout.Button(">>", GUILayout.Width(50)))
-            ListFiles(request.Response.NextPageToken);
+            ListFiles(request.ResponseData.NextPageToken);
         GUILayout.EndHorizontal();
     }
 
@@ -80,7 +80,7 @@ public class TestFilesList : MonoBehaviour
     private bool NextPageExists ()
     {
         return request != null && 
-            request.Response != null && 
-            !string.IsNullOrEmpty(request.Response.NextPageToken);
+            request.ResponseData != null && 
+            !string.IsNullOrEmpty(request.ResponseData.NextPageToken);
     }
 }

@@ -23,13 +23,13 @@ public class TestAboutGet : MonoBehaviour
         {
             GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
         }
-        else if (request.Response != null)
+        else if (request.ResponseData != null)
         {
             GUILayout.Label(string.Format("User name: {0}\nUser email: {1}\nSpace used: {2:0}/{3:0} MB", 
-                request.Response.User.DisplayName,
-                request.Response.User.EmailAddress,
-                request.Response.StorageQuota.Usage * .000001f,
-                request.Response.StorageQuota.Limit * .000001f));
+                request.ResponseData.User.DisplayName,
+                request.ResponseData.User.EmailAddress,
+                request.ResponseData.StorageQuota.Usage * .000001f,
+                request.ResponseData.StorageQuota.Limit * .000001f));
         }
 
         if (GUILayout.Button("Refresh"))

@@ -15,18 +15,18 @@ public class QueryParameterAttribute : Attribute { }
 /// A request intended to communicate with the Google Drive API. 
 /// Handles base networking and authorization flow.
 /// </summary>
-/// <typeparam name="TData">Type of the response data.</typeparam>
-public class GoogleDriveRequest<TData> : IDisposable where TData : Data.ResourceData
+/// <typeparam name="TResponse">Type of the response resource data.</typeparam>
+public class GoogleDriveRequest<TResponse> : IDisposable where TResponse : Data.ResourceData
 {
     /// <summary>
     /// Event invoked when the request is done running.
     /// Make sure to check for <see cref="IsError"/> before using the response data.
     /// </summary>
-    public event Action<TData> OnDone;
+    public event Action<TResponse> OnDone;
 
     public string Uri { get; private set; }
     public string Method { get; private set; }
-    public TData Response { get; protected set; }
+    public TResponse ResponseData { get; protected set; }
     public float Progress { get { return webRequestYeild != null ? webRequestYeild.progress : 0; } }
     public bool IsRunning { get { return yeildInstruction != null && !IsDone; } }
     public bool IsDone { get; protected set; }
@@ -61,7 +61,7 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.Resource
 
     private UnityWebRequest webRequest = null;
     private AsyncOperation webRequestYeild = null;
-    private GoogleDriveRequestYeildInstruction<TData> yeildInstruction = null;
+    private GoogleDriveRequestYeildInstruction<TResponse> yeildInstruction = null;
 
     public GoogleDriveRequest (string uri, string method)
     {
@@ -79,11 +79,11 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.Resource
     /// A yeild instruction indicating the progress/completion state of the request.
     /// Yield this object to wait until the request is done or use <see cref="OnDone"/> event.
     /// </returns>
-    public GoogleDriveRequestYeildInstruction<TData> Send ()
+    public GoogleDriveRequestYeildInstruction<TResponse> Send ()
     {
         if (!IsRunning)
         {
-            yeildInstruction = new GoogleDriveRequestYeildInstruction<TData>(this);
+            yeildInstruction = new GoogleDriveRequestYeildInstruction<TResponse>(this);
             SendWebRequest();
         }
         return yeildInstruction;
@@ -122,7 +122,7 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.Resource
         {
             var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
             if (apiError.IsError) Error += apiError.Error.Message;
-            if (!IsError) Response = JsonUtils.FromJsonPrivateCamel<TData>(responseText);
+            if (!IsError) ResponseData = JsonUtils.FromJsonPrivateCamel<TResponse>(responseText);
         }
     }
 
@@ -157,7 +157,7 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.Resource
         IsDone = true;
 
         if (OnDone != null)
-            OnDone.Invoke(Response);
+            OnDone.Invoke(ResponseData);
 
         webRequest.Dispose();
     }

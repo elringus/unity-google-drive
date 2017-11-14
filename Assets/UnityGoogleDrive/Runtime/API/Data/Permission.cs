@@ -81,6 +81,7 @@ namespace Data
         /// <summary>
         /// System.DateTime? representation of Google.Apis.Drive.v3.Data.Permission.ExpirationTimeRaw.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? ExpirationTime { get { return Rfc3339ToDateTime(ExpirationTimeRaw); } }
         /// <summary>
         /// A link to the user's profile photo, if available.

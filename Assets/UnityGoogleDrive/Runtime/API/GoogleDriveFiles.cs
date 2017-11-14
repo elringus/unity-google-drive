@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
 /// <summary>
 /// The <see cref="Data.File"/> resource collection of methods.
@@ -13,15 +9,8 @@ public static class GoogleDriveFiles
     /// <summary>
     /// Creates a new file.
     /// </summary>
-    public class CreateRequest : GoogleDriveRequest<Data.File>
+    public class CreateRequest : GoogleDriveUploadRequest<Data.File, Data.File>
     {
-        /// <summary>
-        /// The type of upload request to the /upload URI. Acceptable values are:
-        ///   - media - Simple upload. Upload the media only, without any metadata.
-        ///   - multipart - Multipart upload. Upload both the media and its metadata, in a single request.
-        ///   - resumable - Resumable upload. Upload the file in a resumable fashion.
-        /// </summary>
-        [QueryParameter] public string UploadType { get; private set; }
         /// <summary>
         /// Whether to ignore the domain's default visibility settings for the created file.
         /// Domain administrators can choose to make all uploaded files visible to the domain
@@ -47,42 +36,8 @@ public static class GoogleDriveFiles
         /// </summary>
         [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
 
-        private Data.File file;
-
-        public CreateRequest (Data.File file)
-            : base(file.Content != null ? @"https://www.googleapis.com/upload/drive/v3/files" : 
-                  @"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbPOST)
-        {
-            this.file = file;
-            if (file.Content != null)
-                UploadType = "multipart";
-        }
-
-        protected override UnityWebRequest CreateWebRequest ()
-        {
-            // TODO: Make a GoogleDriveUploadRequest<TRequest> : GoogleDriveRequest<TResponse>, 
-            // encapsulate request body uploading logic there.
-            // FIXME: Unity's JsonUtility leaves nulled fields in the output json string with the default values.
-            // Google API doesn't like that (Invalid value for: Invalid format: ""); unused fields should be stripped-out. 
-            // Have to either post-process json strings, or use a third-party json library with nullable types support. 
-
-            var boundary = UnityWebRequest.GenerateBoundary();
-            var metadata = new MultipartFormDataSection(null, JsonUtils.ToJsonPrivateCamel(file), "application/json; charset=UTF-8");
-            var content = new MultipartFormDataSection(null, file.Content, !string.IsNullOrEmpty(file.MimeType) ? file.MimeType : "application/octet-stream");
-            var formData = UnityWebRequest.SerializeFormSections(new List<IMultipartFormSection> { metadata, content }, boundary);
-
-            // End boundary is missing; adding it manually.
-            var endBoundary = Encoding.ASCII.GetBytes(string.Format("\r\n--{0}--", Encoding.ASCII.GetString(boundary)));
-            var data = new byte[formData.Length + endBoundary.Length];
-            System.Buffer.BlockCopy(formData, 0, data, 0, formData.Length);
-            System.Buffer.BlockCopy(endBoundary, 0, data, formData.Length, endBoundary.Length);
-
-            var webRequest = base.CreateWebRequest();
-            webRequest.uploadHandler = new UploadHandlerRaw(data);
-            webRequest.SetRequestHeader("Content-Type", string.Concat("multipart/related; boundary=", Encoding.ASCII.GetString(boundary)));
-
-            return webRequest;
-        }
+        public CreateRequest (Data.File file) : base(file.Content != null ? @"https://www.googleapis.com/upload/drive/v3/files" : 
+            @"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbPOST, file, file.Content, file.MimeType) { }
     }
 
     /// <summary>
@@ -93,7 +48,7 @@ public static class GoogleDriveFiles
         /// <summary>
         /// Whether the requesting application supports Team Drives. (Default: false) 
         /// </summary>
-        [QueryParameter] public bool SupportsTeamDrives { get; set; }
+        [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
         public GetRequest (string fileId)
             : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET) { }
@@ -107,24 +62,24 @@ public static class GoogleDriveFiles
         /// <summary>
         /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
         /// </summary>
-        [QueryParameter] public bool AcknowledgeAbuse { get; set; }
+        [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
 
         public DownloadRequest (string fileId)
             : base(fileId)
         {
             Alt = "media";
-            Response = new Data.File() { Id = fileId };
+            ResponseData = new Data.File() { Id = fileId };
         }
 
         public DownloadRequest (Data.File file)
             : this(file.Id)
         {
-            Response = file;
+            ResponseData = file;
         }
 
         protected override void HandleResponseData (DownloadHandler downloadHandler)
         {
-            Response.Content = downloadHandler.data;
+            ResponseData.Content = downloadHandler.data;
         }
     }
 

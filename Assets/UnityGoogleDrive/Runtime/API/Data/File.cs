@@ -271,6 +271,7 @@ namespace Data
         /// <summary>
         /// The raw content of the file.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public byte[] Content { get; set; }
         /// <summary>
         /// The name of the file. This is not necessarily unique within a folder. Note that
@@ -329,6 +330,7 @@ namespace Data
         /// <summary>
         /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.CreatedTimeRaw.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? CreatedTime { get { return Rfc3339ToDateTime(CreatedTimeRaw); } set { CreatedTimeRaw = DateTimeToRfc3339(value); } }
         /// <summary>
         /// The last time the file was modified by anyone (RFC 3339 date-time). Note that
@@ -338,6 +340,7 @@ namespace Data
         /// <summary>
         /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.ModifiedTimeRaw.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? ModifiedTime { get { return Rfc3339ToDateTime(ModifiedTimeRaw); } set { ModifiedTimeRaw = DateTimeToRfc3339(value); } }
         /// <summary>
         /// The IDs of the parent folders which contain the file. If not specified as part
@@ -371,6 +374,7 @@ namespace Data
         /// <summary>
         /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.SharedWithMeTimeRaw.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? SharedWithMeTime { get { return Rfc3339ToDateTime(SharedWithMeTimeRaw); } }
         /// <summary>
         /// The user who shared the file with the requesting user, if applicable.
@@ -410,6 +414,7 @@ namespace Data
         /// <summary>
         /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.TrashedTimeRaw.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? TrashedTime { get { return Rfc3339ToDateTime(TrashedTimeRaw); } }
         /// <summary>
         /// If the file has been explicitly trashed, the user who trashed it. Only populated for Team Drive files.
@@ -430,6 +435,7 @@ namespace Data
         /// <summary>
         /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.ViewedByMeTimeRaw.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? ViewedByMeTime { get { return Rfc3339ToDateTime(ViewedByMeTimeRaw); } }
         /// <summary>
         /// Whether users with only reader or commenter permission can copy the file's content.
@@ -527,6 +533,7 @@ namespace Data
         /// <summary>
         /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.ModifiedByMeTimeRaw.
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? ModifiedByMeTime { get { return Rfc3339ToDateTime(ModifiedByMeTimeRaw); } }
         /// <summary>
         /// A collection of arbitrary key-value pairs which are private to the requesting app. 
