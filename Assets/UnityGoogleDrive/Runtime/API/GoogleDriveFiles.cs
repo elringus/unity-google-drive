@@ -7,6 +7,41 @@
 public static class GoogleDriveFiles
 {
     /// <summary>
+    /// Creates a copy of a file and applies any requested updates with patch semantics.
+    /// Response data will contain copied <see cref="Data.File"/>.
+    /// </summary>
+    public class CopyRequest : GoogleDriveUploadRequest<Data.File, Data.File>
+    {
+        /// <summary>
+        /// Whether to ignore the domain's default visibility settings for the created file.
+        /// Domain administrators can choose to make all uploaded files visible to the domain
+        /// by default; this parameter bypasses that behavior for the request. Permissions
+        /// are still inherited from parent folders.
+        /// </summary>
+        [QueryParameter] public bool? IgnoreDefaultVisibility { get; set; }
+        /// <summary>
+        /// Whether to set the 'keepForever' field in the new head revision. This is only
+        /// applicable to files with binary content in Drive.
+        /// </summary>
+        [QueryParameter] public bool? KeepRevisionForever { get; set; }
+        /// <summary>
+        /// A language hint for OCR processing during image import (ISO 639-1 code).
+        /// </summary>
+        [QueryParameter] public string OcrLanguage { get; set; }
+        /// <summary>
+        /// Whether the requesting application supports Team Drives.
+        /// </summary>
+        [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+
+        public CopyRequest (Data.File file) : base(string.Format(@"https://www.googleapis.com/drive/v3/files/{0}/copy", file.Id), 
+            UnityWebRequest.kHttpVerbPOST, file)
+        {
+            // API don't like receiving ID in the request body.
+            file.Id = null;
+        }
+    }
+
+    /// <summary>
     /// Creates a new file.
     /// </summary>
     public class CreateRequest : GoogleDriveUploadRequest<Data.File, Data.File>
@@ -64,15 +99,13 @@ public static class GoogleDriveFiles
         /// </summary>
         [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
 
-        public DownloadRequest (string fileId)
-            : base(fileId)
+        public DownloadRequest (string fileId) : base(fileId)
         {
             Alt = "media";
             ResponseData = new Data.File() { Id = fileId };
         }
 
-        public DownloadRequest (Data.File file)
-            : this(file.Id)
+        public DownloadRequest (Data.File file) : this(file.Id)
         {
             ResponseData = file;
         }
@@ -143,9 +176,22 @@ public static class GoogleDriveFiles
     }
 
     /// <summary>
+    /// Creates a copy of a file and applies any requested updates with patch semantics.
+    /// Response data will contain copied <see cref="Data.File"/>.
+    /// </summary>
+    /// <param name="fileId">The file to copy. Ensure it has a valid <see cref="Data.File.Id"/>.</param>
+    public static CopyRequest Copy (Data.File file)
+    {
+        return new CopyRequest(file);
+    }
+
+    /// <summary>
     /// Creates a new file.
     /// </summary>
-    /// <param name="fileId">The file to create. Provide <see cref="Data.File.Content"/> field to upload the content of the file.</param>
+    /// <param name="fileId">
+    /// The file to create. 
+    /// Provide <see cref="Data.File.Content"/> to upload the content of the file.
+    /// </param>
     public static CreateRequest Create (Data.File file)
     {
         return new CreateRequest(file);

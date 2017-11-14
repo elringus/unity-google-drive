@@ -77,12 +77,7 @@ namespace Data
         ///   - The time must be in the future 
         ///   - The time cannot be more than a year in the future
         /// </summary>
-        public string ExpirationTimeRaw { get; private set; }
-        /// <summary>
-        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.Permission.ExpirationTimeRaw.
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime? ExpirationTime { get { return Rfc3339ToDateTime(ExpirationTimeRaw); } }
+        public DateTime? ExpirationTime { get; private set; }
         /// <summary>
         /// A link to the user's profile photo, if available.
         /// </summary>

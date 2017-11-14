@@ -324,24 +324,14 @@ namespace Data
         /// </summary>
         public long? Version { get; private set; }
         /// <summary>
-        /// The time at which the file was created (RFC 3339 date-time).
+        /// The time at which the file was created.
         /// </summary>
-        public string CreatedTimeRaw { get; set; }
-        /// <summary>
-        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.CreatedTimeRaw.
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime? CreatedTime { get { return Rfc3339ToDateTime(CreatedTimeRaw); } set { CreatedTimeRaw = DateTimeToRfc3339(value); } }
+        public DateTime? CreatedTime { get; set; }
         /// <summary>
         /// The last time the file was modified by anyone (RFC 3339 date-time). Note that
         /// setting modifiedTime will also update modifiedByMeTime for the user.
         /// </summary>
-        public string ModifiedTimeRaw { get; set; }
-        /// <summary>
-        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.ModifiedTimeRaw.
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime? ModifiedTime { get { return Rfc3339ToDateTime(ModifiedTimeRaw); } set { ModifiedTimeRaw = DateTimeToRfc3339(value); } }
+        public DateTime? ModifiedTime { get; set; }
         /// <summary>
         /// The IDs of the parent folders which contain the file. If not specified as part
         /// of a create request, the file will be placed directly in the My Drive folder.
@@ -370,12 +360,7 @@ namespace Data
         /// <summary>
         /// The time at which the file was shared with the user, if applicable (RFC 3339 date-time).
         /// </summary>
-        public string SharedWithMeTimeRaw { get; private set; }
-        /// <summary>
-        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.SharedWithMeTimeRaw.
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime? SharedWithMeTime { get { return Rfc3339ToDateTime(SharedWithMeTimeRaw); } }
+        public DateTime? SharedWithMeTime { get; private set; }
         /// <summary>
         /// The user who shared the file with the requesting user, if applicable.
         /// </summary>
@@ -410,12 +395,7 @@ namespace Data
         /// <summary>
         /// The time that the item was trashed (RFC 3339 date-time). Only populated for Team Drive files.
         /// </summary>
-        public string TrashedTimeRaw { get; private set; }
-        /// <summary>
-        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.TrashedTimeRaw.
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime? TrashedTime { get { return Rfc3339ToDateTime(TrashedTimeRaw); } }
+        public DateTime? TrashedTime { get; private set; }
         /// <summary>
         /// If the file has been explicitly trashed, the user who trashed it. Only populated for Team Drive files.
         /// </summary>
@@ -431,12 +411,7 @@ namespace Data
         /// <summary>
         /// The last time the file was viewed by the user (RFC 3339 date-time).
         /// </summary>
-        public string ViewedByMeTimeRaw { get; private set; }
-        /// <summary>
-        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.ViewedByMeTimeRaw.
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime? ViewedByMeTime { get { return Rfc3339ToDateTime(ViewedByMeTimeRaw); } }
+        public DateTime? ViewedByMeTime { get; private set; }
         /// <summary>
         /// Whether users with only reader or commenter permission can copy the file's content.
         /// This affects copy, download, and print operations.
@@ -529,12 +504,7 @@ namespace Data
         /// <summary>
         /// The last time the file was modified by the user (RFC 3339 date-time).
         /// </summary>
-        public string ModifiedByMeTimeRaw { get; private set; }
-        /// <summary>
-        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.File.ModifiedByMeTimeRaw.
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime? ModifiedByMeTime { get { return Rfc3339ToDateTime(ModifiedByMeTimeRaw); } }
+        public DateTime? ModifiedByMeTime { get; private set; }
         /// <summary>
         /// A collection of arbitrary key-value pairs which are private to the requesting app. 
         /// Entries with null values are cleared in update and copy requests.

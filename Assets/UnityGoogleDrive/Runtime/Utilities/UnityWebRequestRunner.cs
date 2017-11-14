@@ -94,12 +94,11 @@ public static class UnityWebRequestExtensions
     #if UNITY_2017_2_OR_NEWER
     public static UnityWebRequestAsyncOperation RunWebRequest (this UnityWebRequest unityWebRequest)
     {
-        var webAsync = unityWebRequest.SendWebRequest();
-        return webAsync;
+        return unityWebRequest.SendWebRequest();
     }
     public static UnityWebRequestAsyncOperation RunWebRequest (this UnityWebRequest unityWebRequest, ref AsyncOperation outAsyncOperation)
     {
-        var webAsync = unityWebRequest.SendWebRequest();
+        var webAsync = RunWebRequest(unityWebRequest);
         outAsyncOperation = webAsync;
         return webAsync;
     }
@@ -112,8 +111,7 @@ public static class UnityWebRequestExtensions
     }
     public static UnityWebRequestRunner RunWebRequest (this UnityWebRequest unityWebRequest, ref AsyncOperation outAsyncOperation)
     {
-        var runner = new UnityWebRequestRunner(unityWebRequest);
-        runner.Run();
+        var runner = RunWebRequest(unityWebRequest);
         outAsyncOperation = runner.RequestYield;
         return runner;
     }
