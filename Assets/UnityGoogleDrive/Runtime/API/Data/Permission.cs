@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
-using UnityEngine;
 
 namespace Data
 {
@@ -9,22 +7,20 @@ namespace Data
     /// A permission for a file. A permission grants a user, group, domain or the world access to a file or a folder hierarchy.
     /// Prototype: https://developers.google.com/drive/v3/reference/permissions#resource-representations.
     /// </summary>
-    [Serializable]
-    public class Permission : GoogleDriveData
+    public class Permission : ResourceData
     {
-        [Serializable]
         public class TeamDrivePermissionDetailsData
         {
             /// <summary>
             /// Whether this permission is inherited. This field is always populated. 
             /// This is an output-only field.
             /// </summary>
-            public bool Inherited { get { return inherited; } }
+            public bool? Inherited { get; private set; }
             /// <summary>
             /// The ID of the item from which this permission is inherited. 
             /// This is an output-only field and is only populated for members of the Team Drive.
             /// </summary>
-            public string InheritedFrom { get { return inheritedFrom; } }
+            public string InheritedFrom { get; private set; }
             /// <summary>
             /// The primary role for this user. While new values may be added in the future, 
             /// the following are currently possible: 
@@ -33,19 +29,14 @@ namespace Data
             ///   - commenter 
             ///   - reader
             /// </summary>
-            public string Role { get { return role; } }
+            public string Role { get; private set; }
             /// <summary>
             /// The Team Drive permission type for this user. 
             /// While new values may be added in future, the following are currently possible: 
             ///   - file 
             ///   - member
             /// </summary>
-            public string TeamDrivePermissionType { get { return teamDrivePermissionType; } }
-
-            [SerializeField] private bool inherited = false;
-            [SerializeField] private string inheritedFrom = null;
-            [SerializeField] private string role = null;
-            [SerializeField] private string teamDrivePermissionType = null;
+            public string TeamDrivePermissionType { get; private set; }
         }
 
         /// <summary>
@@ -56,29 +47,29 @@ namespace Data
         /// The ID of this permission. This is a unique identifier for the grantee, and is 
         /// published in User resources as permissionId.
         /// </summary>
-        public string Id { get { return id; } }
+        public string Id { get; private set; }
         /// <summary>
         /// Whether the permission allows the file to be discovered through search. 
         /// This is only applicable for permissions of type domain or anyone.
         /// </summary>
-        public bool AllowFileDiscovery { get { return allowFileDiscovery; } }
+        public bool? AllowFileDiscovery { get; private set; }
         /// <summary>
         /// Whether the account associated with this permission has been deleted. 
         /// This field only pertains to user and group permissions.
         /// </summary>
-        public bool Deleted { get { return deleted; } }
+        public bool? Deleted { get; private set; }
         /// <summary>
         /// A displayable name for users, groups or domains.
         /// </summary>
-        public string DisplayName { get { return displayName; } }
+        public string DisplayName { get; private set; }
         /// <summary>
         /// The domain to which this permission refers.
         /// </summary>
-        public string Domain { get { return domain; } }
+        public string Domain { get; private set; }
         /// <summary>
         /// The email address of the user or group to which this permission refers.
         /// </summary>
-        public string EmailAddress { get { return emailAddress; } }
+        public string EmailAddress { get; private set; }
         /// <summary>
         /// The time at which this permission will expire (RFC 3339 date-time). 
         /// Expiration times have the following restrictions: 
@@ -86,15 +77,15 @@ namespace Data
         ///   - The time must be in the future 
         ///   - The time cannot be more than a year in the future
         /// </summary>
-        public string ExpirationTimeRaw { get { return expirationTime; } }
+        public string ExpirationTimeRaw { get; private set; }
         /// <summary>
-        /// System.DateTime representation of Google.Apis.Drive.v3.Data.Permission.ExpirationTimeRaw.
+        /// System.DateTime? representation of Google.Apis.Drive.v3.Data.Permission.ExpirationTimeRaw.
         /// </summary>
-        public DateTime ExpirationTime { get { return XmlConvert.ToDateTime(ExpirationTimeRaw, XmlDateTimeSerializationMode.Utc); } }
+        public DateTime? ExpirationTime { get { return Rfc3339ToDateTime(ExpirationTimeRaw); } }
         /// <summary>
         /// A link to the user's profile photo, if available.
         /// </summary>
-        public string PhotoLink { get { return photoLink; } }
+        public string PhotoLink { get; private set; }
         /// <summary>
         /// The role granted by this permission. 
         /// While new values may be supported in the future, the following are currently allowed: 
@@ -104,12 +95,12 @@ namespace Data
         ///   - commenter
         ///   - reader
         /// </summary>
-        public string Role { get { return role; } }
+        public string Role { get; private set; }
         /// <summary>
         /// Details of whether the permissions on this Team Drive item are inherited or directly 
         /// on this item. This is an output-only field which is present only for Team Drive items.
         /// </summary>
-        public List<TeamDrivePermissionDetailsData> TeamDrivePermissionDetails { get { return teamDrivePermissionDetails; } }
+        public List<TeamDrivePermissionDetailsData> TeamDrivePermissionDetails { get; private set; }
         /// <summary>
         /// The type of the grantee. Valid values are: 
         ///   - user 
@@ -117,18 +108,6 @@ namespace Data
         ///   - domain 
         ///   - anyone
         /// </summary>
-        public string Type { get { return type; } }
-
-        [SerializeField] private string id = null;
-        [SerializeField] private bool allowFileDiscovery = false;
-        [SerializeField] private bool deleted = false;
-        [SerializeField] private string displayName = null;
-        [SerializeField] private string domain = null;
-        [SerializeField] private string emailAddress = null;
-        [SerializeField] private string expirationTime = null;
-        [SerializeField] private string photoLink = null;
-        [SerializeField] private string role = null;
-        [SerializeField] private List<TeamDrivePermissionDetailsData> teamDrivePermissionDetails = null;
-        [SerializeField] private string type = null;
+        public string Type { get; private set; }
     }
 }

@@ -508,7 +508,8 @@ PlayerSettings:
   scriptingBackend: {}
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
-  apiCompatibilityLevelPerPlatform: {}
+  apiCompatibilityLevelPerPlatform:
+    WebGL: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: UnityGoogleDrive

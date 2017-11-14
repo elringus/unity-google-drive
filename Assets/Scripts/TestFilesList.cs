@@ -69,7 +69,7 @@ public class TestFilesList : MonoBehaviour
 
         foreach (var file in fileList.Files)
         {
-            var fileInfo = string.Format("Name: {0} Size: {1:0}MB Created: {2:dd.MM.yyyy}",
+            var fileInfo = string.Format("Name: {0} Size: {1:0.00}MB Created: {2:dd.MM.yyyy}",
                 file.Name,
                 file.Size * .000001f,
                 file.CreatedTime);

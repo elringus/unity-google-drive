@@ -45,7 +45,7 @@ public class TestFilesDownload : MonoBehaviour
 
     private void RenderImage (Data.File file)
     {
-        var texture = new Texture2D(file.ImageMediaMetadata.Width, file.ImageMediaMetadata.Height, TextureFormat.RGBA32, false);
+        var texture = new Texture2D(file.ImageMediaMetadata.Width.Value, file.ImageMediaMetadata.Height.Value, TextureFormat.RGBA32, false);
         texture.LoadImage(file.Content); 
         var rect = new Rect(0, 0, texture.width, texture.height);
         SpriteRenderer.sprite = Sprite.Create(texture, rect, Vector2.one * .5f);

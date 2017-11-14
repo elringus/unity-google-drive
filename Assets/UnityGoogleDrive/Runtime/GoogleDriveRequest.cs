@@ -16,7 +16,7 @@ public class QueryParameterAttribute : Attribute { }
 /// Handles base networking and authorization flow.
 /// </summary>
 /// <typeparam name="TData">Type of the response data.</typeparam>
-public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDriveData
+public class GoogleDriveRequest<TData> : IDisposable where TData : Data.ResourceData
 {
     /// <summary>
     /// Event invoked when the request is done running.
@@ -122,7 +122,7 @@ public class GoogleDriveRequest<TData> : IDisposable where TData : Data.GoogleDr
         {
             var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
             if (apiError.IsError) Error += apiError.Error.Message;
-            if (!IsError) Response = JsonUtility.FromJson<TData>(responseText);
+            if (!IsError) Response = JsonUtils.FromJsonPrivateCamel<TData>(responseText);
         }
     }
 

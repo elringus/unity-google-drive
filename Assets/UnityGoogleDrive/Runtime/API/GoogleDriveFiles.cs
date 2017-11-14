@@ -60,33 +60,26 @@ public static class GoogleDriveFiles
 
         protected override UnityWebRequest CreateWebRequest ()
         {
-            byte[] bytes;
-            var stream = new MemoryStream();
-            bytes = Encoding.ASCII.GetBytes("--foo_bar_baz\n");
-            stream.Write(bytes, 0, bytes.Length);
-            bytes = Encoding.ASCII.GetBytes("Content-Type: application/json; charset=UTF-8\n\n");
-            stream.Write(bytes, 0, bytes.Length);
-            bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(file) + "\n\n");
-            stream.Write(bytes, 0, bytes.Length);
-            bytes = Encoding.ASCII.GetBytes("--foo_bar_baz\n");
-            stream.Write(bytes, 0, bytes.Length);
-            bytes = Encoding.ASCII.GetBytes(string.Format("Content-Type: {0}\n\n", !string.IsNullOrEmpty(file.MimeType) ? file.MimeType : "application/octet-stream"));
-            stream.Write(bytes, 0, bytes.Length);
-            stream.Write(file.Content, 0, file.Content.Length);
-            bytes = Encoding.ASCII.GetBytes("\n--foo_bar_baz--\n");
-            stream.Write(bytes, 0, bytes.Length);
-            var data = stream.ToArray();
+            // TODO: Make a GoogleDriveUploadRequest<TRequest> : GoogleDriveRequest<TResponse>, 
+            // encapsulate request body uploading logic there.
+            // FIXME: Unity's JsonUtility leaves nulled fields in the output json string with the default values.
+            // Google API doesn't like that (Invalid value for: Invalid format: ""); unused fields should be stripped-out. 
+            // Have to either post-process json strings, or use a third-party json library with nullable types support. 
 
-            //var lolol = Encoding.UTF8.GetString(data);
+            var boundary = UnityWebRequest.GenerateBoundary();
+            var metadata = new MultipartFormDataSection(null, JsonUtils.ToJsonPrivateCamel(file), "application/json; charset=UTF-8");
+            var content = new MultipartFormDataSection(null, file.Content, !string.IsNullOrEmpty(file.MimeType) ? file.MimeType : "application/octet-stream");
+            var formData = UnityWebRequest.SerializeFormSections(new List<IMultipartFormSection> { metadata, content }, boundary);
 
-            //var boundary = UnityWebRequest.GenerateBoundary();
-            //var metadata = new MultipartFormDataSection(null, JsonUtility.ToJson(file), "application/json; charset=UTF-8");
-            //var content = new MultipartFormDataSection(null, file.Content, !string.IsNullOrEmpty(file.MimeType) ? file.MimeType : "application/octet-stream");
-            //var data = UnityWebRequest.SerializeFormSections(new List<IMultipartFormSection> { metadata, content }, Encoding.ASCII.GetBytes(boundary));
+            // End boundary is missing; adding it manually.
+            var endBoundary = Encoding.ASCII.GetBytes(string.Format("\r\n--{0}--", Encoding.ASCII.GetString(boundary)));
+            var data = new byte[formData.Length + endBoundary.Length];
+            System.Buffer.BlockCopy(formData, 0, data, 0, formData.Length);
+            System.Buffer.BlockCopy(endBoundary, 0, data, formData.Length, endBoundary.Length);
 
             var webRequest = base.CreateWebRequest();
             webRequest.uploadHandler = new UploadHandlerRaw(data);
-            webRequest.SetRequestHeader("Content-Type", "multipart/related; boundary=foo_bar_baz");
+            webRequest.SetRequestHeader("Content-Type", string.Concat("multipart/related; boundary=", Encoding.ASCII.GetString(boundary)));
 
             return webRequest;
         }
