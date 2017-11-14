@@ -20,7 +20,7 @@ public class GoogleDriveRequest<TResponse> : IDisposable where TResponse : Data.
 {
     /// <summary>
     /// Event invoked when the request is done running.
-    /// Make sure to check for <see cref="IsError"/> before using the response data.
+    /// Make sure to check for <see cref="IsError"/> before using <see cref="ResponseData"/>.
     /// </summary>
     public event Action<TResponse> OnDone;
 
@@ -77,7 +77,7 @@ public class GoogleDriveRequest<TResponse> : IDisposable where TResponse : Data.
     /// </summary>
     /// <returns>
     /// A yeild instruction indicating the progress/completion state of the request.
-    /// Yield this object to wait until the request is done or use <see cref="OnDone"/> event.
+    /// Yield this object to wait until the request <see cref="IsDone"/> or use <see cref="OnDone"/> event.
     /// </returns>
     public GoogleDriveRequestYeildInstruction<TResponse> Send ()
     {
