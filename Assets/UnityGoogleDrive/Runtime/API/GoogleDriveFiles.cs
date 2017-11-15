@@ -242,6 +242,25 @@ public static class GoogleDriveFiles
     }
 
     /// <summary>
+    /// Subscribes to changes to a file.
+    /// </summary>
+    public class WatchRequest : GoogleDriveUploadRequest<Data.Channel, Data.Channel>
+    {
+        /// <summary>
+        /// Whether the user is acknowledging the risk of downloading known malware or other
+        /// abusive files. This is only applicable when alt=media.
+        /// </summary>
+        [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
+        /// <summary>
+        /// Whether the requesting application supports Team Drives.
+        /// </summary>
+        [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+
+        public WatchRequest (string fileId, Data.Channel channel) : base(string.Format(@"https://www.googleapis.com/drive/v3/files/{0}/watch", fileId), 
+            UnityWebRequest.kHttpVerbPOST, channel) { }
+    }
+
+    /// <summary>
     /// Updates a file's metadata and/or content with patch semantics.
     /// </summary>
     public class UpdateRequest : GoogleDriveUploadRequest<Data.File, Data.File>
@@ -388,5 +407,16 @@ public static class GoogleDriveFiles
     public static UpdateRequest Update (string fileId, Data.File file)
     {
         return new UpdateRequest(fileId, file);
+    }
+
+    /// <summary>
+    /// Subscribes to changes to a file.
+    /// </summary>
+    /// <param name="fileId">The ID of the file to watch for.</param>
+    /// <param name="channel">The body of the request.</param>
+    /// <returns></returns>
+    public static WatchRequest Watch (string fileId, Data.Channel channel)
+    {
+        return new WatchRequest(fileId, channel);
     }
 }
