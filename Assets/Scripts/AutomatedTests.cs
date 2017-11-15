@@ -80,6 +80,16 @@ public class AutomatedTests
     }
 
     [UnityTest]
+    public IEnumerator Test008_FilesGenerateIds ()
+    {
+        const int COUNT = 3;
+        var request = GoogleDriveFiles.GenerateIds(COUNT);
+        yield return request.Send();
+        Assert.IsFalse(request.IsError);
+        Assert.AreEqual(request.ResponseData.Ids.Count, COUNT);
+    }
+
+    [UnityTest]
     public IEnumerator Test999_FilesDelete ()
     {
         var request1 = GoogleDriveFiles.Delete(createdFileId);

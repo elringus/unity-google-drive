@@ -119,6 +119,29 @@ public static class GoogleDriveFiles
     }
 
     /// <summary>
+    /// Generates a set of file IDs which can be provided in create requests.
+    /// </summary>
+    public class GenerateIdsRequest : GoogleDriveRequest<Data.GeneratedIds>
+    {
+        /// <summary>
+        /// The number of IDs to return.
+        /// </summary>
+        [QueryParameter] public int? Count { get; private set; }
+        /// <summary>
+        /// The space in which the IDs can be used to create new files. 
+        /// Supported values are 'drive' and 'appDataFolder'.
+        /// </summary>
+        [QueryParameter] public string Space { get; private set; }
+
+        public GenerateIdsRequest (int? count = null, string space = null)
+            : base(@"https://www.googleapis.com/drive/v3/files/generateIds", UnityWebRequest.kHttpVerbGET)
+        {
+            Count = count;
+            Space = space;
+        }
+    }
+
+    /// <summary>
     /// Gets a file's metadata by ID.
     /// </summary>
     public class GetRequest : GoogleDriveRequest<Data.File>
@@ -268,6 +291,19 @@ public static class GoogleDriveFiles
     public static ExportRequest Export (string fileId, string mimeType)
     {
         return new ExportRequest(fileId, mimeType);
+    }
+
+    /// <summary>
+    /// Generates a set of file IDs which can be provided in create requests.
+    /// </summary>
+    /// <param name="count">The number of IDs to return.</param>
+    /// <param name="space">
+    /// The space in which the IDs can be used to create new files. 
+    /// Supported values are 'drive' and 'appDataFolder'.
+    /// </param>
+    public static GenerateIdsRequest GenerateIds (int? count = null, string space = null)
+    {
+        return new GenerateIdsRequest(count, space);
     }
 
     /// <summary>
