@@ -242,6 +242,41 @@ public static class GoogleDriveFiles
     }
 
     /// <summary>
+    /// Updates a file's metadata and/or content with patch semantics.
+    /// </summary>
+    public class UpdateRequest : GoogleDriveUploadRequest<Data.File, Data.File>
+    {
+        /// <summary>
+        /// A comma-separated list of parent IDs to add.
+        /// </summary>
+        [QueryParameter] public string AddParents { get; set; }
+        /// <summary>
+        /// Whether to set the 'keepForever' field in the new head revision. This is only
+        /// applicable to files with binary content in Drive.
+        /// </summary>
+        [QueryParameter] public bool? KeepRevisionForever { get; set; }
+        /// <summary>
+        /// A language hint for OCR processing during image import (ISO 639-1 code).
+        /// </summary>
+        [QueryParameter] public string OcrLanguage { get; set; }
+        /// <summary>
+        /// A comma-separated list of parent IDs to remove.
+        /// </summary>
+        [QueryParameter] public string RemoveParents { get; set; }
+        /// <summary>
+        /// Whether the requesting application supports Team Drives.
+        /// </summary>
+        [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+        /// <summary>
+        /// Whether to use the uploaded content as indexable text.
+        /// </summary>
+        [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
+
+        public UpdateRequest (string fileId, Data.File file) : base(file.Content != null ? string.Concat(@"https://www.googleapis.com/upload/drive/v3/files/", fileId) :
+            string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), "PATCH", file, file.Content, file.MimeType) { }
+    }
+
+    /// <summary>
     /// Creates a copy of a file and applies any requested updates with patch semantics.
     /// Response data will contain copied <see cref="Data.File"/>.
     /// </summary>
@@ -340,5 +375,18 @@ public static class GoogleDriveFiles
     public static ListRequest List ()
     {
         return new ListRequest();
+    }
+
+    /// <summary>
+    /// Updates a file's metadata and/or content with patch semantics.
+    /// </summary>
+    /// <param name="fileId">ID of the file to update.</param>
+    /// <param name="file">
+    /// Updated metadata of the file. 
+    /// Provide <see cref="Data.File.Content"/> to update the content of the file.
+    /// </param>
+    public static UpdateRequest Update (string fileId, Data.File file)
+    {
+        return new UpdateRequest(fileId, file);
     }
 }

@@ -90,6 +90,17 @@ public class AutomatedTests
     }
 
     [UnityTest]
+    public IEnumerator Test009_FilesUpdate ()
+    {
+        const string UPDATED_NAME = "UpdatedName";
+        var file = new Data.File() { Name = UPDATED_NAME };
+        var request = GoogleDriveFiles.Update(copiedFileId, file);
+        yield return request.Send();
+        Assert.IsFalse(request.IsError);
+        Assert.AreEqual(request.ResponseData.Name, UPDATED_NAME);
+    }
+
+    [UnityTest]
     public IEnumerator Test999_FilesDelete ()
     {
         var request1 = GoogleDriveFiles.Delete(createdFileId);
