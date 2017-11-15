@@ -7,7 +7,11 @@ using UnityEngine;
 /// </summary>
 public class AuthController
 {
-    public event Action OnAccessTokenRefreshed;
+    /// <summary>
+    /// Invoked when <see cref="AccessToken"/> has been refreshed.
+    /// Return false on authorization fail.
+    /// </summary>
+    public event Action<bool> OnAccessTokenRefreshed;
 
     public string AccessToken { get { return accessTokenProvider.AccessToken; } }
     public bool IsRefreshingAccessToken { get; private set; }
@@ -33,6 +37,7 @@ public class AuthController
     {
         if (IsRefreshingAccessToken) return;
         IsRefreshingAccessToken = true;
+
         accessTokenProvider.ProvideAccessToken();
     }
 
@@ -41,13 +46,10 @@ public class AuthController
         if (provider.IsError)
         {
             Debug.LogError("UnityGoogleDrive: Failed to execute authorization procedure. Check application settings and credentials.");
-            // TODO: Handle auth procedure fail for running requests.
         }
-        else
-        {
-            IsRefreshingAccessToken = false;
-            if (OnAccessTokenRefreshed != null)
-                OnAccessTokenRefreshed.Invoke();
-        }
+        else IsRefreshingAccessToken = false;
+
+        if (OnAccessTokenRefreshed != null)
+            OnAccessTokenRefreshed.Invoke(!provider.IsError);
     }
 }

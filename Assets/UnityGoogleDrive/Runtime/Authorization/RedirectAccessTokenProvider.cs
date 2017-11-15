@@ -26,6 +26,12 @@ public class RedirectAccessTokenProvider : IAccessTokenProvider
 
     public void ProvideAccessToken ()
     {
+        if (!settings.AuthCredentials.ContainsSensitiveData())
+        {
+            HandleProvideAccessTokenComplete(true);
+            return;
+        }
+
         var accessToken = ExtractAccessTokenFromApplicationUrl();
         if (string.IsNullOrEmpty(accessToken)) // Access token isn't available; retrieve it.
         {

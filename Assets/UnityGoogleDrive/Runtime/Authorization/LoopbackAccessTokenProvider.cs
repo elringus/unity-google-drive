@@ -41,6 +41,12 @@ public class LoopbackAccessTokenProvider : IAccessTokenProvider
 
     public void ProvideAccessToken ()
     {
+        if (!settings.AuthCredentials.ContainsSensitiveData())
+        {
+            HandleProvideAccessTokenComplete(true);
+            return;
+        }
+
         // Refresh token isn't available; executing full auth procedure.
         if (string.IsNullOrEmpty(RefreshToken)) ExecuteFullAuth();
         // Using refresh token to issue a new access token.

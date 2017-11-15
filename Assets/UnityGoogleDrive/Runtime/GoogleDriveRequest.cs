@@ -194,10 +194,10 @@ public class GoogleDriveRequest<TResponse> : IDisposable
         AuthController.RefreshAccessToken();
     }
 
-    private void HandleAccessTokenRefreshed ()
+    private void HandleAccessTokenRefreshed (bool success)
     {
         AuthController.OnAccessTokenRefreshed -= HandleAccessTokenRefreshed;
-        SendWebRequest();
+        if (success) SendWebRequest();
     }
 
     /// <summary>
