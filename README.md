@@ -4,7 +4,7 @@ TBA
 ## Description
 SDK for [Google Drive](https://www.google.com/drive/) providing API for listing, searching, creating, uploading, editing, copying, downloading and deleting files on the User's drive from within [Unity game engine](https://unity3d.com/).
 
-Supports all Unity target platforms (including WebGL).
+Works with Unity version 5.6 and higher. Supports all major target platforms (including WebGL).
 
 Core runtime is **.NET 2.0 Subset** profile compatible; however full **.NET 2.0** profile is required for [Json.Net.Unity3D
 ](https://github.com/SaladLab/Json.Net.Unity3D) library to work correctly (used for API data serialization).
