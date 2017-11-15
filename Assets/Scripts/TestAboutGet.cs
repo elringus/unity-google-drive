@@ -23,7 +23,13 @@ public class TestAboutGet : MonoBehaviour
         {
             GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
         }
-        else if (request.ResponseData != null)
+        else
+        {
+            if (GUILayout.Button("Refresh"))
+                UpdateInfo();
+        }
+
+        if (request.ResponseData != null)
         {
             GUILayout.Label(string.Format("User name: {0}\nUser email: {1}\nSpace used: {2:0}/{3:0} MB", 
                 request.ResponseData.User.DisplayName,
@@ -31,9 +37,6 @@ public class TestAboutGet : MonoBehaviour
                 request.ResponseData.StorageQuota.Usage * .000001f,
                 request.ResponseData.StorageQuota.Limit * .000001f));
         }
-
-        if (GUILayout.Button("Refresh"))
-            UpdateInfo();
     }
 
     private void UpdateInfo ()

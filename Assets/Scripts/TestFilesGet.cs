@@ -20,16 +20,18 @@ public class TestFilesGet : MonoBehaviour
         {
             GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
         }
-        else if (!string.IsNullOrEmpty(result))
+        else
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("File ID:", GUILayout.Width(70));
+            fileId = GUILayout.TextField(fileId);
+            if (GUILayout.Button("Get", GUILayout.Width(100))) GetFile();
+            GUILayout.EndHorizontal();
+        }
+        if (!string.IsNullOrEmpty(result))
         {
             GUILayout.Label(result);
         }
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("File ID:", GUILayout.Width(70));
-        fileId = GUILayout.TextField(fileId);
-        if (GUILayout.Button("Get", GUILayout.Width(100))) GetFile();
-        GUILayout.EndHorizontal();
     }
 
     private void GetFile ()

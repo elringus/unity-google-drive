@@ -5,7 +5,7 @@ using UnityEngine;
 /// Yield instruction to suspend coroutines while <see cref="GoogleDriveRequest{TData}"/> is running.
 /// </summary>
 /// <typeparam name="T">Type of the response data of the request the instruction is serving for.</typeparam>
-public class GoogleDriveRequestYeildInstruction<TResponse> : CustomYieldInstruction where TResponse : Data.ResourceData
+public class GoogleDriveRequestYeildInstruction<TResponse> : CustomYieldInstruction
 {
     /// <summary>
     /// Event invoked when corresponding request is done running.

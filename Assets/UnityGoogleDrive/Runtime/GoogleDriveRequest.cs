@@ -15,8 +15,8 @@ public class QueryParameterAttribute : Attribute { }
 /// A request intended to communicate with the Google Drive API. 
 /// Handles base networking and authorization flow.
 /// </summary>
-/// <typeparam name="TResponse">Type of the response resource data.</typeparam>
-public class GoogleDriveRequest<TResponse> : IDisposable where TResponse : Data.ResourceData
+/// <typeparam name="TResponse">Type of the response data.</typeparam>
+public class GoogleDriveRequest<TResponse> : IDisposable
 {
     /// <summary>
     /// Event invoked when the request is done running.

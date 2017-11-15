@@ -76,6 +76,22 @@ public static class GoogleDriveFiles
     }
 
     /// <summary>
+    /// Permanently deletes a file owned by the user without moving it to the trash.
+    /// If the file belongs to a Team Drive the user must be an organizer on the parent.
+    /// If the target is a folder, all descendants owned by the user are also deleted.
+    /// </summary>
+    public class DeleteRequest : GoogleDriveRequest<string>
+    {
+        /// <summary>
+        /// Whether the requesting application supports Team Drives. (Default: false) 
+        /// </summary>
+        [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+
+        public DeleteRequest (string fileId)
+            : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbDELETE) { }
+    }
+
+    /// <summary>
     /// Gets a file's metadata by ID.
     /// </summary>
     public class GetRequest : GoogleDriveRequest<Data.File>
@@ -195,6 +211,17 @@ public static class GoogleDriveFiles
     public static CreateRequest Create (Data.File file)
     {
         return new CreateRequest(file);
+    }
+
+    /// <summary>
+    /// Permanently deletes a file owned by the user without moving it to the trash.
+    /// If the file belongs to a Team Drive the user must be an organizer on the parent.
+    /// If the target is a folder, all descendants owned by the user are also deleted.
+    /// </summary>
+    /// <param name="fileId">The ID of the file to delete.</param>
+    public static DeleteRequest Delete (string fileId)
+    {
+        return new DeleteRequest(fileId);
     }
 
     /// <summary>

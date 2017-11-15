@@ -7,10 +7,9 @@ using UnityEngine.Networking;
 /// A request intended to communicate with the Google Drive API. 
 /// Allows uploading a <see cref="Data.ResourceData"/> and (optionally) raw payload data.
 /// </summary>
-/// <typeparam name="TRequest">Type of the uploaded resource data.</typeparam>
-/// <typeparam name="TResponse">Type of the response resource data.</typeparam>
-public class GoogleDriveUploadRequest<TRequest, TResponse> : GoogleDriveRequest<TResponse> 
-    where TRequest : Data.ResourceData where TResponse : Data.ResourceData
+/// <typeparam name="TRequest">Type of the uploaded data.</typeparam>
+/// <typeparam name="TResponse">Type of the response data.</typeparam>
+public class GoogleDriveUploadRequest<TRequest, TResponse> : GoogleDriveRequest<TResponse> where TRequest : Data.ResourceData
 {
     public TRequest RequestData { get; protected set; }
     public byte[] RequestPayload { get; protected set; }
