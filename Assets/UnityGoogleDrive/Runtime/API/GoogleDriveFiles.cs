@@ -101,6 +101,24 @@ public static class GoogleDriveFiles
     }
 
     /// <summary>
+    /// Exports a Google Doc to the requested MIME type and returns the exported content.
+    /// Please note that the exported content is limited to 10MB.
+    /// </summary>
+    public class ExportRequest : GoogleDriveRequest<Data.File>
+    {
+        /// <summary>
+        /// The MIME type of the format requested for this export.
+        /// </summary>
+        [QueryParameter] public string MimeType { get; private set; }
+
+        public ExportRequest (string fileId, string mimeType)
+            : base(string.Format(@"https://www.googleapis.com/drive/v3/files/{0}/export", fileId), UnityWebRequest.kHttpVerbGET)
+        {
+            MimeType = mimeType;
+        }
+    }
+
+    /// <summary>
     /// Gets a file's metadata by ID.
     /// </summary>
     public class GetRequest : GoogleDriveRequest<Data.File>
@@ -239,6 +257,17 @@ public static class GoogleDriveFiles
     public static EmptyTrashRequest EmptyTrash ()
     {
         return new EmptyTrashRequest();
+    }
+
+    /// <summary>
+    /// Exports a Google Doc to the requested MIME type and returns the exported content.
+    /// Please note that the exported content is limited to 10MB.
+    /// </summary>
+    /// <param name="fileId">The ID of the file to export.</param>
+    /// <param name="mimeType">The MIME type of the format requested for this export.</param>
+    public static ExportRequest Export (string fileId, string mimeType)
+    {
+        return new ExportRequest(fileId, mimeType);
     }
 
     /// <summary>
