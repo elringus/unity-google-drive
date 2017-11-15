@@ -24,13 +24,39 @@ public class GoogleDriveRequest<TResponse> : IDisposable
     /// </summary>
     public event Action<TResponse> OnDone;
 
+    /// <summary>
+    /// The URI of the request.
+    /// </summary>
     public string Uri { get; private set; }
+    /// <summary>
+    /// HTTP method of the request.
+    /// </summary>
     public string Method { get; private set; }
+    /// <summary>
+    /// The response data of the request.
+    /// Make sure to check for <see cref="IsDone"/> and <see cref="IsError"/> before using.
+    /// </summary>
     public TResponse ResponseData { get; protected set; }
+    /// <summary>
+    /// Progress of the request execution, in 0.0 to 1.0 range.
+    /// </summary>
     public float Progress { get { return webRequestYeild != null ? webRequestYeild.progress : 0; } }
+    /// <summary>
+    /// Whether the request is currently executing.
+    /// </summary>
     public bool IsRunning { get { return yeildInstruction != null && !IsDone; } }
+    /// <summary>
+    /// Whether the request has finished executing and it's safe to use <see cref="ResponseData"/>.
+    /// </summary>
     public bool IsDone { get; protected set; }
+    /// <summary>
+    /// Whether the request has finished with errors.
+    /// Use <see cref="Error"/> for error description.
+    /// </summary>
     public bool IsError { get { return !string.IsNullOrEmpty(Error); } }
+    /// <summary>
+    /// When <see cref="IsError"/> is true contains description of the occured error.
+    /// </summary>
     public string Error { get; protected set; }
 
     /// <summary>

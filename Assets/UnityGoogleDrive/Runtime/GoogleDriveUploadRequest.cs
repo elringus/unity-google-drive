@@ -11,9 +11,21 @@ using UnityEngine.Networking;
 /// <typeparam name="TResponse">Type of the response data.</typeparam>
 public class GoogleDriveUploadRequest<TRequest, TResponse> : GoogleDriveRequest<TResponse> where TRequest : Data.ResourceData
 {
+    /// <summary>
+    /// The uploaded meta data of the request.
+    /// </summary>
     public TRequest RequestData { get; protected set; }
+    /// <summary>
+    /// The uploaded raw payload data of the request.
+    /// </summary>
     public byte[] RequestPayload { get; protected set; }
+    /// <summary>
+    /// MIME type of the <see cref="RequestPayload"/>.
+    /// </summary>
     public string PayloadMimeType { get; protected set; }
+    /// <summary>
+    /// Whether the request has <see cref="RequestPayload"/>.
+    /// </summary>
     public bool HasPayload { get { return RequestPayload != null; } }
 
     /// <summary>
