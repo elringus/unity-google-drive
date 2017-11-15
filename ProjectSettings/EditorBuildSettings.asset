@@ -26,3 +26,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestFilesDelete.unity
     guid: 8901625e531185848a30bd20c77e7e4f
+  - enabled: 1
+    path: Assets/Scenes/TestFilesEmptyTrash.unity
+    guid: 1050b1c463dab7343be11895d72e0a11

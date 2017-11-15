@@ -92,6 +92,15 @@ public static class GoogleDriveFiles
     }
 
     /// <summary>
+    /// Permanently deletes all of the user's trashed files.
+    /// </summary>
+    public class EmptyTrashRequest : GoogleDriveRequest<string>
+    {
+        public EmptyTrashRequest ()
+            : base(@"https://www.googleapis.com/drive/v3/files/trash", UnityWebRequest.kHttpVerbDELETE) { }
+    }
+
+    /// <summary>
     /// Gets a file's metadata by ID.
     /// </summary>
     public class GetRequest : GoogleDriveRequest<Data.File>
@@ -222,6 +231,14 @@ public static class GoogleDriveFiles
     public static DeleteRequest Delete (string fileId)
     {
         return new DeleteRequest(fileId);
+    }
+
+    /// <summary>
+    /// Permanently deletes all of the user's trashed files.
+    /// </summary>
+    public static EmptyTrashRequest EmptyTrash ()
+    {
+        return new EmptyTrashRequest();
     }
 
     /// <summary>
