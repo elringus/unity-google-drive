@@ -43,11 +43,11 @@ public class ExampleGetFileByPath : MonoBehaviour
 
     private IEnumerator GetFileByPathRoutine (string filePath)
     {
-        // A folder in Google Drive is actully a file with the MIME type 'application/vnd.google-apps.folder'.
+        // A folder in Google Drive is actually a file with the MIME type 'application/vnd.google-apps.folder'. 
         // Hierarchy relationship is implemented via File's 'Parents' property. To get the actual file using it's path 
         // we have to find ID of the file's parent folder, and for this we need IDs of all the folders in the chain. 
-        // Thus, we will have to traverse all the hierarchy chain using List requests. 
-        // More info: https://developers.google.com/drive/v3/web/folder.
+        // Thus, we need to traverse the entire hierarchy chain using List requests. 
+        // More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
         var fileName = filePath.Contains("/") ? filePath.GetAfter("/") : filePath;
         var parentNames = filePath.Contains("/") ? filePath.GetBeforeLast("/").Split('/') : null;
