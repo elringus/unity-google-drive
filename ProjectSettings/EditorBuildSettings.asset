@@ -29,3 +29,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FilesEmptyTrash.unity
     guid: 1050b1c463dab7343be11895d72e0a11
+  - enabled: 1
+    path: Assets/Scenes/GetFileByPath.unity
+    guid: 6aecb61640546d542a05f3506af1bb59
