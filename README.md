@@ -29,17 +29,27 @@ Core runtime is **.NET 2.0 Subset** profile compatible; however full **.NET 2.0*
 - Return to Unity editor, open the settings (you can also access them via Edit -> Project Settings -> Google Drive Settings) and click **Parse credentials JSON file**; select the downloaded credentials json file
 
 ## Examples
+
 ### Listing files
 ```csharp
 GoogleDriveFiles.List().Send().OnDone += fileList => ...;
 ```
+
 ### Uploading file
 ```csharp
 var file = new UnityGoogleDrive.Data.File() { Name = "Image.png", Content = rawImageData, MimeType = "image/png" };
 GoogleDriveFiles.Create(file).Send();
 ```
+
 ### Downloading file
 ```csharp
 GoogleDriveFiles.Download(fileId).Send().OnDone += file => ...;
 ```
 For more examples take a look at [test scripts](https://github.com/Elringus/UnityGoogleDrive/tree/master/Assets/Scripts).
+
+### Working with folders and file path
+A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via File's `Parents` property. To get the actual file using it's path we have to find ID of the file's parent folder, and for this we need IDs of all the folders in the chain. Thus, we need to traverse the entire hierarchy chain using List requests. 
+
+You can find a naive implementation of the aforementioned logic in [the example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs).
+
+More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
