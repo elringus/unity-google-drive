@@ -35,7 +35,7 @@ GoogleDriveFiles.List().Send().OnDone += fileList => ...;
 ```
 ### Uploading file
 ```csharp
-var file = new Data.File() { Name = "Image.png", Content = rawImageData, MimeType = "image/png" };
+var file = new UnityGoogleDrive.Data.File() { Name = "Image.png", Content = rawImageData, MimeType = "image/png" };
 GoogleDriveFiles.Create(file).Send();
 ```
 ### Downloading file
