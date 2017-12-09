@@ -47,9 +47,17 @@ GoogleDriveFiles.Download(fileId).Send().OnDone += file => ...;
 ```
 For more examples take a look at [test scripts](https://github.com/Elringus/UnityGoogleDrive/tree/master/Assets/Scripts).
 
-### Working with folders and file path
-A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via File's `Parents` property. To get the actual file using it's path we have to find ID of the file's parent folder, and for this we need IDs of all the folders in the chain. Thus, we need to traverse the entire hierarchy chain using List requests. 
+## FAQ
+
+### How to access a file using its path?
+A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path we have to find ID of the file's parent folder, and for this we need IDs of all the folders in the chain. Thus, we have to traverse the entire hierarchy chain using List requests. 
 
 You can find a naive implementation of the aforementioned logic in [the example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs).
 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
+
+### Can I access someone else's Google drive? Share a drive account? Skip authentication in the browser?
+To work with anyone's Google Drive, it's mandatory to complete OAuth procedure for that user, which requires opening a browser window to login and allow the app to access their drive. It's a security measure [enforced by Google](https://developers.google.com/identity/protocols/OAuth2). The only legit way to allow multiple users share a drive account is to use [Team Drives](https://gsuite.google.com/learning-center/products/drive/get-started-team-drive/).
+
+### Will this plugin appear on the Asset Store?
+I'll consider publishing when (if) it'll be more in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
