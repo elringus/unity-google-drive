@@ -115,6 +115,12 @@ public static class GoogleDriveFiles
             : base(string.Format(@"https://www.googleapis.com/drive/v3/files/{0}/export", fileId), UnityWebRequest.kHttpVerbGET)
         {
             MimeType = mimeType;
+            ResponseData = new Data.File() { Id = fileId };
+        }
+
+        protected override void HandleResponseData (DownloadHandler downloadHandler)
+        {
+            ResponseData.Content = downloadHandler.data;
         }
     }
 
