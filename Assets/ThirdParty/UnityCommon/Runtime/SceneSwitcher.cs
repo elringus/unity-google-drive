@@ -1,4 +1,4 @@
-﻿// Copyright 2012-2017 Elringus (Artyom Sovetnikov). All Rights Reserved.
+﻿// Copyright 2012-2018 Elringus (Artyom Sovetnikov). All Rights Reserved.
 
 namespace UnityCommon
 {
@@ -7,8 +7,8 @@ namespace UnityCommon
     
     public class SceneSwitcher : MonoBehaviour 
     {
-        private const int BUTTON_HEIGHT = 25;
-        private const int BUTTON_WIDTH = 100;
+        private const int BUTTON_HEIGHT = 50;
+        private const int BUTTON_WIDTH = 150;
     
         private void OnGUI ()
     	{

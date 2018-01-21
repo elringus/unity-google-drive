@@ -1,4 +1,4 @@
-﻿// Copyright 2012-2017 Elringus (Artyom Sovetnikov). All Rights Reserved.
+﻿// Copyright 2012-2018 Elringus (Artyom Sovetnikov). All Rights Reserved.
 
 namespace UnityCommon
 {
@@ -162,6 +162,14 @@ namespace UnityCommon
                 return source;
     
             return source.Remove(source.LastIndexOf(value));
+        }
+    
+        /// <summary>
+        /// Performes <see cref="string.Trim"/> additionally removing any BOM and other service symbols.
+        /// </summary>
+        public static string TrimFull (this string source)
+        {
+            return source.Trim(new char[] { '\uFEFF', '\u200B' });
         }
     }
     
