@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityGoogleDrive;
 
 public class TestFilesCreate : MonoBehaviour
 {
@@ -31,13 +32,13 @@ public class TestFilesCreate : MonoBehaviour
     private void Upload ()
     {
         var content = ImageToUpload.EncodeToPNG();
-        var file = new Data.File() { Name = "TestUnityGoogleDriveFilesUpload.png", Content = content, MimeType = "image/png" };
+        var file = new UnityGoogleDrive.Data.File() { Name = "TestUnityGoogleDriveFilesUpload.png", Content = content, MimeType = "image/png" };
         request = GoogleDriveFiles.Create(file);
         request.Fields = new List<string> { "id", "name", "size", "createdTime" };
         request.Send().OnDone += PrintResult;
     }
 
-    private void PrintResult (Data.File file)
+    private void PrintResult (UnityGoogleDrive.Data.File file)
     {
         result = string.Format("Name: {0} Size: {1:0.00}MB Created: {2:dd.MM.yyyy HH:MM:ss}",
                 file.Name,

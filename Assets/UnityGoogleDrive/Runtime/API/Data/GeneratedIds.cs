@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Data
+namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// A list of generated file IDs which can be provided in create requests.

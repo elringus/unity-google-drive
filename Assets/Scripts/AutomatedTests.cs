@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityGoogleDrive;
 
 public class AutomatedTests
 {
@@ -32,7 +33,7 @@ public class AutomatedTests
     public IEnumerator Test003_FilesCreate ()
     {
         var content = Resources.Load<Texture2D>(TEST_RESOURCE_PATH).EncodeToPNG();
-        var file = new Data.File() { Name = "AutoTestUpload", Content = content };
+        var file = new UnityGoogleDrive.Data.File() { Name = "AutoTestUpload", Content = content };
         var request = GoogleDriveFiles.Create(file);
         request.Fields = new List<string> { "id" };
         yield return request.Send();
@@ -62,7 +63,7 @@ public class AutomatedTests
     [UnityTest]
     public IEnumerator Test006_FilesCopy ()
     {
-        var file = new Data.File() { Id = createdFileId };
+        var file = new UnityGoogleDrive.Data.File() { Id = createdFileId };
         var request = GoogleDriveFiles.Copy(file);
         request.Fields = new List<string> { "id" };
         yield return request.Send();
@@ -93,7 +94,7 @@ public class AutomatedTests
     public IEnumerator Test009_FilesUpdate ()
     {
         const string UPDATED_NAME = "UpdatedName";
-        var file = new Data.File() { Name = UPDATED_NAME };
+        var file = new UnityGoogleDrive.Data.File() { Name = UPDATED_NAME };
         var request = GoogleDriveFiles.Update(copiedFileId, file);
         yield return request.Send();
         Assert.IsFalse(request.IsError);

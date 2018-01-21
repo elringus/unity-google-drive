@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Data
+namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// The metadata for a file stored in Google Drive.

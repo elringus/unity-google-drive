@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Data
+namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// A notification channel used to watch for resource changes.

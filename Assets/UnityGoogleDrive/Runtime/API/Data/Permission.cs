@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Data
+namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// A permission for a file. A permission grants a user, group, domain or the world access to a file or a folder hierarchy.

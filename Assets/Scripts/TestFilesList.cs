@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityGoogleDrive;
 
 public class TestFilesList : MonoBehaviour
 {
@@ -63,7 +64,7 @@ public class TestFilesList : MonoBehaviour
         request.Send().OnDone += BuildResults;
     }
 
-    private void BuildResults (Data.FileList fileList)
+    private void BuildResults (UnityGoogleDrive.Data.FileList fileList)
     {
         results = new Dictionary<string, string>();
 

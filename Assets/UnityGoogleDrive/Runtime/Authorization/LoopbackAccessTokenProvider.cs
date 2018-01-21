@@ -3,182 +3,185 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
-/// <summary>
-/// Provides access token using local loopback method to read authorization response.
-/// Implementation based on: https://github.com/googlesamples/oauth-apps-for-windows.
-/// </summary>
-public class LoopbackAccessTokenProvider : IAccessTokenProvider
+namespace UnityGoogleDrive
 {
-    public event Action<IAccessTokenProvider> OnDone;
-
-    public bool IsDone { get; private set; }
-    public bool IsError { get; private set; }
-    public string AccessToken { get { return PlayerPrefs.GetString(ACCESS_TOKEN_KEY); } private set { PlayerPrefs.SetString(ACCESS_TOKEN_KEY, value); } }
-    public string RefreshToken { get { return PlayerPrefs.GetString(REFRESH_TOKEN_KEY); } private set { PlayerPrefs.SetString(REFRESH_TOKEN_KEY, value); } }
-
-    private const string ACCESS_TOKEN_KEY = "GoogleDriveAccessToken";
-    private const string REFRESH_TOKEN_KEY = "GoogleDriveRefreshToken";
-    private const string LOOPBACK_URI = @"http://localhost";
-
-    private GoogleDriveSettings settings;
-    private AccessTokenRefresher accessTokenRefresher;
-    private AuthCodeExchanger authCodeExchanger;
-    private string expectedState;
-    private string codeVerifier;
-    private string redirectUri;
-    private string authorizationCode;
-
-    public LoopbackAccessTokenProvider (GoogleDriveSettings googleDriveSettings)
+    /// <summary>
+    /// Provides access token using local loopback method to read authorization response.
+    /// Implementation based on: https://github.com/googlesamples/oauth-apps-for-windows.
+    /// </summary>
+    public class LoopbackAccessTokenProvider : IAccessTokenProvider
     {
-        settings = googleDriveSettings;
+        public event Action<IAccessTokenProvider> OnDone;
 
-        accessTokenRefresher = new AccessTokenRefresher(settings);
-        accessTokenRefresher.OnDone += HandleAccessTokenRefreshed;
+        public bool IsDone { get; private set; }
+        public bool IsError { get; private set; }
+        public string AccessToken { get { return PlayerPrefs.GetString(ACCESS_TOKEN_KEY); } private set { PlayerPrefs.SetString(ACCESS_TOKEN_KEY, value); } }
+        public string RefreshToken { get { return PlayerPrefs.GetString(REFRESH_TOKEN_KEY); } private set { PlayerPrefs.SetString(REFRESH_TOKEN_KEY, value); } }
 
-        authCodeExchanger = new AuthCodeExchanger(settings);
-        authCodeExchanger.OnDone += HandleAuthCodeExchanged;
-    }
+        private const string ACCESS_TOKEN_KEY = "GoogleDriveAccessToken";
+        private const string REFRESH_TOKEN_KEY = "GoogleDriveRefreshToken";
+        private const string LOOPBACK_URI = @"http://localhost";
 
-    public void ProvideAccessToken ()
-    {
-        if (!settings.AuthCredentials.ContainsSensitiveData())
+        private GoogleDriveSettings settings;
+        private AccessTokenRefresher accessTokenRefresher;
+        private AuthCodeExchanger authCodeExchanger;
+        private string expectedState;
+        private string codeVerifier;
+        private string redirectUri;
+        private string authorizationCode;
+
+        public LoopbackAccessTokenProvider (GoogleDriveSettings googleDriveSettings)
         {
-            HandleProvideAccessTokenComplete(true);
-            return;
+            settings = googleDriveSettings;
+
+            accessTokenRefresher = new AccessTokenRefresher(settings);
+            accessTokenRefresher.OnDone += HandleAccessTokenRefreshed;
+
+            authCodeExchanger = new AuthCodeExchanger(settings);
+            authCodeExchanger.OnDone += HandleAuthCodeExchanged;
         }
 
-        // Refresh token isn't available; executing full auth procedure.
-        if (string.IsNullOrEmpty(RefreshToken)) ExecuteFullAuth();
-        // Using refresh token to issue a new access token.
-        else accessTokenRefresher.RefreshAccessToken(RefreshToken);
-    }
-
-    private void HandleProvideAccessTokenComplete (bool error = false)
-    {
-        IsError = error;
-        IsDone = true;
-        if (OnDone != null)
-            OnDone.Invoke(this);
-    }
-
-    private void HandleAccessTokenRefreshed (AccessTokenRefresher refresher)
-    {
-        if (refresher.IsError)
+        public void ProvideAccessToken ()
         {
-            if (Debug.isDebugBuild)
+            if (!settings.AuthCredentials.ContainsSensitiveData())
             {
-                var message = "UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.";
-                if (!string.IsNullOrEmpty(refresher.Error))
-                    message += string.Format("\nDetails: {0}", refresher.Error);
-                Debug.Log(message);
+                HandleProvideAccessTokenComplete(true);
+                return;
             }
-            ExecuteFullAuth();
+
+            // Refresh token isn't available; executing full auth procedure.
+            if (string.IsNullOrEmpty(RefreshToken)) ExecuteFullAuth();
+            // Using refresh token to issue a new access token.
+            else accessTokenRefresher.RefreshAccessToken(RefreshToken);
         }
-        else
+
+        private void HandleProvideAccessTokenComplete (bool error = false)
         {
-            AccessToken = refresher.AccesToken;
-            HandleProvideAccessTokenComplete();
+            IsError = error;
+            IsDone = true;
+            if (OnDone != null)
+                OnDone.Invoke(this);
         }
-    }
 
-    private void HandleAuthCodeExchanged (AuthCodeExchanger exchanger)
-    {
-        if (authCodeExchanger.IsError)
+        private void HandleAccessTokenRefreshed (AccessTokenRefresher refresher)
         {
-            Debug.LogError("UnityGoogleDrive: Failed to exchange authorization code.");
-            HandleProvideAccessTokenComplete(true);
+            if (refresher.IsError)
+            {
+                if (Debug.isDebugBuild)
+                {
+                    var message = "UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.";
+                    if (!string.IsNullOrEmpty(refresher.Error))
+                        message += string.Format("\nDetails: {0}", refresher.Error);
+                    Debug.Log(message);
+                }
+                ExecuteFullAuth();
+            }
+            else
+            {
+                AccessToken = refresher.AccesToken;
+                HandleProvideAccessTokenComplete();
+            }
         }
-        else
+
+        private void HandleAuthCodeExchanged (AuthCodeExchanger exchanger)
         {
-            AccessToken = authCodeExchanger.AccesToken;
-            RefreshToken = authCodeExchanger.RefreshToken;
-            HandleProvideAccessTokenComplete();
+            if (authCodeExchanger.IsError)
+            {
+                Debug.LogError("UnityGoogleDrive: Failed to exchange authorization code.");
+                HandleProvideAccessTokenComplete(true);
+            }
+            else
+            {
+                AccessToken = authCodeExchanger.AccesToken;
+                RefreshToken = authCodeExchanger.RefreshToken;
+                HandleProvideAccessTokenComplete();
+            }
         }
-    }
 
-    private void ExecuteFullAuth ()
-    {
-        // Generate state and PKCE values.
-        expectedState = CryptoUtils.RandomDataBase64Uri(32);
-        codeVerifier = CryptoUtils.RandomDataBase64Uri(32);
-        var codeVerifierHash = CryptoUtils.Sha256(codeVerifier);
-        var codeChallenge = CryptoUtils.Base64UriEncodeNoPadding(codeVerifierHash);
-
-        // Creates a redirect URI using an available port on the loopback address.
-        redirectUri = string.Format("{0}:{1}", LOOPBACK_URI, GetRandomUnusedPort());
-
-        // Listen for requests on the redirect URI.
-        var httpListener = new HttpListener();
-        httpListener.Prefixes.Add(redirectUri + '/');
-        httpListener.Start();
-
-        // Create the OAuth 2.0 authorization request.
-        // https://developers.google.com/identity/protocols/OAuth2WebServer#creatingclient
-        var authRequest = string.Format("{0}?response_type=code&scope={1}&redirect_uri={2}&client_id={3}&state={4}&code_challenge={5}&code_challenge_method={6}" +
-                "&access_type=offline" + // Forces to return a refresh token at the auth code exchange phase.
-                "&approval_prompt=force", // Forces to show consent screen for each auth request. Needed to return refresh tokens on consequent auth runs.
-            settings.AuthCredentials.AuthUri,
-            settings.AccessScope,
-            Uri.EscapeDataString(redirectUri),
-            settings.AuthCredentials.ClientId,
-            expectedState,
-            codeChallenge,
-            GoogleDriveSettings.CODE_CHALLENGE_METHOD);
-
-        // Open request in the browser.
-        Application.OpenURL(authRequest);
-
-        // Wait for the authorization response.
-        var context = httpListener.GetContext();
-
-        // Send an HTTP response to the browser to notify the user to close the browser.
-        var response = context.Response;
-        var responseString = settings.LoopbackResponseHtml;
-        var buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
-        response.ContentLength64 = buffer.Length;
-        var responseOutput = response.OutputStream;
-        responseOutput.Write(buffer, 0, buffer.Length);
-        responseOutput.Close();
-        httpListener.Stop();
-
-        // Check for errors.
-        if (context.Request.QueryString.Get("error") != null)
+        private void ExecuteFullAuth ()
         {
-            Debug.LogError(string.Format("UnityGoogleDrive: OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
-            HandleProvideAccessTokenComplete(true);
-            return;
+            // Generate state and PKCE values.
+            expectedState = CryptoUtils.RandomDataBase64Uri(32);
+            codeVerifier = CryptoUtils.RandomDataBase64Uri(32);
+            var codeVerifierHash = CryptoUtils.Sha256(codeVerifier);
+            var codeChallenge = CryptoUtils.Base64UriEncodeNoPadding(codeVerifierHash);
+
+            // Creates a redirect URI using an available port on the loopback address.
+            redirectUri = string.Format("{0}:{1}", LOOPBACK_URI, GetRandomUnusedPort());
+
+            // Listen for requests on the redirect URI.
+            var httpListener = new HttpListener();
+            httpListener.Prefixes.Add(redirectUri + '/');
+            httpListener.Start();
+
+            // Create the OAuth 2.0 authorization request.
+            // https://developers.google.com/identity/protocols/OAuth2WebServer#creatingclient
+            var authRequest = string.Format("{0}?response_type=code&scope={1}&redirect_uri={2}&client_id={3}&state={4}&code_challenge={5}&code_challenge_method={6}" +
+                    "&access_type=offline" + // Forces to return a refresh token at the auth code exchange phase.
+                    "&approval_prompt=force", // Forces to show consent screen for each auth request. Needed to return refresh tokens on consequent auth runs.
+                settings.AuthCredentials.AuthUri,
+                settings.AccessScope,
+                Uri.EscapeDataString(redirectUri),
+                settings.AuthCredentials.ClientId,
+                expectedState,
+                codeChallenge,
+                GoogleDriveSettings.CODE_CHALLENGE_METHOD);
+
+            // Open request in the browser.
+            Application.OpenURL(authRequest);
+
+            // Wait for the authorization response.
+            var context = httpListener.GetContext();
+
+            // Send an HTTP response to the browser to notify the user to close the browser.
+            var response = context.Response;
+            var responseString = settings.LoopbackResponseHtml;
+            var buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+            response.ContentLength64 = buffer.Length;
+            var responseOutput = response.OutputStream;
+            responseOutput.Write(buffer, 0, buffer.Length);
+            responseOutput.Close();
+            httpListener.Stop();
+
+            // Check for errors.
+            if (context.Request.QueryString.Get("error") != null)
+            {
+                Debug.LogError(string.Format("UnityGoogleDrive: OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
+                HandleProvideAccessTokenComplete(true);
+                return;
+            }
+            if (context.Request.QueryString.Get("code") == null || context.Request.QueryString.Get("state") == null)
+            {
+                Debug.LogError("UnityGoogleDrive: Malformed authorization response. " + context.Request.QueryString);
+                HandleProvideAccessTokenComplete(true);
+                return;
+            }
+
+            // Extract the authorization code.
+            authorizationCode = context.Request.QueryString.Get("code");
+            var incomingState = context.Request.QueryString.Get("state");
+
+            // Compare the receieved state to the expected value, to ensure that
+            // this app made the request which resulted in authorization.
+            if (incomingState != expectedState)
+            {
+                Debug.LogError(string.Format("UnityGoogleDrive: Received request with invalid state ({0}).", incomingState));
+                HandleProvideAccessTokenComplete(true);
+                return;
+            }
+
+            // Exchange the authorization code for tokens.
+            authCodeExchanger.ExchangeAuthCode(authorizationCode, codeVerifier, redirectUri);
         }
-        if (context.Request.QueryString.Get("code") == null || context.Request.QueryString.Get("state") == null)
+
+        private int GetRandomUnusedPort ()
         {
-            Debug.LogError("UnityGoogleDrive: Malformed authorization response. " + context.Request.QueryString);
-            HandleProvideAccessTokenComplete(true);
-            return;
+            // Based on: http://stackoverflow.com/a/3978040.
+            var listener = new TcpListener(IPAddress.Loopback, 0);
+            listener.Start();
+            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            listener.Stop();
+            return port;
         }
-
-        // Extract the authorization code.
-        authorizationCode = context.Request.QueryString.Get("code");
-        var incomingState = context.Request.QueryString.Get("state");
-
-        // Compare the receieved state to the expected value, to ensure that
-        // this app made the request which resulted in authorization.
-        if (incomingState != expectedState)
-        {
-            Debug.LogError(string.Format("UnityGoogleDrive: Received request with invalid state ({0}).", incomingState));
-            HandleProvideAccessTokenComplete(true);
-            return;
-        }
-
-        // Exchange the authorization code for tokens.
-        authCodeExchanger.ExchangeAuthCode(authorizationCode, codeVerifier, redirectUri);
-    }
-
-    private int GetRandomUnusedPort ()
-    {
-        // Based on: http://stackoverflow.com/a/3978040.
-        var listener = new TcpListener(IPAddress.Loopback, 0);
-        listener.Start();
-        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
-        listener.Stop();
-        return port;
     }
 }

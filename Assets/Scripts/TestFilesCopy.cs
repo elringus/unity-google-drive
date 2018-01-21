@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityGoogleDrive;
 
 public class TestFilesCopy : MonoBehaviour
 {
@@ -40,13 +41,13 @@ public class TestFilesCopy : MonoBehaviour
 
     private void CopyFile ()
     {
-        var file = new Data.File() { Id = fileId, Name = string.IsNullOrEmpty(copyName) ? null : copyName };
+        var file = new UnityGoogleDrive.Data.File() { Id = fileId, Name = string.IsNullOrEmpty(copyName) ? null : copyName };
         request = GoogleDriveFiles.Copy(file);
         request.Fields = new List<string> { "name, size, createdTime" };
         request.Send().OnDone += BuildResultString;
     }
 
-    private void BuildResultString (Data.File file)
+    private void BuildResultString (UnityGoogleDrive.Data.File file)
     {
         result = string.Format("Copied File Name: {0} Size: {1:0.00}MB Created: {2:dd.MM.yyyy HH:MM:ss}",
                 file.Name,

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityGoogleDrive;
 
 public class TestFilesDownload : MonoBehaviour
 {
@@ -37,13 +38,13 @@ public class TestFilesDownload : MonoBehaviour
         getRequest.Send().OnDone += HandleImageMetaReceived;
     }
 
-    private void HandleImageMetaReceived (Data.File file)
+    private void HandleImageMetaReceived (UnityGoogleDrive.Data.File file)
     {
         request = GoogleDriveFiles.Download(file);
         request.Send().OnDone += RenderImage;
     }
 
-    private void RenderImage (Data.File file)
+    private void RenderImage (UnityGoogleDrive.Data.File file)
     {
         var texture = new Texture2D(file.ImageMediaMetadata.Width.Value, file.ImageMediaMetadata.Height.Value, TextureFormat.RGBA32, false);
         texture.LoadImage(file.Content); 

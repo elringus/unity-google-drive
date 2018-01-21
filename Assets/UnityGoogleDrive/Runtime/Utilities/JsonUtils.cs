@@ -2,46 +2,49 @@
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
-public static class JsonUtils
+namespace UnityGoogleDrive
 {
-    /// <summary>
-    /// Allows resolving properties with private setters.
-    /// </summary>
-    class PrivateCamelResolver : CamelCasePropertyNamesContractResolver
+    public static class JsonUtils
     {
-        protected override JsonProperty CreateProperty (MemberInfo member, MemberSerialization memberSerialization)
+        /// <summary>
+        /// Allows resolving properties with private setters.
+        /// </summary>
+        class PrivateCamelResolver : CamelCasePropertyNamesContractResolver
         {
-            var prop = base.CreateProperty(member, memberSerialization);
-
-            if (!prop.Writable)
+            protected override JsonProperty CreateProperty (MemberInfo member, MemberSerialization memberSerialization)
             {
-                var property = member as PropertyInfo;
-                if (property != null)
+                var prop = base.CreateProperty(member, memberSerialization);
+
+                if (!prop.Writable)
                 {
-                    var hasPrivateSetter = property.GetSetMethod(true) != null;
-                    prop.Writable = hasPrivateSetter;
+                    var property = member as PropertyInfo;
+                    if (property != null)
+                    {
+                        var hasPrivateSetter = property.GetSetMethod(true) != null;
+                        prop.Writable = hasPrivateSetter;
+                    }
                 }
+
+                return prop;
             }
-
-            return prop;
         }
-    }
 
-    /// <summary>
-    /// Invokes <see cref="JsonConvert.DeserializeObject"/> configured with <see cref="PrivateCamelResolver"/>.
-    /// </summary>
-    public static T FromJsonPrivateCamel<T> (string json)
-    {
-        var serializerSettings = new JsonSerializerSettings { ContractResolver = new PrivateCamelResolver() };
-        return JsonConvert.DeserializeObject<T>(json, serializerSettings);
-    }
+        /// <summary>
+        /// Invokes <see cref="JsonConvert.DeserializeObject"/> configured with <see cref="PrivateCamelResolver"/>.
+        /// </summary>
+        public static T FromJsonPrivateCamel<T> (string json)
+        {
+            var serializerSettings = new JsonSerializerSettings { ContractResolver = new PrivateCamelResolver() };
+            return JsonConvert.DeserializeObject<T>(json, serializerSettings);
+        }
 
-    /// <summary>
-    /// Invokes <see cref="JsonConvert.SerializeObject"/> configured with <see cref="PrivateCamelResolver"/>.
-    /// </summary>
-    public static string ToJsonPrivateCamel (object obj)
-    {
-        var serializerSettings = new JsonSerializerSettings { ContractResolver = new PrivateCamelResolver() };
-        return JsonConvert.SerializeObject(obj, serializerSettings);
+        /// <summary>
+        /// Invokes <see cref="JsonConvert.SerializeObject"/> configured with <see cref="PrivateCamelResolver"/>.
+        /// </summary>
+        public static string ToJsonPrivateCamel (object obj)
+        {
+            var serializerSettings = new JsonSerializerSettings { ContractResolver = new PrivateCamelResolver() };
+            return JsonConvert.SerializeObject(obj, serializerSettings);
+        }
     }
 }

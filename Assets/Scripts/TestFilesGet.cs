@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityGoogleDrive;
 
 public class TestFilesGet : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class TestFilesGet : MonoBehaviour
         request.Send().OnDone += BuildResultString;
     }
 
-    private void BuildResultString (Data.File file)
+    private void BuildResultString (UnityGoogleDrive.Data.File file)
     {
         result = string.Format("Name: {0} Size: {1:0.00}MB Created: {2:dd.MM.yyyy HH:MM:ss}",
                 file.Name,

@@ -1,5 +1,5 @@
 ﻿
-namespace Data
+namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// Information about a Google Drive user.
