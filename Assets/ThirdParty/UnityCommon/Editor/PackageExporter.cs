@@ -69,7 +69,9 @@ public class PackageExporter : EditorWindow
     {
         modifiedScripts.Clear();
 
-        if (!string.IsNullOrEmpty(NamespaceToWrap) || !string.IsNullOrEmpty(Copyright))
+        var needToModify = !string.IsNullOrEmpty(NamespaceToWrap) || !string.IsNullOrEmpty(Copyright);
+
+        if (needToModify)
         {
             foreach (var path in AssetDatabase.GetAllAssetPaths())
             {
@@ -104,7 +106,7 @@ public class PackageExporter : EditorWindow
 
         AssetDatabase.ExportPackage(AssetsPath, OutputPath + "/" + OutputFileName + ".unitypackage", ExportPackageOptions.Recurse);
 
-        if (!string.IsNullOrEmpty(NamespaceToWrap))
+        if (needToModify)
         {
             foreach (var modifiedScript in modifiedScripts)
                 File.WriteAllText(modifiedScript.Key, modifiedScript.Value, Encoding.UTF8);
