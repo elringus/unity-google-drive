@@ -36,21 +36,18 @@ Automated integration tests cover the main features:
 ## Examples
 The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
 
-### Listing files
 ```csharp
+// Listing files.
 GoogleDriveFiles.List().Send().OnDone += fileList => ...;
-```
 
-### Uploading file
-```csharp
+// Uploading a file.
 var file = new UnityGoogleDrive.Data.File() { Name = "Image.png", Content = rawImageData };
 GoogleDriveFiles.Create(file).Send();
-```
 
-### Downloading file
-```csharp
+// Downloading a file.
 GoogleDriveFiles.Download(fileId).Send().OnDone += file => ...;
 ```
+
 For more examples take a look at [test scripts](https://github.com/Elringus/UnityGoogleDrive/tree/master/Assets/Scripts).
 
 ## FAQ
