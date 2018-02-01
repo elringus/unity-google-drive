@@ -2,12 +2,17 @@
 [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.2-alpha/UnityGoogleDrive.unitypackage)
 
 ## Description
-SDK for [Google Drive](https://www.google.com/drive/) providing API for listing, searching, creating, uploading, editing, copying, downloading and deleting files on the User's drive from within [Unity game engine](https://unity3d.com/).
+[Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
 
-Works with Unity version 5.6 and higher. Supports all major target platforms (including WebGL).
+Works with **Unity version 5.6 and higher**. Supports **all the major platforms** (including **WebGL**). Source code is **.NET 2.0 profile compatible** and portable (no platform-specific precompiled libraries are used).
 
-Core runtime is **.NET 2.0 Subset** profile compatible; however full **.NET 2.0** profile is required for [Json.Net.Unity3D
-](https://github.com/SaladLab/Json.Net.Unity3D) library to work correctly (used for API data serialization).
+Two main authentication schemes are used: browser redirection for WebGL builds (because of the sockets limitation) and local loopback requests for other platforms with refresh tokens support. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
+
+![Settings](https://i.gyazo.com/75fd0d64dd50485f208adfc56308ac20.png) 
+
+Automated integration tests cover the main features:
+
+![Tests](https://i.gyazo.com/81a59d10ce29ceabb4e23bb8ab5af6b1.png) 
 
 ## Setup
 - Import the package
@@ -29,6 +34,7 @@ Core runtime is **.NET 2.0 Subset** profile compatible; however full **.NET 2.0*
 - Return to Unity editor, open the settings (you can also access them via Edit -> Project Settings -> Google Drive Settings) and click **Parse credentials JSON file**; select the downloaded credentials json file
 
 ## Examples
+The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
 
 ### Listing files
 ```csharp
@@ -37,7 +43,7 @@ GoogleDriveFiles.List().Send().OnDone += fileList => ...;
 
 ### Uploading file
 ```csharp
-var file = new UnityGoogleDrive.Data.File() { Name = "Image.png", Content = rawImageData, MimeType = "image/png" };
+var file = new UnityGoogleDrive.Data.File() { Name = "Image.png", Content = rawImageData };
 GoogleDriveFiles.Create(file).Send();
 ```
 
@@ -56,8 +62,11 @@ You can find a naive implementation of the aforementioned logic in [the example 
 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
-### Can I access someone else's Google drive? Share a drive account? Skip authentication in the browser?
-To work with anyone's Google Drive, it's mandatory to complete OAuth procedure for that user, which requires opening a browser window to login and allow the app to access their drive. It's a security measure [enforced by Google](https://developers.google.com/identity/protocols/OAuth2). The only legit way to allow multiple users share a drive account is to use [Team Drives](https://gsuite.google.com/learning-center/products/drive/get-started-team-drive/).
+### Can I access someone else's Google drive or skip authentication in the browser?
+To work with anyone's Google Drive, it's mandatory to complete OAuth procedure for that user, which requires opening a browser window to login and allow the app to access their drive. It's a security measure [enforced by Google](https://developers.google.com/identity/protocols/OAuth2). 
+
+### Can I share a drive account? 
+The only legit way to allow multiple users share a drive account is to use [Team Drives](https://gsuite.google.com/learning-center/products/drive/get-started-team-drive/).
 
 ### Will this plugin appear on the Asset Store?
 I'll consider publishing when (if) it'll be more in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
