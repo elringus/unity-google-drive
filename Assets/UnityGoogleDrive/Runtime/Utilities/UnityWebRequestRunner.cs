@@ -76,14 +76,17 @@ namespace UnityGoogleDrive
             if (completed != null)
                 completed.Invoke(RequestYield);
             if (containerObject)
-                UnityEngine.Object.Destroy(containerObject);
+            {
+                if (Application.isPlaying) UnityEngine.Object.Destroy(containerObject);
+                else UnityEngine.Object.DestroyImmediate(containerObject);
+            }
         }
 
         private MonoBehaviour CreateContainer ()
         {
             containerObject = new GameObject("UnityWebRequest");
             containerObject.hideFlags = HideFlags.DontSave;
-            UnityEngine.Object.DontDestroyOnLoad(containerObject);
+            if (Application.isPlaying) UnityEngine.Object.DontDestroyOnLoad(containerObject);
             return containerObject.AddComponent<CoroutineContainer>();
         }
     }
