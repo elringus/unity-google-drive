@@ -175,6 +175,7 @@ namespace UnityGoogleDrive
             if (webRequest.responseCode == GoogleDriveSettings.UNAUTHORIZED_RESPONSE_CODE)
             {
                 HandleUnauthorizedResponse();
+                webRequest.Dispose();
                 return;
             }
 
