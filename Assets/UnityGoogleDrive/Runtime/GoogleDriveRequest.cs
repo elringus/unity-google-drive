@@ -160,12 +160,6 @@ namespace UnityGoogleDrive
         {
             IsDone = false;
 
-            if (webRequest != null)
-            {
-                webRequest.Abort();
-                webRequest.Dispose();
-            }
-
             webRequest = CreateWebRequest();
             webRequest.RunWebRequest(ref webRequestYeild).completed += HandleWebRequestDone;
         }
