@@ -15,7 +15,7 @@ namespace UnityGoogleDrive
         /// </summary>
         public event Action<bool> OnAccessTokenRefreshed;
 
-        public string AccessToken { get { return accessTokenProvider.AccessToken; } }
+        public string AccessToken { get { return settings.CachedAccessToken; } }
         public bool IsRefreshingAccessToken { get; private set; }
 
         private GoogleDriveSettings settings;

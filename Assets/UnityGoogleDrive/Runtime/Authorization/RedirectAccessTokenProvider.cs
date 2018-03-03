@@ -14,9 +14,7 @@ namespace UnityGoogleDrive
 
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
-        public string AccessToken { get { return PlayerPrefs.GetString(ACCESS_TOKEN_KEY); } private set { PlayerPrefs.SetString(ACCESS_TOKEN_KEY, value); } }
 
-        private const string ACCESS_TOKEN_KEY = "GoogleDriveAccessToken";
         private const string TOKEN_ARG_NAME = "access_token";
 
         private GoogleDriveSettings settings;
@@ -47,7 +45,7 @@ namespace UnityGoogleDrive
             }
             else // Access token is already injected to the URL; using it.
             {
-                AccessToken = accessToken;
+                settings.CachedAccessToken = accessToken;
                 HandleProvideAccessTokenComplete();
             }
         }

@@ -11,7 +11,6 @@ namespace UnityGoogleDrive
 
         bool IsDone { get; }
         bool IsError { get; }
-        string AccessToken { get; }
 
         void ProvideAccessToken ();
     }

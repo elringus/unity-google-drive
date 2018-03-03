@@ -15,11 +15,7 @@ namespace UnityGoogleDrive
 
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
-        public string AccessToken { get { return PlayerPrefs.GetString(ACCESS_TOKEN_KEY); } private set { PlayerPrefs.SetString(ACCESS_TOKEN_KEY, value); } }
-        public string RefreshToken { get { return PlayerPrefs.GetString(REFRESH_TOKEN_KEY); } private set { PlayerPrefs.SetString(REFRESH_TOKEN_KEY, value); } }
 
-        private const string ACCESS_TOKEN_KEY = "GoogleDriveAccessToken";
-        private const string REFRESH_TOKEN_KEY = "GoogleDriveRefreshToken";
         private const string LOOPBACK_URI = @"http://localhost";
 
         private GoogleDriveSettings settings;
@@ -50,9 +46,9 @@ namespace UnityGoogleDrive
             }
 
             // Refresh token isn't available; executing full auth procedure.
-            if (string.IsNullOrEmpty(RefreshToken)) ExecuteFullAuth();
+            if (string.IsNullOrEmpty(settings.CachedRefreshToken)) ExecuteFullAuth();
             // Using refresh token to issue a new access token.
-            else accessTokenRefresher.RefreshAccessToken(RefreshToken);
+            else accessTokenRefresher.RefreshAccessToken(settings.CachedRefreshToken);
         }
 
         private void HandleProvideAccessTokenComplete (bool error = false)
@@ -78,7 +74,7 @@ namespace UnityGoogleDrive
             }
             else
             {
-                AccessToken = refresher.AccesToken;
+                settings.CachedAccessToken = refresher.AccesToken;
                 HandleProvideAccessTokenComplete();
             }
         }
@@ -92,8 +88,8 @@ namespace UnityGoogleDrive
             }
             else
             {
-                AccessToken = authCodeExchanger.AccesToken;
-                RefreshToken = authCodeExchanger.RefreshToken;
+                settings.CachedAccessToken = authCodeExchanger.AccesToken;
+                settings.CachedRefreshToken = authCodeExchanger.RefreshToken;
                 HandleProvideAccessTokenComplete();
             }
         }

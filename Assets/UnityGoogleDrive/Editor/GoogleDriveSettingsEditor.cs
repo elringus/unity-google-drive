@@ -18,11 +18,16 @@ namespace UnityGoogleDrive
         private SerializedProperty authCredentials;
         private SerializedProperty accessScope;
         private SerializedProperty loopbackResponseHtml;
+        private SerializedProperty accessTokenPrefsKey;
+        private SerializedProperty refreshTokenPrefsKey;
 
         private GUIContent authCredentialsContent = new GUIContent("Authorization Credentials", "Google Drive API application credentials used to authorize requests.");
         private GUIContent accessScopeContent = new GUIContent("Access Scope", "Scope of access to the user's Google Drive the app will request.");
         private GUIContent[] accessScopeOptionsContent = new GUIContent[] { new GUIContent("Full"), new GUIContent("Readonly") };
         private GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
+        private GUIContent accessTokenPrefsKeyContent = new GUIContent("Acces Token Key", "PlayerPrefs key used to store access token.");
+        private GUIContent refreshTokenPrefsKeyContent = new GUIContent("Refresh Token Key", "PlayerPrefs key used to store refresh token.");
+        private GUIContent deleteCachedTokensContent = new GUIContent("Delete cached tokens", "Removes cached access and refresh tokens forcing user to login on the next request.");
 
         [InitializeOnLoadMethod]
         private static GoogleDriveSettings GetOrCreateSettings ()
@@ -54,6 +59,8 @@ namespace UnityGoogleDrive
             authCredentials = serializedObject.FindProperty("authCredentials");
             accessScope = serializedObject.FindProperty("accessScope");
             loopbackResponseHtml = serializedObject.FindProperty("loopbackResponseHtml");
+            accessTokenPrefsKey = serializedObject.FindProperty("accessTokenPrefsKey");
+            refreshTokenPrefsKey = serializedObject.FindProperty("refreshTokenPrefsKey");
         }
 
         public override void OnInspectorGUI ()
@@ -67,6 +74,8 @@ namespace UnityGoogleDrive
             EditorGUILayout.PropertyField(authCredentials, authCredentialsContent, true);
             AccessScopeGUI();
             EditorGUILayout.PropertyField(loopbackResponseHtml, loopbackResponseHtmlContent);
+            EditorGUILayout.PropertyField(accessTokenPrefsKey, accessTokenPrefsKeyContent);
+            EditorGUILayout.PropertyField(refreshTokenPrefsKey, refreshTokenPrefsKeyContent);
 
             EditorGUILayout.Space();
 
@@ -80,6 +89,12 @@ namespace UnityGoogleDrive
 
             if (GUILayout.Button("Parse credentials JSON file..."))
                 ParseCredentialsJson(EditorUtility.OpenFilePanel("Select Drive API app credentials JSON file", "", "json"));
+
+            EditorGUILayout.Space();
+
+            using (new EditorGUI.DisabledScope(!TargetSettings.IsAnyAuthTokenCached()))
+                if (GUILayout.Button(deleteCachedTokensContent))
+                    TargetSettings.DeleteCachedAuthTokens();
 
             serializedObject.ApplyModifiedProperties();
         }
