@@ -59,6 +59,9 @@ You can find a naive implementation of the aforementioned logic in [the example 
 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
+### How to logout or force user to login/select another Google account?
+Use `GoogleDriveSettings.DeleteCachedAuthTokens()` method to remove all the cahced auth data which will force the user to login again on the next request. You can always get `GoogleDriveSetting` instance using `GoogleDriveSettings.LoadFromResources()` static method. While in editor, you can also use 'Delete cached tokens' button to permanently delete all the cached data.
+
 ### Can I access someone else's Google drive or skip authentication in the browser?
 To work with anyone's Google Drive, it's mandatory to complete OAuth procedure for that user, which requires opening a browser window to login and allow the app to access their drive. It's a security measure [enforced by Google](https://developers.google.com/identity/protocols/OAuth2). 
 
