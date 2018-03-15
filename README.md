@@ -60,7 +60,7 @@ You can find a naive implementation of the aforementioned logic in [the example 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
 ### How to logout or force user to login/select another Google account?
-Use `GoogleDriveSettings.DeleteCachedAuthTokens()` method to clear cached authentication tokens which will force the user to login again on the next request. You can always get `GoogleDriveSetting` instance using `GoogleDriveSettings.LoadFromResources()` static method. While in editor, you can also use 'Delete cached tokens' button for the same effect.
+Use `GoogleDriveSettings.DeleteCachedAuthTokens()` method to clear cached authentication tokens which will force the user to login again on the next request. You can always get `GoogleDriveSettings` instance using `GoogleDriveSettings.LoadFromResources()` static method. While in editor, you can also use 'Delete cached tokens' button for the same effect.
 
 ### Can I access someone else's Google drive or skip authentication in the browser?
 To work with anyone's Google Drive, it's mandatory to complete OAuth procedure for that user, which requires opening a browser window to login and allow the app to access their drive. It's a security measure [enforced by Google](https://developers.google.com/identity/protocols/OAuth2). 
@@ -68,5 +68,8 @@ To work with anyone's Google Drive, it's mandatory to complete OAuth procedure f
 ### Can I share a drive account? 
 The only legit way to allow multiple users share a drive account is to use [Team Drives](https://gsuite.google.com/learning-center/products/drive/get-started-team-drive/).
 
+### Is it possible to access shared files and folders?
+This is possible. To access shared resources you'll have to specify ["Shared with me" collection](https://developers.google.com/drive/v3/web/about-organization#shared_with_me) when resolving ID of the resource. Additionally, if the shared resource has been [added to the user's drive](https://support.google.com/drive/answer/2375057?co=GENIE.Platform%3DDesktop&hl=en) it'll be accessible via the path finding method described above.
+
 ### Will this plugin appear on the Asset Store?
-I'll consider publishing when (if) it'll be more in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
+I'll consider publishing when (if) it'll be in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
