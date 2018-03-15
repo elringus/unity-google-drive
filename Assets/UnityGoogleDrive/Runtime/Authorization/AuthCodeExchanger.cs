@@ -58,8 +58,15 @@ namespace UnityGoogleDrive
 
         private void HandleRequestComplete (AsyncOperation requestYeild)
         {
-            if (exchangeRequest == null || !string.IsNullOrEmpty(exchangeRequest.error))
+            if (exchangeRequest == null)
             {
+                HandleExchangeComplete(true);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(exchangeRequest.error))
+            {
+                Debug.LogError(exchangeRequest.error);
                 HandleExchangeComplete(true);
                 return;
             }
