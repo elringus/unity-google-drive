@@ -16,7 +16,7 @@ namespace UnityGoogleDrive
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
 
-        private const string LOOPBACK_URI = @"http://localhost";
+        private const string LOOPBACK_URI = @"http://127.0.0.1";
 
         private GoogleDriveSettings settings;
         private AccessTokenRefresher accessTokenRefresher;
