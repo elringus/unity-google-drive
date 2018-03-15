@@ -26,9 +26,9 @@ Automated integration tests cover the main features:
   - Select **Web application** for 'Application type', give your app a name and enter the following restrictions:
     - Authorised JavaScript origins: enter host names wich will serve WebGL builds; *not required for platforms other than WebGL*
     - Authorised redirect URIs:
-      - Add redirect URI for local loopback requests: **http://localhost**
+      - Add redirect URI for the local loopback requests: **http://127.0.0.1**
       - Add full URIs to the WebGL builds locations; *not required for platforms other than WebGL*
-    - Final result may [look like that](https://i.gyazo.com/34c05f3b5262c249b3f9b45d7daabd44.png) 
+    - Final result may [look like that](https://i.gyazo.com/dd1ece44ec428a156f963866dea0486f.png) 
   - Click **Save**
   - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file
 - Return to Unity editor, open the settings (you can also access them via Edit -> Project Settings -> Google Drive Settings) and click **Parse credentials JSON file**; select the downloaded credentials json file
