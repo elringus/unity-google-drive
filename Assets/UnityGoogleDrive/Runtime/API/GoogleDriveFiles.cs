@@ -422,7 +422,6 @@ namespace UnityGoogleDrive
         /// </summary>
         /// <param name="fileId">The ID of the file to watch for.</param>
         /// <param name="channel">The body of the request.</param>
-        /// <returns></returns>
         public static WatchRequest Watch (string fileId, Data.Channel channel)
         {
             return new WatchRequest(fileId, channel);
