@@ -1,5 +1,5 @@
 ## Download unitypackage
-For Unity 5.6 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.3-alpha/UnityGoogleDrive.unitypackage)
+For Unity 5.6 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.4-alpha/UnityGoogleDrive.unitypackage)
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
