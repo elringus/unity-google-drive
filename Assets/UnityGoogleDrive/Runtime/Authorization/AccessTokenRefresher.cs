@@ -42,7 +42,7 @@ namespace UnityGoogleDrive
             refreshRequest = UnityWebRequest.Post(refreshRequestURI, refreshRequestForm);
             refreshRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
             refreshRequest.SetRequestHeader("Accept", "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-            refreshRequest.RunWebRequest().completed += HandleRequestComplete;
+            refreshRequest.SendWebRequest().completed += HandleRequestComplete;
         }
 
         private void HandleRefreshComplete (bool error = false)

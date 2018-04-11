@@ -167,7 +167,7 @@ namespace UnityGoogleDrive
             }
 
             webRequest = CreateWebRequest();
-            webRequest.RunWebRequest(ref webRequestYeild).completed += HandleWebRequestDone;
+            webRequest.SendWebRequest().completed += HandleWebRequestDone;
         }
 
         private void HandleWebRequestDone (AsyncOperation requestYeild)
