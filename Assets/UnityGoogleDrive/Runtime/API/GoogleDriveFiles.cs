@@ -1,4 +1,5 @@
-﻿using UnityEngine.Networking;
+﻿using UnityEngine;
+using UnityEngine.Networking;
 
 namespace UnityGoogleDrive
 {
@@ -187,6 +188,92 @@ namespace UnityGoogleDrive
             protected override void HandleResponseData (DownloadHandler downloadHandler)
             {
                 ResponseData.Content = downloadHandler.data;
+            }
+        }
+
+        /// <summary>
+        /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
+        /// Using this class significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
+        /// </summary>
+        public class DownloadAudioRequest : GoogleDriveRequest<Data.AudioFile>
+        {
+            /// <summary>
+            /// Whether the requesting application supports Team Drives. (Default: false) 
+            /// </summary>
+            [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+            /// <summary>
+            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
+            /// </summary>
+            [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
+
+            /// <summary>
+            /// The type of audio encoding for the downloaded audio clip.
+            /// </summary>
+            public AudioType AudioType { get; private set; }
+
+            public DownloadAudioRequest (string fileId, AudioType audioType) 
+                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET) 
+            {
+                Alt = "media";
+                AudioType = audioType;
+                ResponseData = new Data.AudioFile() { Id = fileId };
+            }
+
+            protected override UnityWebRequest CreateWebRequest ()
+            {
+                var webRequest = UnityWebRequestMultimedia.GetAudioClip(Uri, AudioType);
+                SetAuthorizationHeader(webRequest);
+                SetQueryPayload(webRequest);
+                return webRequest;
+            }
+
+            protected override void HandleResponseData (DownloadHandler downloadHandler)
+            {
+                ResponseData.Content = downloadHandler.data;
+                ResponseData.AudioClip = DownloadHandlerAudioClip.GetContent(WebRequest);
+            }
+        }
+
+        /// <summary>
+        /// Downloads a file's content by ID and creates a <see cref="Texture2D"/> based on the retrieved data.
+        /// Using this class significantly reduces memory reallocation compared to downloading raw bytes and creating a texture manually in script.
+        /// </summary>
+        public class DownloadTextureRequest : GoogleDriveRequest<Data.TextureFile>
+        {
+            /// <summary>
+            /// Whether the requesting application supports Team Drives. (Default: false) 
+            /// </summary>
+            [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+            /// <summary>
+            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
+            /// </summary>
+            [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
+
+            /// <summary>
+            /// If true, the texture's raw data will not be accessible to script. This can conserve memory. Default: false.
+            /// </summary>
+            public bool NonReadable { get; set; }
+
+            public DownloadTextureRequest (string fileId, bool nonReadable = false)
+                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
+            {
+                Alt = "media";
+                NonReadable = nonReadable;
+                ResponseData = new Data.TextureFile() { Id = fileId };
+            }
+
+            protected override UnityWebRequest CreateWebRequest ()
+            {
+                var webRequest = UnityWebRequestTexture.GetTexture(Uri, NonReadable);
+                SetAuthorizationHeader(webRequest);
+                SetQueryPayload(webRequest);
+                return webRequest;
+            }
+
+            protected override void HandleResponseData (DownloadHandler downloadHandler)
+            {
+                ResponseData.Content = downloadHandler.data;
+                ResponseData.Texture = DownloadHandlerTexture.GetContent(WebRequest);
             }
         }
 
@@ -394,6 +481,50 @@ namespace UnityGoogleDrive
         public static DownloadRequest Download (Data.File file)
         {
             return new DownloadRequest(file);
+        }
+
+        /// <summary>
+        /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
+        /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
+        /// </summary>
+        /// <param name="fileId">The ID of the audio file to download.</param>
+        /// <param name="audioType">The type of audio encoding for the downloaded audio clip.</param>
+        public static DownloadAudioRequest DownloadAudio (string fileId, AudioType audioType)
+        {
+            return new DownloadAudioRequest(fileId, audioType);
+        }
+
+        /// <summary>
+        /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
+        /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
+        /// </summary>
+        /// <param name="file">Meta of the audio file to download. Must have a valid <see cref="Data.File.Id"/> and <see cref="Data.File.MimeType"/> fields.</param>
+        public static DownloadAudioRequest DownloadAudio (Data.File file)
+        {
+            var fileId = file.Id;
+            if (string.IsNullOrEmpty(fileId)) Debug.LogError("Invalid file ID.");
+            var audioType = AudioType.UNKNOWN;
+            switch (file.MimeType)
+            {
+                case "audio/aiff": audioType = AudioType.AIFF; break;
+                case "audio/mpeg": audioType = AudioType.MPEG; break;
+                case "audio/ogg": audioType = AudioType.OGGVORBIS; break;
+                case "video/ogg": audioType = AudioType.OGGVORBIS; break;
+                case "audio/wav": audioType = AudioType.WAV; break;
+            }
+            if (audioType == AudioType.UNKNOWN) Debug.LogError("Unsupported audio MIME type.");
+            return new DownloadAudioRequest(fileId, audioType);
+        }
+
+        /// <summary>
+        /// Downloads a file's content by ID and creates a <see cref="Texture2D"/> based on the retrieved data.
+        /// Using this class significantly reduces memory reallocation compared to downloading raw bytes and creating a texture manually in script.
+        /// </summary>
+        /// <param name="fileId">The ID of the texture file to download.</param>
+        /// <param name="nonReadable">If true, the texture's raw data will not be accessible to script. This can conserve memory. Default: false.</param>
+        public static DownloadTextureRequest DownloadTexture (string fileId, bool nonReadable = false)
+        {
+            return new DownloadTextureRequest(fileId, nonReadable);
         }
 
         /// <summary>

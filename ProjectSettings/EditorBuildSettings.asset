@@ -35,3 +35,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ExportDocument.unity
     guid: a67bfa30d7186d7439bf59ae9b1fc851
+  - enabled: 1
+    path: Assets/Scenes/FilesDownloadAudio.unity
+    guid: e6c1977f3c8f7a14f99776bd6babe26f
