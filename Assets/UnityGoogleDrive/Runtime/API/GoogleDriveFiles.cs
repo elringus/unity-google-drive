@@ -486,6 +486,8 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
         /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
+        /// Be aware, that Unity support for encoding formats is limited depending on the platform. 
+        /// Eg: mp3 not supported on editor and standalones, ogg not availabile on WebGL, etc.
         /// </summary>
         /// <param name="fileId">The ID of the audio file to download.</param>
         /// <param name="audioType">The type of audio encoding for the downloaded audio clip.</param>
@@ -497,6 +499,8 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
         /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
+        /// Be aware, that Unity support for encoding formats is limited depending on the platform. 
+        /// Eg: mp3 not supported on editor and standalones, ogg not availabile on WebGL, etc.
         /// </summary>
         /// <param name="file">Meta of the audio file to download. Must have a valid <see cref="Data.File.Id"/> and <see cref="Data.File.MimeType"/> fields.</param>
         public static DownloadAudioRequest DownloadAudio (Data.File file)
