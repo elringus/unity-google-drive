@@ -1,10 +1,10 @@
-## Download unitypackage
-For Unity 5.6 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.4-alpha/UnityGoogleDrive.unitypackage)
+## Download package
+For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.5-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
 
-Works with **Unity version 5.6 and higher**. Supports **all the major platforms** (including **WebGL**). Source code is **.NET 2.0 profile compatible** and portable (no platform-specific precompiled libraries are used).
+Supports **all the major platforms** (including **WebGL**). Source code is **.NET 2.0 profile compatible** and portable (no platform-specific precompiled libraries are used).
 
 Two main authentication schemes are used: browser redirection for WebGL builds (because of the sockets limitation) and local loopback requests for other platforms with refresh tokens support. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
 
