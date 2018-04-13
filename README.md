@@ -1,5 +1,5 @@
 ## Download package
-For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.5-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
+For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.6-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
@@ -16,7 +16,7 @@ Automated integration tests cover the main features:
 
 ## Setup
 - Import the package
-- **GoogleDriveSettings**.asset will be automatically created in Assets/UnityGoogleDrive/Resources; select it
+- In the Unity editor go to "Edit -> Project Settings -> Google Drive Settings"; **GoogleDriveSettings**.asset will be automatically created at "Assets/UnityGoogleDrive/Resources"; select the asset (if it wasn't selected automatically)
 - Click **Create Google Drive API app** button; web-browser will open URL to setup the app
   - Select **Create a new project** and click continue
   - Click **Go to credentials**
@@ -31,7 +31,7 @@ Automated integration tests cover the main features:
     - Final result may [look like that](https://i.gyazo.com/dd1ece44ec428a156f963866dea0486f.png) 
   - Click **Save**
   - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file
-- Return to Unity editor, open the settings (you can also access them via Edit -> Project Settings -> Google Drive Settings) and click **Parse credentials JSON file**; select the downloaded credentials json file
+- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file
 
 ## Examples
 The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
