@@ -29,7 +29,6 @@ namespace UnityGoogleDrive
         private GUIContent refreshTokenPrefsKeyContent = new GUIContent("Refresh Token Key", "PlayerPrefs key used to store refresh token.");
         private GUIContent deleteCachedTokensContent = new GUIContent("Delete cached tokens", "Removes cached access and refresh tokens forcing user to login on the next request.");
 
-        [InitializeOnLoadMethod]
         private static GoogleDriveSettings GetOrCreateSettings ()
         {
             var settings = GoogleDriveSettings.LoadFromResources(true);
