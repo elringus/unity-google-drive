@@ -4,7 +4,7 @@ using UnityGoogleDrive;
 
 public class TestAboutGetAsync : MonoBehaviour
 {
-    #if NET_4_6
+    #if NET_4_6 || NET_STANDARD_2_0
     public Rect WindowRect = new Rect(10, 10, 940, 580);
 
     private GoogleDriveAbout.GetRequest request;
