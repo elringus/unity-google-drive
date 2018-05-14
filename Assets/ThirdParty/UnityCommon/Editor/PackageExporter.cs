@@ -147,6 +147,8 @@ namespace UnityCommon
                     if (!path.StartsWith(tmpFolderPath)) continue;
                     AssetDatabase.MoveAsset(path, path.Replace(tmpFolderPath, AssetsPath));
                 }
+    
+                AssetDatabase.DeleteAsset(tmpFolderPath);
             }
         }
     }
