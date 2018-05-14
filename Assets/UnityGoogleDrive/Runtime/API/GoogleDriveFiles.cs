@@ -315,7 +315,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public string PageToken { get; set; }
             /// <summary>
             /// A query for filtering the file results. 
-            /// See the "Search for Files" guide for supported syntax.
+            /// See <see cref="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax. 
             /// </summary>
             [QueryParameter] public string Q { get; set; }
             /// <summary>
