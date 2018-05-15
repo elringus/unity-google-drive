@@ -94,7 +94,11 @@ namespace UnityGoogleDrive
             }
         }
 
+        #if NET_4_6 || NET_STANDARD_2_0
+        private async void ExecuteFullAuth ()
+        #else
         private void ExecuteFullAuth ()
+        #endif
         {
             // Generate state and PKCE values.
             expectedState = CryptoUtils.RandomDataBase64Uri(32);
@@ -127,7 +131,11 @@ namespace UnityGoogleDrive
             Application.OpenURL(authRequest);
 
             // Wait for the authorization response.
+            #if NET_4_6 || NET_STANDARD_2_0
+            var context = await httpListener.GetContextAsync();
+            #else
             var context = httpListener.GetContext();
+            #endif
 
             // Send an HTTP response to the browser to notify the user to close the browser.
             var response = context.Response;
