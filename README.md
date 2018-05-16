@@ -1,5 +1,5 @@
 ## Download package
-For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.10-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
+For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.11-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
@@ -82,6 +82,37 @@ The only legit way to allow multiple users share a drive account is to use [Team
 
 ### Is it possible to access shared files and folders?
 This is possible. To access shared resources you'll have to specify ["Shared with me" collection](https://developers.google.com/drive/v3/web/about-organization#shared_with_me) when resolving ID of the resource. Additionally, if the shared resource has been [added to the user's drive](https://support.google.com/drive/answer/2375057?co=GENIE.Platform%3DDesktop&hl=en) it'll be accessible via the path finding method described above.
+
+### Issues with authentication on iOS Devices.
+In case you're having issues when authenticating on iOS, please try the following:
+- Switch to the [.NET 4.x scripting runtime]( https://docs.unity3d.com/Manual/ScriptingRuntimeUpgrade.html) and try again. When under .NET 4.x an async HTTP listener will be used while waiting for the auth response, which could resolve the issues in some cases;
+- Set the following rules to the [info.plist](https://forum.unity.com/threads/how-can-you-add-items-to-the-xcode-project-targets-info-plist-using-the-xcodeapi.330574/#post-2143867) file to explicitly allow local loopback requests:
+```
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <key>NSAllowsLocalNetworking</key>
+    <true/>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    <key>NSExceptionDomains</key>
+    <dict>
+      <key>127.0.0.1</key>
+      <dict>
+        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+        <true/>
+        <key>NSIncludesSubdomains</key>
+        <true/>
+      </dict>
+      <key>localhost</key>
+      <dict>
+        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+        <true/>
+        <key>NSIncludesSubdomains</key>
+        <true/>
+      </dict>
+    </dict>
+  </dict>
+```
 
 ### Will this plugin appear on the Asset Store?
 I'll consider publishing when (if) it'll be in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
