@@ -16,7 +16,7 @@ Automated integration tests cover the main features:
 
 ## Setup
 - Import the package;
-- In the Unity editor go to "Edit -> Project Settings -> Google Drive Settings"; **GoogleDriveSettings**.asset will be automatically created at "Assets/UnityGoogleDrive/Resources", select the asset (if it wasn't selected automatically);
+- In the Unity editor go to `Edit -> Project Settings -> Google Drive Settings`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
 - Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
   - Select **Create a new project** and click continue;
   - Click **Go to credentials**;
