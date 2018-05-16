@@ -15,23 +15,23 @@ Automated integration tests cover the main features:
 ![Tests](https://i.gyazo.com/81a59d10ce29ceabb4e23bb8ab5af6b1.png) 
 
 ## Setup
-- Import the package
-- In the Unity editor go to "Edit -> Project Settings -> Google Drive Settings"; **GoogleDriveSettings**.asset will be automatically created at "Assets/UnityGoogleDrive/Resources"; select the asset (if it wasn't selected automatically)
-- Click **Create Google Drive API app** button; web-browser will open URL to setup the app
-  - Select **Create a new project** and click continue
-  - Click **Go to credentials**
-  - Click **Cancel** 
-  - Select **OAuth consent screen** tab and enter required info; click **Save**
-  - Return to **Credentials** tab and click **Create credentials** -> **OAuth client ID**
+- Import the package;
+- In the Unity editor go to "Edit -> Project Settings -> Google Drive Settings"; **GoogleDriveSettings**.asset will be automatically created at "Assets/UnityGoogleDrive/Resources", select the asset (if it wasn't selected automatically);
+- Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
+  - Select **Create a new project** and click continue;
+  - Click **Go to credentials**;
+  - Click **Cancel**;
+  - Select **OAuth consent screen** tab and enter required info, click **Save**;
+  - Return to **Credentials** tab and click **Create credentials** -> **OAuth client ID**;
   - Select **Web application** for 'Application type', give your app a name and enter the following restrictions:
-    - Authorised JavaScript origins: enter host names wich will serve WebGL builds; *not required for platforms other than WebGL*
+    - Authorised JavaScript origins: enter host names wich will serve WebGL builds *(not required for platforms other than WebGL)*;
     - Authorised redirect URIs:
-      - Add redirect URI for the local loopback requests: **http://127.0.0.1**
-      - Add full URIs to the WebGL builds locations; *not required for platforms other than WebGL*
-    - Final result may [look like that](https://i.gyazo.com/dd1ece44ec428a156f963866dea0486f.png) 
-  - Click **Save**
-  - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file
-- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file
+      - Add redirect URI for the local loopback requests: **http://127.0.0.1**;
+      - Add full URIs to the WebGL builds locations *(not required for platforms other than WebGL)*.
+    - Final result may [look like that](https://i.gyazo.com/dd1ece44ec428a156f963866dea0486f.png).
+  - Click **Save**;
+  - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file.
+- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file.
 
 ## Examples
 The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
