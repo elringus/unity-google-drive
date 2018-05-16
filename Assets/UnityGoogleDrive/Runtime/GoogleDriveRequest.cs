@@ -61,7 +61,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Progress of the request execution, in 0.0 to 1.0 range.
         /// </summary>
-        public override float Progress { get { return WebRequestYeild != null ? WebRequestYeild.progress : 0; } }
+        public override float Progress { get { return WebRequest != null ? WebRequest.downloadProgress : 0; } }
         /// <summary>
         /// Whether the request is currently executing.
         /// </summary>

@@ -29,6 +29,10 @@ namespace UnityGoogleDrive
         /// Whether the request has <see cref="RequestPayload"/>.
         /// </summary>
         public bool HasPayload { get { return RequestPayload != null; } }
+        /// <summary>
+        /// Progress of the request execution, in 0.0 to 1.0 range.
+        /// </summary>
+        public override float Progress { get { return WebRequest != null ? WebRequest.uploadProgress : 0; } }
 
         /// <summary>
         /// The type of upload request to the /upload URI. Acceptable values are:
