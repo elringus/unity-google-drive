@@ -1,5 +1,5 @@
 ## Download package
-For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.10-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
+For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.11-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
@@ -15,23 +15,23 @@ Automated integration tests cover the main features:
 ![Tests](https://i.gyazo.com/81a59d10ce29ceabb4e23bb8ab5af6b1.png) 
 
 ## Setup
-- Import the package
-- In the Unity editor go to "Edit -> Project Settings -> Google Drive Settings"; **GoogleDriveSettings**.asset will be automatically created at "Assets/UnityGoogleDrive/Resources"; select the asset (if it wasn't selected automatically)
-- Click **Create Google Drive API app** button; web-browser will open URL to setup the app
-  - Select **Create a new project** and click continue
-  - Click **Go to credentials**
-  - Click **Cancel** 
-  - Select **OAuth consent screen** tab and enter required info; click **Save**
-  - Return to **Credentials** tab and click **Create credentials** -> **OAuth client ID**
+- Import the package;
+- In the Unity editor navigate to `Edit -> Project Settings -> Google Drive Settings`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
+- Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
+  - Select **Create a new project** and click continue;
+  - Click **Go to credentials**;
+  - Click **Cancel**;
+  - Select **OAuth consent screen** tab and enter required info, click **Save**;
+  - Return to **Credentials** tab and click **Create credentials** -> **OAuth client ID**;
   - Select **Web application** for 'Application type', give your app a name and enter the following restrictions:
-    - Authorised JavaScript origins: enter host names wich will serve WebGL builds; *not required for platforms other than WebGL*
+    - Authorised JavaScript origins: enter host names wich will serve WebGL builds *(not required for platforms other than WebGL)*;
     - Authorised redirect URIs:
-      - Add redirect URI for the local loopback requests: **http://127.0.0.1**
-      - Add full URIs to the WebGL builds locations; *not required for platforms other than WebGL*
-    - Final result may [look like that](https://i.gyazo.com/dd1ece44ec428a156f963866dea0486f.png) 
-  - Click **Save**
-  - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file
-- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file
+      - Add redirect URI for the local loopback requests: **http://127.0.0.1**;
+      - Add full URIs to the WebGL builds locations *(not required for platforms other than WebGL)*.
+    - Final result may [look like that](https://i.gyazo.com/dd1ece44ec428a156f963866dea0486f.png).
+  - Click **Save**;
+  - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file.
+- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file.
 
 ## Examples
 The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
@@ -56,7 +56,7 @@ For more examples take a look at [test scripts](https://github.com/Elringus/Unit
 ## FAQ
 
 ### Why the returned properties of the response are all null?
-Most of the response properties are null by default. You have to explicitly require fields in order for the drive API to return them (using 'fields' property of the request object). More info here: https://developers.google.com/drive/v3/web/performance#partial.
+Most of the response properties are null by default. You have to explicitly require fields in order for the drive API to return them (using `Fields` property of the request object). More info here: https://developers.google.com/drive/v3/web/performance#partial.
 
 ### How to access a file using its path?
 A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path we have to find ID of the file's parent folder, and for this we need IDs of all the folders in the chain. Thus, we have to traverse the entire hierarchy chain using List requests. 
@@ -66,7 +66,7 @@ You can find a naive implementation of the aforementioned logic in [the example 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
 ### Is there a way to automatically redirect user to the app when authorization in browser is complete? 
-When user finishes authorization flow on mobile and standalone platforms, an HTML string is injected to the active browser window. The default content of the HTML contains a message, asking user to return to the app. You can modify the content of the injected html in the Google Drive Settings asset using ‘Loopback Response HTML’ field. It’s possible to inject a javascript code to this HTML, which will be invoked right after the auth flow is completed. You can use this option to automatically redirect user back to your app using a custom URI scheme. Specific implementation will depend on the platform: for android you’ll have to [add an intent filter to the manifest](https://stackoverflow.com/questions/2958701/launch-custom-android-application-from-android-browser), for iOS use [universal links feature](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html) and for Windows [bind the application to a URI scheme](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767914(v=vs.85)).
+When user finishes authorization flow on mobile and standalone platforms, an HTML string is injected to the active browser window. The default content of the HTML contains a message, asking user to return to the app. You can modify the content of the injected HTML in the Google Drive Settings asset using ‘Loopback Response HTML’ field. It’s possible to inject a javascript code to this HTML, which will be invoked right after the auth flow is completed. You can use this option to automatically redirect user back to your app using a custom URI scheme. Specific implementation will depend on the platform: for android you’ll have to [add an intent filter to the manifest](https://stackoverflow.com/questions/2958701/launch-custom-android-application-from-android-browser), for iOS use [universal links feature](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html) and for Windows [bind the application to a URI scheme](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767914(v=vs.85)).
 
 ### How to logout or force user to login/select another Google account?
 Use `GoogleDriveSettings.DeleteCachedAuthTokens()` method to clear cached authentication tokens which will force the user to login again on the next request. You can always get `GoogleDriveSettings` instance using `GoogleDriveSettings.LoadFromResources()` static method. While in editor, you can also use 'Delete cached tokens' button for the same effect.
@@ -82,6 +82,37 @@ The only legit way to allow multiple users share a drive account is to use [Team
 
 ### Is it possible to access shared files and folders?
 This is possible. To access shared resources you'll have to specify ["Shared with me" collection](https://developers.google.com/drive/v3/web/about-organization#shared_with_me) when resolving ID of the resource. Additionally, if the shared resource has been [added to the user's drive](https://support.google.com/drive/answer/2375057?co=GENIE.Platform%3DDesktop&hl=en) it'll be accessible via the path finding method described above.
+
+### Issues with authentication on iOS Devices.
+In case you're having issues when authenticating on iOS, please try the following:
+- Switch to the [.NET 4.x scripting runtime]( https://docs.unity3d.com/Manual/ScriptingRuntimeUpgrade.html) and try again. When under .NET 4.x an async HTTP listener will be used while waiting for the auth response, which could resolve the issues in some cases;
+- Set the following rules to the [info.plist](https://forum.unity.com/threads/how-can-you-add-items-to-the-xcode-project-targets-info-plist-using-the-xcodeapi.330574/#post-2143867) file to explicitly allow local loopback requests:
+```
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <key>NSAllowsLocalNetworking</key>
+    <true/>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    <key>NSExceptionDomains</key>
+    <dict>
+      <key>127.0.0.1</key>
+      <dict>
+        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+        <true/>
+        <key>NSIncludesSubdomains</key>
+        <true/>
+      </dict>
+      <key>localhost</key>
+      <dict>
+        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+        <true/>
+        <key>NSIncludesSubdomains</key>
+        <true/>
+      </dict>
+    </dict>
+  </dict>
+```
 
 ### Will this plugin appear on the Asset Store?
 I'll consider publishing when (if) it'll be in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
