@@ -79,6 +79,7 @@ namespace UnityCommon
         private static void Export (bool wrapNamespace = false)
         {
             // Temporary move-out ignored assets.
+            DisplayProgressBar("Moving-out ignored assets...", 0f);
             var tmpFolderPath = string.Empty;
             if (IsAnyPathsIgnored)
             {
@@ -89,11 +90,21 @@ namespace UnityCommon
                 {
                     if (!path.StartsWith(AssetsPath)) continue;
                     if (!ignoredPaths.Exists(p => path.StartsWith(p))) continue;
+    
+                    var movePath = path.Replace(AssetsPath, tmpFolderPath);
+                    var moveDirectory = movePath.GetBeforeLast("/");
+                    if (!Directory.Exists(moveDirectory))
+                    {
+                        Directory.CreateDirectory(moveDirectory);
+                        AssetDatabase.Refresh();
+                    }
+    
                     AssetDatabase.MoveAsset(path, path.Replace(AssetsPath, tmpFolderPath));
                 }
             }
     
             // Modify scripts (namespace and copyright).
+            DisplayProgressBar("Modifying scripts...", .25f);
             modifiedScripts.Clear();
             var needToModify = !string.IsNullOrEmpty(NamespaceToWrap) || !string.IsNullOrEmpty(Copyright);
             if (needToModify)
@@ -130,9 +141,11 @@ namespace UnityCommon
             }
     
             // Export the package.
+            DisplayProgressBar("Writing package file...", .5f);
             AssetDatabase.ExportPackage(AssetsPath, OutputPath + "/" + OutputFileName + ".unitypackage", ExportPackageOptions.Recurse);
     
             // Restore modified scripts.
+            DisplayProgressBar("Restoring modified scripts...", .75f);
             if (needToModify)
             {
                 foreach (var modifiedScript in modifiedScripts)
@@ -140,6 +153,7 @@ namespace UnityCommon
             }
     
             // Restore moved-out ignored assets.
+            DisplayProgressBar("Restoring moved-out ignored assets...", .95f);
             if (IsAnyPathsIgnored)
             {
                 foreach (var path in AssetDatabase.GetAllAssetPaths())
@@ -150,6 +164,13 @@ namespace UnityCommon
     
                 AssetDatabase.DeleteAsset(tmpFolderPath);
             }
+    
+            EditorUtility.ClearProgressBar();
+        }
+    
+        private static void DisplayProgressBar (string activity, float progress)
+        {
+            EditorUtility.DisplayProgressBar(string.Format("Exporting {0}", PackageName), activity, progress);
         }
     }
     
