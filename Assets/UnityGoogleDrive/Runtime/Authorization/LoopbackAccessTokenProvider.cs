@@ -16,8 +16,6 @@ namespace UnityGoogleDrive
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
 
-        private const string LOOPBACK_URI = @"http://127.0.0.1";
-
         private GoogleDriveSettings settings;
         private AccessTokenRefresher accessTokenRefresher;
         private AuthCodeExchanger authCodeExchanger;
@@ -107,7 +105,7 @@ namespace UnityGoogleDrive
             var codeChallenge = CryptoUtils.Base64UriEncodeNoPadding(codeVerifierHash);
 
             // Creates a redirect URI using an available port on the loopback address.
-            redirectUri = string.Format("{0}:{1}", LOOPBACK_URI, GetRandomUnusedPort());
+            redirectUri = string.Format("{0}:{1}", settings.LoopbackUri, GetRandomUnusedPort());
 
             // Listen for requests on the redirect URI.
             var httpListener = new HttpListener();

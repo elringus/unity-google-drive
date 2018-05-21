@@ -22,6 +22,11 @@ namespace UnityGoogleDrive
         /// </summary>
         public string AccessScope { get { return accessScope; } }
         /// <summary>
+        /// A web address for the loopback authentication requests. Defult is 'localhost'.
+        /// </summary>
+        /// <see cref="https://forum.unity.com/threads/google-drive-sdk-for-unity-free-open-sourced.515360/page-2#post-3504547"/>
+        public string LoopbackUri { get { return loopbackUri; } }
+        /// <summary>
         /// HTML page shown to the user when loopback response is received.
         /// </summary>
         public string LoopbackResponseHtml { get { return loopbackResponseHtml; } }
@@ -36,6 +41,7 @@ namespace UnityGoogleDrive
 
         [SerializeField] private AuthCredentials authCredentials = null;
         [SerializeField] private string accessScope = FULL_ACCESS_SCOPE;
+        [SerializeField] private string loopbackUri = "http://localhost";
         [SerializeField] private string loopbackResponseHtml = "<html><h1>Please return to the app.</h1></html>";
         [SerializeField] private string accessTokenPrefsKey = "GoogleDriveAccessToken";
         [SerializeField] private string refreshTokenPrefsKey = "GoogleDriveRefreshToken";
