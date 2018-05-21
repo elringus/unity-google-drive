@@ -24,7 +24,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// A web address for the loopback authentication requests. Defult is 'localhost'.
         /// </summary>
-        /// <see cref="https://forum.unity.com/threads/google-drive-sdk-for-unity-free-open-sourced.515360/page-2#post-3504547"/>
+        /// <see cref="https://forum.unity.com/threads/515360/page-2#post-3504547"/>
         public string LoopbackUri { get { return loopbackUri; } }
         /// <summary>
         /// HTML page shown to the user when loopback response is received.
