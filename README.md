@@ -1,5 +1,5 @@
 ## Download package
-For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.11-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
+For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.12-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
@@ -8,11 +8,11 @@ Supports **all the major platforms** (including **WebGL**). Source code is **.NE
 
 Two main authentication schemes are used: browser redirection for WebGL builds (because of the sockets limitation) and local loopback requests for other platforms with refresh tokens support. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
 
-![Settings](https://i.gyazo.com/75fd0d64dd50485f208adfc56308ac20.png) 
+![Settings](https://i.gyazo.com/50c58d42173658a504e0ea19ef522a2f.png) 
 
 Automated integration tests cover the main features:
 
-![Tests](https://i.gyazo.com/81a59d10ce29ceabb4e23bb8ab5af6b1.png) 
+![Tests](https://i.gyazo.com/128acac61f5c719376b0f32f70144168.png) 
 
 ## Setup
 - Import the package;
@@ -26,9 +26,9 @@ Automated integration tests cover the main features:
   - Select **Web application** for 'Application type', give your app a name and enter the following restrictions:
     - Authorised JavaScript origins: enter host names wich will serve WebGL builds *(not required for platforms other than WebGL)*;
     - Authorised redirect URIs:
-      - Add redirect URI for the local loopback requests: **http://127.0.0.1**;
+      - Add redirect URI for the local loopback requests: **http://localhost**;
       - Add full URIs to the WebGL builds locations *(not required for platforms other than WebGL)*.
-    - Final result may [look like that](https://i.gyazo.com/dd1ece44ec428a156f963866dea0486f.png).
+    - Final result may [look like that](https://i.gyazo.com/9d28c9b1e0201cb92ed6d8f3fc6dcfaf.png).
   - Click **Save**;
   - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file.
 - Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file.
@@ -84,35 +84,7 @@ The only legit way to allow multiple users share a drive account is to use [Team
 This is possible. To access shared resources you'll have to specify ["Shared with me" collection](https://developers.google.com/drive/v3/web/about-organization#shared_with_me) when resolving ID of the resource. Additionally, if the shared resource has been [added to the user's drive](https://support.google.com/drive/answer/2375057?co=GENIE.Platform%3DDesktop&hl=en) it'll be accessible via the path finding method described above.
 
 ### Issues with authentication on iOS Devices.
-In case you're having issues when authenticating on iOS, please try the following:
-- Switch to the [.NET 4.x scripting runtime]( https://docs.unity3d.com/Manual/ScriptingRuntimeUpgrade.html) and try again. When under .NET 4.x an async HTTP listener will be used while waiting for the auth response, which could resolve the issues in some cases;
-- Set the following rules to the [info.plist](https://forum.unity.com/threads/how-can-you-add-items-to-the-xcode-project-targets-info-plist-using-the-xcodeapi.330574/#post-2143867) file to explicitly allow local loopback requests:
-```
-  <key>NSAppTransportSecurity</key>
-  <dict>
-    <key>NSAllowsLocalNetworking</key>
-    <true/>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-    <key>NSExceptionDomains</key>
-    <dict>
-      <key>127.0.0.1</key>
-      <dict>
-        <key>NSExceptionAllowsInsecureHTTPLoads</key>
-        <true/>
-        <key>NSIncludesSubdomains</key>
-        <true/>
-      </dict>
-      <key>localhost</key>
-      <dict>
-        <key>NSExceptionAllowsInsecureHTTPLoads</key>
-        <true/>
-        <key>NSIncludesSubdomains</key>
-        <true/>
-      </dict>
-    </dict>
-  </dict>
-```
+In case you're having issues when authenticating on iOS, consider switching to the [.NET 4.x scripting runtime]( https://docs.unity3d.com/Manual/ScriptingRuntimeUpgrade.html). When under .NET 4.x an async HTTP listener will be used while waiting for the auth response, which could resolve the issues in [some cases](https://forum.unity.com/threads/google-drive-sdk-for-unity-free-open-sourced.515360/page-2#post-3498766).
 
 ### Will this plugin appear on the Asset Store?
 I'll consider publishing when (if) it'll be in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
