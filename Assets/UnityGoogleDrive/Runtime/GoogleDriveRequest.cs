@@ -107,7 +107,6 @@ namespace UnityGoogleDrive
         protected static AuthController AuthController { get; private set; }
 
         protected UnityWebRequest WebRequest { get; private set; }
-        protected AsyncOperation WebRequestYeild { get; private set; }
         protected GoogleDriveRequestYeildInstruction<TResponse> YeildInstruction { get; private set; }
 
         public GoogleDriveRequest (string uri, string method)
