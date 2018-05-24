@@ -57,9 +57,9 @@ namespace UnityGoogleDrive
         /// The response data of the request.
         /// Make sure to check for <see cref="IsDone"/> and <see cref="IsError"/> before using.
         /// </summary>
-        public TResponse ResponseData { get; protected set; }
+        public virtual TResponse ResponseData { get; protected set; }
         /// <summary>
-        /// Progress of the request execution, in 0.0 to 1.0 range.
+        /// Progress of the data download, in 0.0 to 1.0 range.
         /// </summary>
         public override float Progress { get { return WebRequest != null ? WebRequest.downloadProgress : 0; } }
         /// <summary>
@@ -108,6 +108,7 @@ namespace UnityGoogleDrive
 
         protected UnityWebRequest WebRequest { get; private set; }
         protected GoogleDriveRequestYeildInstruction<TResponse> YeildInstruction { get; private set; }
+        protected virtual bool AutoCompleteOnDone { get { return true; } }
 
         public GoogleDriveRequest (string uri, string method)
         {
@@ -179,7 +180,7 @@ namespace UnityGoogleDrive
             if (!string.IsNullOrEmpty(responseText))
             {
                 var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
-                if (apiError.IsError) Error += apiError.Error.Message;
+                if (apiError.IsError) AppendError(apiError.Error.Message);
                 if (!IsError) ResponseData = JsonUtils.FromJsonPrivateCamel<TResponse>(responseText);
             }
         }
@@ -199,7 +200,17 @@ namespace UnityGoogleDrive
             webRequest.url = string.Concat(webRequest.url, "?", GenerateQueryString());
         }
 
-        private void SendWebRequest ()
+        protected void CompleteRequest ()
+        {
+            IsDone = true;
+
+            if (OnDone != null)
+                OnDone.Invoke(ResponseData);
+
+            if (WebRequest != null) WebRequest.Dispose();
+        }
+
+        protected virtual void SendWebRequest ()
         {
             IsDone = false;
 
@@ -213,7 +224,7 @@ namespace UnityGoogleDrive
             WebRequest.SendWebRequest().completed += HandleWebRequestDone;
         }
 
-        private void HandleWebRequestDone (AsyncOperation requestYeild)
+        protected virtual void HandleWebRequestDone (AsyncOperation requestYeild)
         {
             if (WebRequest.responseCode == GoogleDriveSettings.UNAUTHORIZED_RESPONSE_CODE)
             {
@@ -221,18 +232,20 @@ namespace UnityGoogleDrive
                 return;
             }
 
-            Error = WebRequest.error;
+            AppendError(WebRequest.error);
 
             HandleResponseData(WebRequest.downloadHandler);
 
             if (IsError) Debug.LogError("UnityGoogleDrive: " + Error);
 
-            IsDone = true;
+            if (AutoCompleteOnDone) CompleteRequest();
+        }
 
-            if (OnDone != null)
-                OnDone.Invoke(ResponseData);
-
-            WebRequest.Dispose();
+        protected void AppendError (string newError)
+        {
+            if (string.IsNullOrEmpty(newError)) return;
+            if (string.IsNullOrEmpty(Error)) Error = newError;
+            else Error += Environment.NewLine + newError;
         }
 
         private void HandleUnauthorizedResponse ()

@@ -79,6 +79,40 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
+        /// Creates a new file and upload file's data in a resumable fashion.
+        /// </summary>
+        public class ResumableCreateRequest : GoogleDriveResumableUploadRequest<Data.File>
+        {
+            /// <summary>
+            /// Whether to ignore the domain's default visibility settings for the created file.
+            /// Domain administrators can choose to make all uploaded files visible to the domain
+            /// by default; this parameter bypasses that behavior for the request. Permissions
+            /// are still inherited from parent folders.
+            /// </summary>
+            [QueryParameter] public bool? IgnoreDefaultVisibility { get; set; }
+            /// <summary>
+            /// Whether to set the 'keepForever' field in the new head revision. This is only 
+            /// applicable to files with binary content in Drive.
+            /// </summary>
+            [QueryParameter] public bool? KeepRevisionForever { get; set; }
+            /// <summary>
+            /// A language hint for OCR processing during image import (ISO 639-1 code).
+            /// </summary>
+            [QueryParameter] public string OcrLanguage { get; set; }
+            /// <summary>
+            /// Whether the requesting application supports Team Drives.
+            /// </summary>
+            [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+            /// <summary>
+            /// Whether to use the uploaded content as indexable text.
+            /// </summary>
+            [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
+
+            public ResumableCreateRequest (Data.File file, string resumableSessionUri = null) : base(@"https://www.googleapis.com/upload/drive/v3/files", 
+                UnityWebRequest.kHttpVerbPOST, file, file.Content, file.MimeType, resumableSessionUri) { }
+        }
+
+        /// <summary>
         /// Permanently deletes a file owned by the user without moving it to the trash.
         /// If the file belongs to a Team Drive the user must be an organizer on the parent.
         /// If the target is a folder, all descendants owned by the user are also deleted.
@@ -391,6 +425,41 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
+        /// Updates a file's metadata and/or content with patch semantics and uploads the data in a resumable fashion.
+        /// </summary>
+        public class ResumableUpdateRequest : GoogleDriveResumableUploadRequest<Data.File>
+        {
+            /// <summary>
+            /// A comma-separated list of parent IDs to add.
+            /// </summary>
+            [QueryParameter] public string AddParents { get; set; }
+            /// <summary>
+            /// Whether to set the 'keepForever' field in the new head revision. This is only
+            /// applicable to files with binary content in Drive.
+            /// </summary>
+            [QueryParameter] public bool? KeepRevisionForever { get; set; }
+            /// <summary>
+            /// A language hint for OCR processing during image import (ISO 639-1 code).
+            /// </summary>
+            [QueryParameter] public string OcrLanguage { get; set; }
+            /// <summary>
+            /// A comma-separated list of parent IDs to remove.
+            /// </summary>
+            [QueryParameter] public string RemoveParents { get; set; }
+            /// <summary>
+            /// Whether the requesting application supports Team Drives.
+            /// </summary>
+            [QueryParameter] public bool? SupportsTeamDrives { get; set; }
+            /// <summary>
+            /// Whether to use the uploaded content as indexable text.
+            /// </summary>
+            [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
+
+            public ResumableUpdateRequest (string fileId, Data.File file, string resumableSessionUri = null) 
+                : base(string.Concat(@"https://www.googleapis.com/upload/drive/v3/files/", fileId), "PATCH", file, file.Content, file.MimeType, resumableSessionUri) { }
+        }
+
+        /// <summary>
         /// Creates a copy of a file and applies any requested updates with patch semantics.
         /// Response data will contain copied <see cref="Data.File"/>.
         /// </summary>
@@ -410,6 +479,18 @@ namespace UnityGoogleDrive
         public static CreateRequest Create (Data.File file)
         {
             return new CreateRequest(file);
+        }
+
+        /// <summary>
+        /// Creates a new file and uploads the file's content in a resumable fashion.
+        /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest, TResponse}.ResumableSessionUri"/> property of the failed request and start a new one.
+        /// </summary>
+        /// <param name="fileId">The file to create. Make sure to set <see cref="Data.File.Content"/>.</param>
+        /// <param name="resumableSessionUri">Session URI to resume previously unfinished upload. Will upload from start when not provided.</param>
+        public static ResumableCreateRequest CreateResumable (Data.File file, string resumableSessionUri = null)
+        {
+            Debug.Assert(file.Content != null, "File's 'Content' field should be set to use resumable upload.");
+            return new ResumableCreateRequest(file, resumableSessionUri);
         }
 
         /// <summary>
@@ -550,6 +631,19 @@ namespace UnityGoogleDrive
         public static UpdateRequest Update (string fileId, Data.File file)
         {
             return new UpdateRequest(fileId, file);
+        }
+
+        /// <summary>
+        /// Updates a file's metadata and content with patch semantics and upload the content in resumable fashion.
+        /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest, TResponse}.ResumableSessionUri"/> property of the failed request and start a new one.
+        /// </summary>
+        /// <param name="fileId">ID of the file to update.</param>
+        /// <param name="file">Updated metadata of the file. Make sure to set <see cref="Data.File.Content"/>.</param>
+        /// <param name="resumableSessionUri">Session URI to resume previously unfinished upload. Will upload from start when not provided.</param>
+        public static ResumableUpdateRequest UpdateResumable (string fileId, Data.File file, string resumableSessionUri = null)
+        {
+            Debug.Assert(file.Content != null, "File's 'Content' field should be set to use resumable upload.");
+            return new ResumableUpdateRequest(fileId, file, resumableSessionUri);
         }
 
         /// <summary>

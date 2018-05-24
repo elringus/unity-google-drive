@@ -30,7 +30,7 @@ namespace UnityGoogleDrive
         /// </summary>
         public bool HasPayload { get { return RequestPayload != null; } }
         /// <summary>
-        /// Progress of the request execution, in 0.0 to 1.0 range.
+        /// Progress of the data upload, in 0.0 to 1.0 range.
         /// </summary>
         public override float Progress { get { return WebRequest != null ? WebRequest.uploadProgress : 0; } }
 
@@ -40,11 +40,10 @@ namespace UnityGoogleDrive
         ///   - multipart - Multipart upload. Upload both the media and its metadata, in a single request.
         ///   - resumable - Resumable upload. Upload the file in a resumable fashion.
         /// </summary>
-        [QueryParameter] public string UploadType { get; private set; }
+        [QueryParameter] public virtual string UploadType { get { return HasPayload ? "multipart" : null; } }
 
         private const string REQUEST_CONTENT_TYPE = "application/json; charset=UTF-8";
         private const string DEFAULT_MIME_TYPE = "application/octet-stream";
-        private const string MULTIPART_UPLOAD_TYPE = "multipart";
 
         public GoogleDriveUploadRequest (string uri, string method, TRequest requestData,
             byte[] requestPayload = null, string payloadMimeType = null) : base(uri, method)
@@ -54,7 +53,6 @@ namespace UnityGoogleDrive
             {
                 RequestPayload = requestPayload;
                 PayloadMimeType = string.IsNullOrEmpty(payloadMimeType) ? DEFAULT_MIME_TYPE : payloadMimeType;
-                UploadType = MULTIPART_UPLOAD_TYPE;
             }
         }
 
@@ -64,7 +62,7 @@ namespace UnityGoogleDrive
             return HasPayload ? CreateMultipartUpload(webRequest) : CreateSimpleUpload(webRequest);
         }
 
-        private UnityWebRequest CreateMultipartUpload (UnityWebRequest webRequest)
+        protected UnityWebRequest CreateMultipartUpload (UnityWebRequest webRequest)
         {
             var boundary = UnityWebRequest.GenerateBoundary();
             var metadata = new MultipartFormDataSection(null, JsonUtils.ToJsonPrivateCamel(RequestData), REQUEST_CONTENT_TYPE);
@@ -83,7 +81,7 @@ namespace UnityGoogleDrive
             return webRequest;
         }
 
-        private UnityWebRequest CreateSimpleUpload (UnityWebRequest webRequest)
+        protected UnityWebRequest CreateSimpleUpload (UnityWebRequest webRequest)
         {
             var requestJson = JsonUtils.ToJsonPrivateCamel(RequestData);
             var requestData = Encoding.UTF8.GetBytes(requestJson);
