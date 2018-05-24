@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using UnityGoogleDrive;
 
@@ -42,7 +41,6 @@ public class TestFilesCreateResumable : MonoBehaviour
 
         var file = new UnityGoogleDrive.Data.File() { Name = Path.GetFileName(UploadFilePath), Content = content };
         request = GoogleDriveFiles.CreateResumable(file, resumableSessionUri);
-        request.Fields = new List<string> { "id", "name", "size", "createdTime" };
         request.Send().OnDone += SaveSessionUri;
     }
 
