@@ -157,7 +157,8 @@ namespace UnityGoogleDrive
 
             protected override void HandleResponseData (DownloadHandler downloadHandler)
             {
-                ResponseData.Content = downloadHandler.data;
+                if (IsError) base.HandleResponseData(downloadHandler);
+                else ResponseData.Content = downloadHandler.data;
             }
         }
 
@@ -195,7 +196,10 @@ namespace UnityGoogleDrive
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
             public GetRequest (string fileId)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET) { }
+                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
+            {
+                Debug.Assert(!string.IsNullOrEmpty(fileId), "Missing file ID.");
+            }
         }
 
         /// <summary>
@@ -204,24 +208,40 @@ namespace UnityGoogleDrive
         public class DownloadRequest : GetRequest
         {
             /// <summary>
+            /// Portion of the file's content to dowload (byte range). Will download the full file when null (default).
+            /// For more info see <see cref="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
+            /// </summary>
+            public RangeInt? DownloadRange { get; private set; }
+
+            /// <summary>
             /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
             /// </summary>
             [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
 
-            public DownloadRequest (string fileId) : base(fileId)
+            public DownloadRequest (string fileId, RangeInt? downloadRange = null) : base(fileId)
             {
                 Alt = "media";
                 ResponseData = new Data.File() { Id = fileId };
+                DownloadRange = downloadRange;
             }
 
-            public DownloadRequest (Data.File file) : this(file.Id)
+            public DownloadRequest (Data.File file, RangeInt? downloadRange = null) : this(file.Id, downloadRange)
             {
                 ResponseData = file;
             }
 
+            protected override UnityWebRequest CreateWebRequest ()
+            {
+                var webRequest = base.CreateWebRequest();
+                if (DownloadRange.HasValue) webRequest.SetRequestHeader("Range", 
+                    string.Format("bytes={0}-{1}", DownloadRange.Value.start, DownloadRange.Value.end));
+                return webRequest;
+            }
+
             protected override void HandleResponseData (DownloadHandler downloadHandler)
             {
-                ResponseData.Content = downloadHandler.data;
+                if (IsError) base.HandleResponseData(downloadHandler);
+                else ResponseData.Content = downloadHandler.data;
             }
         }
 
@@ -263,8 +283,12 @@ namespace UnityGoogleDrive
 
             protected override void HandleResponseData (DownloadHandler downloadHandler)
             {
-                ResponseData.Content = downloadHandler.data;
-                ResponseData.AudioClip = DownloadHandlerAudioClip.GetContent(WebRequest);
+                if (IsError) base.HandleResponseData(downloadHandler);
+                else
+                {
+                    ResponseData.Content = downloadHandler.data;
+                    ResponseData.AudioClip = DownloadHandlerAudioClip.GetContent(WebRequest);
+                }
             }
         }
 
@@ -306,8 +330,11 @@ namespace UnityGoogleDrive
 
             protected override void HandleResponseData (DownloadHandler downloadHandler)
             {
-                ResponseData.Content = downloadHandler.data;
-                ResponseData.Texture = DownloadHandlerTexture.GetContent(WebRequest);
+                if (IsError) base.HandleResponseData(downloadHandler);
+                {
+                    ResponseData.Content = downloadHandler.data;
+                    ResponseData.Texture = DownloadHandlerTexture.GetContent(WebRequest);
+                }
             }
         }
 
@@ -544,22 +571,25 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
-        /// Downloads a file's content by ID.
-        /// Only <see cref="Data.File.Id"/> and <see cref="Data.File.Content"/> fields will be returned on success.
+        /// Downloads a file's content by ID. Only <see cref="Data.File.Id"/> and <see cref="Data.File.Content"/> fields will be returned on success.
+        /// For a partial download provide <paramref name="downloadRange"/> argument. More info: <see cref="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
         /// </summary>
         /// <param name="fileId">The ID of the file to download content for.</param>
-        public static DownloadRequest Download (string fileId)
+        /// <param name="downloadRange">The portion of the file you want to dowload (a byte range). Will download the full file when null (default).</param>
+        public static DownloadRequest Download (string fileId, RangeInt? downloadRange = null)
         {
-            return new DownloadRequest(fileId);
+            return new DownloadRequest(fileId, downloadRange);
         }
 
         /// <summary>
         /// Downloads a file's content by ID of the provided file.
+        /// For a partial download provide <paramref name="downloadRange"/> argument. More info: <see cref="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
         /// </summary>
         /// <param name="fileId">The file to download content for. File's <see cref="Data.File.Id"/> field must be valid.</param>
-        public static DownloadRequest Download (Data.File file)
+        /// <param name="downloadRange">The portion of the file you want to dowload (a byte range). Will download the full file when null (default).</param>
+        public static DownloadRequest Download (Data.File file, RangeInt? downloadRange = null)
         {
-            return new DownloadRequest(file);
+            return new DownloadRequest(file, downloadRange);
         }
 
         /// <summary>

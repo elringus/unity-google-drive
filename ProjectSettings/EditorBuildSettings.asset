@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/FilesDownloadAudio.unity
     guid: e6c1977f3c8f7a14f99776bd6babe26f
   - enabled: 1
+    path: Assets/Scenes/FilesDownloadRange.unity
+    guid: e1c1da107b2458c4289864cf49ac5901
+  - enabled: 1
     path: Assets/Scenes/FilesCreate.unity
     guid: 2cf450ec146bc5b4299efdc922f12ac3
   - enabled: 1
