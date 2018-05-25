@@ -1,5 +1,5 @@
 ## Download package
-For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.13-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
+For Unity 2017.4 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.14-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
@@ -64,6 +64,11 @@ A folder in Google Drive is actually a file with the MIME type `application/vnd.
 You can find a naive implementation of the aforementioned logic in [the example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs).
 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
+
+### Is it possible to download/upload large files in chunks to preserve memory usage?
+To perform a partial download you have to supply 'downloadRange' agrument for the GoogleDriveFiles.Download request specifying the bytes range you wish to get. Here is an [example script for a partial text file download](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/TestFilesDownloadRange.cs). More info on partial downloads can be found in the [API docs](https://developers.google.com/drive/api/v3/manage-downloads#partial_download).
+
+For the chunked uploads you'll have to use resumable upload requests in a special manner. First, create a resumable upload request (via either GoogleDriveFiles.CreateResumable or GoogleDriveFiles.UpdateResumable), supply the file's metadata, but don't set the file's content. Send the request and get a resumable session URI from the response. Now you can use the session URI to upload the file's content in chunks. [See the Drive API docs](https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable) for detailed instructions on how to perform a chunked upload using the resumable session URI.
 
 ### Is there a way to automatically redirect user to the app when authorization in browser is complete? 
 When user finishes authorization flow on mobile and standalone platforms, an HTML string is injected to the active browser window. The default content of the HTML contains a message, asking user to return to the app. You can modify the content of the injected HTML in the Google Drive Settings asset using ‘Loopback Response HTML’ field. It’s possible to inject a javascript code to this HTML, which will be invoked right after the auth flow is completed. You can use this option to automatically redirect user back to your app using a custom URI scheme. Specific implementation will depend on the platform: for android you’ll have to [add an intent filter to the manifest](https://stackoverflow.com/questions/2958701/launch-custom-android-application-from-android-browser), for iOS use [universal links feature](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html) and for Windows [bind the application to a URI scheme](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767914(v=vs.85)).
