@@ -472,24 +472,22 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Creates a new file.
         /// </summary>
-        /// <param name="fileId">
-        /// The file to create. 
-        /// Provide <see cref="Data.File.Content"/> to upload the content of the file.
-        /// </param>
+        /// <param name="fileId">The file to create. Provide <see cref="Data.File.Content"/> to upload the content of the file.</param>
         public static CreateRequest Create (Data.File file)
         {
             return new CreateRequest(file);
         }
 
         /// <summary>
-        /// Creates a new file and uploads the file's content in a resumable fashion.
+        /// Creates a new file and (optionally) uploads the file's content in a resumable fashion.
         /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest, TResponse}.ResumableSessionUri"/> property of the failed request and start a new one.
+        /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate 
+        /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see cref="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
         /// </summary>
-        /// <param name="fileId">The file to create. Make sure to set <see cref="Data.File.Content"/>.</param>
+        /// <param name="file">The file to create. Provide <see cref="Data.File.Content"/> to upload the content of the file.</param>
         /// <param name="resumableSessionUri">Session URI to resume previously unfinished upload. Will upload from start when not provided.</param>
         public static ResumableCreateRequest CreateResumable (Data.File file, string resumableSessionUri = null)
         {
-            Debug.Assert(file.Content != null, "File's 'Content' field should be set to use resumable upload.");
             return new ResumableCreateRequest(file, resumableSessionUri);
         }
 
@@ -624,10 +622,7 @@ namespace UnityGoogleDrive
         /// Updates a file's metadata and/or content with patch semantics.
         /// </summary>
         /// <param name="fileId">ID of the file to update.</param>
-        /// <param name="file">
-        /// Updated metadata of the file. 
-        /// Provide <see cref="Data.File.Content"/> to update the content of the file.
-        /// </param>
+        /// <param name="file">Updated metadata of the file. Provide <see cref="Data.File.Content"/> to update the content of the file.</param>
         public static UpdateRequest Update (string fileId, Data.File file)
         {
             return new UpdateRequest(fileId, file);
@@ -636,13 +631,14 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Updates a file's metadata and content with patch semantics and upload the content in resumable fashion.
         /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest, TResponse}.ResumableSessionUri"/> property of the failed request and start a new one.
+        /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate 
+        /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see cref="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
         /// </summary>
         /// <param name="fileId">ID of the file to update.</param>
-        /// <param name="file">Updated metadata of the file. Make sure to set <see cref="Data.File.Content"/>.</param>
+        /// <param name="file">Updated metadata of the file. Provide <see cref="Data.File.Content"/> to update the content of the file.</param>
         /// <param name="resumableSessionUri">Session URI to resume previously unfinished upload. Will upload from start when not provided.</param>
         public static ResumableUpdateRequest UpdateResumable (string fileId, Data.File file, string resumableSessionUri = null)
         {
-            Debug.Assert(file.Content != null, "File's 'Content' field should be set to use resumable upload.");
             return new ResumableUpdateRequest(fileId, file, resumableSessionUri);
         }
 

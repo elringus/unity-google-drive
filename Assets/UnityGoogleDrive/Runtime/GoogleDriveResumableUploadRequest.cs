@@ -6,7 +6,7 @@ namespace UnityGoogleDrive
 {
     /// <summary>
     /// A request intended to communicate with the Google Drive API. 
-    /// Allows uploading a <see cref="Data.ResourceData"/> and raw payload data in a resumable fashion.
+    /// Allows uploading a <see cref="Data.ResourceData"/> and (optinally) raw payload data in a resumable fashion.
     /// </summary>
     /// <typeparam name="TRequest">Type of the uploaded data.</typeparam>
     /// <see cref="https://developers.google.com/drive/api/v3/resumable-upload"/>
@@ -37,7 +37,7 @@ namespace UnityGoogleDrive
         private UnityWebRequest uploadRequest;
         private UnityWebRequest statusRequest;
 
-        public GoogleDriveResumableUploadRequest (string uri, string method, TRequest requestData, byte[] requestPayload, 
+        public GoogleDriveResumableUploadRequest (string uri, string method, TRequest requestData, byte[] requestPayload = null, 
             string payloadMimeType = null, string resumableSessionUri = null) : base(uri, method, requestData, requestPayload, payloadMimeType)
         {
             ResumableSessionUri = resumableSessionUri;
@@ -52,19 +52,26 @@ namespace UnityGoogleDrive
 
         protected override void SendWebRequest ()
         {
-            // If session URI wasn't provided by user send base request to initiate new session.
+            // If session URI wasn't provided by user send base request to initiate a new session.
             if (!ResumableSessionInitiated) base.SendWebRequest();
             // Otherwise get status of the unfinished session and resume the upload.
-            else GetStatusAndResumeUpload();
+            else if (HasPayload) GetStatusAndResumeUpload();
+            else // User provided unfinished session URI but not the payload; cancel the request.
+            {
+                Debug.LogError("UnityGoogleDrive: Can't resume upload without the payload data. Make sure to set File.Data field.");
+                CompleteRequest();
+            }
         }
 
         protected override void HandleWebRequestDone (AsyncOperation requestYeild)
         {
             base.HandleWebRequestDone(requestYeild);
             if (IsError) { CompleteRequest(); return; }
-            // New resumable upload session initiated. Save the URI and start uploading.
             ResumableSessionUri = WebRequest.GetResponseHeader("Location");
-            ResumeUpload();
+            // New resumable upload session initiated and we have the payload, so start uploading.
+            if (HasPayload) ResumeUpload();
+            // User didn't provide the payload, so just return the session URI for manual uploading.
+            else CompleteRequest();
         }
 
         public override void Dispose ()
@@ -85,7 +92,7 @@ namespace UnityGoogleDrive
 
         private void GetStatusAndResumeUpload ()
         {
-            Debug.Assert(ResumableSessionInitiated);
+            Debug.Assert(ResumableSessionInitiated && HasPayload);
 
             if (statusRequest != null)
             {
@@ -125,7 +132,7 @@ namespace UnityGoogleDrive
 
         private void ResumeUpload ()
         {
-            Debug.Assert(ResumableSessionInitiated);
+            Debug.Assert(ResumableSessionInitiated && HasPayload);
 
             if (uploadRequest != null)
             {
