@@ -180,7 +180,7 @@ namespace UnityGoogleDrive
             if (!string.IsNullOrEmpty(responseText))
             {
                 var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
-                if (apiError.IsError) AppendError(apiError.Error.Message);
+                if (apiError.IsError) AppendError(apiError.ToString());
                 if (!IsError) ResponseData = JsonUtils.FromJsonPrivateCamel<TResponse>(responseText);
             }
         }

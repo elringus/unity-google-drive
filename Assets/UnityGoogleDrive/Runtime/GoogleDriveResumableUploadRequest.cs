@@ -122,8 +122,7 @@ namespace UnityGoogleDrive
             // Unexpected response.
             else
             {
-                Debug.LogError(string.Format("UnityGoogleDrive: Failed to resume upload. HTTP error: {0}", statusRequest.error));
-                AppendError(statusRequest.error);
+                AppendError(string.Format("Failed to resume upload. HTTP error: {0}", statusRequest.error));
                 CompleteRequest();
             }
 
@@ -155,10 +154,7 @@ namespace UnityGoogleDrive
         private void HandleUploadRequestCompleted (AsyncOperation asyncOperation)
         {
             if (!string.IsNullOrEmpty(uploadRequest.error))
-            {
-                Debug.LogError(string.Format("UnityGoogleDrive: Failed to upload using resumable scheme. HTTP error: {0}", uploadRequest.error));
-                AppendError(uploadRequest.error);
-            }
+                AppendError(string.Format("Failed to upload using resumable scheme. HTTP error: {0}", uploadRequest.error));
 
             CompleteRequest();
             uploadRequest.Dispose();

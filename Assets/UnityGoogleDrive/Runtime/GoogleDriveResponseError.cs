@@ -14,9 +14,17 @@ namespace UnityGoogleDrive
             public int Code { get { return code; } }
             public string Message { get { return message; } }
 
-            [SerializeField] private List<ErrorDefinition> errors = null;
+            [SerializeField] private List<ErrorDefinition> errors = new List<ErrorDefinition>();
             [SerializeField] private int code = 0;
             [SerializeField] private string message = null;
+
+            public override string ToString ()
+            {
+                var output = string.Format("Google Drive API Error Description: Code '{0}' Message: '{1}'", Code, Message);
+                foreach (var error in Errors)
+                    output += Environment.NewLine + " - " + error.ToString();
+                return output;
+            }
         }
 
         [Serializable]
@@ -33,10 +41,22 @@ namespace UnityGoogleDrive
             [SerializeField] private string message = null;
             [SerializeField] private string locationType = null;
             [SerializeField] private string location = null;
+
+            public override string ToString ()
+            {
+                return string.Format("Domain: '{0}' Reason: '{1}' Message: '{2}' LocationType: '{3}' Location: '{4}'", 
+                    Domain, Reason, Message, LocationType, Location);
+            }
         }
 
-        public bool IsError { get { return Error != null; } }
+        public bool IsError { get { return Error != null && Error.Code != 0; } }
         public ErrorDescription Error { get { return error; } }
+
+        public override string ToString ()
+        {
+            if (!IsError) return null;
+            return Error.ToString();
+        }
 
         [SerializeField] private ErrorDescription error = null;
     }
