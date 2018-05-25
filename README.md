@@ -65,7 +65,7 @@ You can find a naive implementation of the aforementioned logic in [the example 
 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
-### Is it possible to download/upload large files in chunks to preserve memory usage?
+### Is it possible to download/upload large files in chunks to reduce memory usage?
 To perform a partial download you have to supply 'downloadRange' agrument for the GoogleDriveFiles.Download request specifying the bytes range you wish to get. Here is an [example script for a partial text file download](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/TestFilesDownloadRange.cs). More info on partial downloads can be found in the [API docs](https://developers.google.com/drive/api/v3/manage-downloads#partial_download).
 
 For the chunked uploads you'll have to use resumable upload requests in a special manner. First, create a resumable upload request (via either GoogleDriveFiles.CreateResumable or GoogleDriveFiles.UpdateResumable), supply the file's metadata, but don't set the file's content. Send the request and get a resumable session URI from the response. Now you can use the session URI to upload the file's content in chunks. [See the Drive API docs](https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable) for detailed instructions on how to perform a chunked upload using the resumable session URI.
