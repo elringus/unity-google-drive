@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -39,7 +40,7 @@ namespace UnityGoogleDrive
             tokenRequestForm.AddField("client_id", settings.AuthCredentials.ClientId);
             tokenRequestForm.AddField("code_verifier", codeVerifier);
             tokenRequestForm.AddField("client_secret", settings.AuthCredentials.ClientSecret);
-            tokenRequestForm.AddField("scope", settings.AccessScope);
+            tokenRequestForm.AddField("scope", string.Join(" ", settings.AccessScopes.ToArray()));
             tokenRequestForm.AddField("grant_type", "authorization_code");
 
             exchangeRequest = UnityWebRequest.Post(tokenRequestURI, tokenRequestForm);

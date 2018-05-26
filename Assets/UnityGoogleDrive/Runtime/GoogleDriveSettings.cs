@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace UnityGoogleDrive
 {
@@ -7,8 +8,6 @@ namespace UnityGoogleDrive
     /// </summary>
     public class GoogleDriveSettings : ScriptableObject
     {
-        public const string FULL_ACCESS_SCOPE = "https://www.googleapis.com/auth/drive";
-        public const string READONLY_ACCESS_SCOPE = "https://www.googleapis.com/auth/drive.readonly";
         public const string REQUEST_CONTENT_TYPE = "application/x-www-form-urlencoded";
         public const string CODE_CHALLENGE_METHOD = "S256";
         public const int UNAUTHORIZED_RESPONSE_CODE = 401;
@@ -18,9 +17,10 @@ namespace UnityGoogleDrive
         /// </summary>
         public AuthCredentials AuthCredentials { get { return authCredentials; } }
         /// <summary>
-        /// Scope of access to the user's Google Drive the app will request.
+        /// Scopes of access to the user's Google Drive the app will request.
+        /// For available scopes see: <see cref="https://developers.google.com/drive/api/v3/about-auth"/>.
         /// </summary>
-        public string AccessScope { get { return accessScope; } }
+        public List<string> AccessScopes { get { return accessScopes; } }
         /// <summary>
         /// A web address for the loopback authentication requests. Defult is 'localhost'.
         /// </summary>
@@ -40,7 +40,7 @@ namespace UnityGoogleDrive
         public string CachedRefreshToken { get { return PlayerPrefs.GetString(refreshTokenPrefsKey); } set { PlayerPrefs.SetString(refreshTokenPrefsKey, value); } }
 
         [SerializeField] private AuthCredentials authCredentials = null;
-        [SerializeField] private string accessScope = FULL_ACCESS_SCOPE;
+        [SerializeField] private List<string> accessScopes = new List<string> { "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.appdata" };
         [SerializeField] private string loopbackUri = "http://localhost";
         [SerializeField] private string loopbackResponseHtml = "<html><h1>Please return to the app.</h1></html>";
         [SerializeField] private string accessTokenPrefsKey = "GoogleDriveAccessToken";
