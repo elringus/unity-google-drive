@@ -8,16 +8,16 @@ using UnityEngine.Networking;
 namespace UnityGoogleDrive
 {
     /// <summary>
-    /// Property will be included in the query portion of the request URL.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class QueryParameterAttribute : Attribute { }
-
-    /// <summary>
     /// A request intended to communicate with the Google Drive API. 
     /// </summary>
     public abstract class GoogleDriveRequest : IDisposable
     {
+        /// <summary>
+        /// Property will be included in the query portion of the request URL.
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+        protected sealed class QueryParameterAttribute : Attribute { }
+
         public abstract string Uri { get; protected set; }
         public abstract string Method { get; protected set; }
         public abstract float Progress { get; }
