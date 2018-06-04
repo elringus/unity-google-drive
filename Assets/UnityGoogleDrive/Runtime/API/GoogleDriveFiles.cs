@@ -368,6 +368,7 @@ namespace UnityGoogleDrive
             /// <summary>
             /// The maximum number of files to return per page. Partial or empty result pages
             /// are possible even before the end of the files list has been reached.
+            /// Acceptable values are 1 to 1000, inclusive. (Default: 100) 
             /// </summary>
             [QueryParameter] public int? PageSize { get; set; }
             /// <summary>
