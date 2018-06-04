@@ -51,7 +51,7 @@ namespace UnityGoogleDrive
 
             var parentQueries = parentIds.Select(parentId => $"'{parentId}' in parents");
             var query = $"({string.Join(" or ", parentQueries)}) and trashed = {trashed}";
-            if (!string.IsNullOrWhiteSpace(fileName)) query += $" and name = '{fileName}' ";
+            if (!string.IsNullOrWhiteSpace(fileName)) query += $" and name = '{fileName}'";
             if (!string.IsNullOrWhiteSpace(mime)) query += $" and mimeType = '{mime}'";
 
             if (fields == null) fields = new List<string>();
