@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace UnityGoogleDrive
@@ -643,9 +644,20 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Lists or searches files.
         /// </summary>
-        public static ListRequest List ()
+        /// <param name="query">
+        /// A query for filtering the file results. 
+        /// See <see cref="https://developers.google.com/drive/api/v3/search-parameters"/> for the supported syntax.
+        /// </param>
+        /// <param name="fields">
+        /// Selector specifying a subset of fields to include in the response.
+        /// Nested fields should be in the following format: field(nestedField1, nestedField2).
+        /// </param>
+        public static ListRequest List (string query = null, List<string> fields = null)
         {
-            return new ListRequest();
+            var listRequest = new ListRequest();
+            listRequest.Q = query;
+            listRequest.Fields = fields;
+            return listRequest;
         }
 
         /// <summary>
