@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 
 namespace UnityGoogleDrive
 {
@@ -36,7 +37,7 @@ namespace UnityGoogleDrive
         /// Looks for the files located at the provided path.
         /// </summary>
         /// <param name="path">File's path in Google Drive. Add front slash to find all files in a folder.</param>
-        /// <param name="appData">Whether to look inside the AppData folder instead of the drive root.</param>
+        /// <param name="appData">Whether to use the AppData space instead of the drive root.</param>
         /// <param name="fields">File fields to request.</param>
         /// <param name="mimeType">File's MIME type.</param>
         /// <param name="trashed">Whether to include trashed files.</param>
@@ -72,9 +73,91 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
+        /// Creates a new (or update existsing) <see cref="Data.File"/> at the provided path.
+        /// Will also create any missing folders at the provided path.
+        /// </summary>
+        /// <param name="file">Metadata for the created (updated) file.</param>
+        /// <param name="path">Created file's path (including file name).</param>
+        /// <param name="appData">Whether to use the AppData space instead of the drive root.</param>
+        /// <returns>ID of the created (updated) file. Null if failed.</returns>
+        public static async System.Threading.Tasks.Task<string> CreateOrUpdateFileAtPathAsync (Data.File file, string path, bool appData = false)
+        {
+            var fileName = Path.GetFileName(path);
+            if (string.IsNullOrWhiteSpace(fileName)) return null;
+            if (string.IsNullOrWhiteSpace(file.Name)) file.Name = fileName;
+
+            // Just modify the file if already exists.
+            var files = await FindFilesByPathAsync(path, appData, mime: file.MimeType);
+            if (files.Count > 0)
+            {
+                if (files.Count > 1) Debug.LogWarning($"UnityGoogleDrive: Multiple '{path}' files found while attempting to modify the file. Operation will modify only the first found file.");
+                using (var updateRequest = GoogleDriveFiles.Update(files[0].Id, file))
+                {
+                    updateRequest.Fields = new List<string> { "id" };
+                    var updatedFile = await updateRequest.Send();
+                    return updatedFile.Id;
+                }
+            }
+
+            // Check if all the folders in the path exist.
+            var parentIds = await ValidatePath(path, appData);
+            if (parentIds == null) parentIds = new HashSet<string>();
+            if (parentIds.Count > 1) Debug.LogWarning($"UnityGoogleDrive: Multiple '{Path.GetDirectoryName(path)}' pathes found while attempting to create a file. Operation will create a file at the first found path.");
+
+            // Some of the folders are missing; create them.
+            if (parentIds.Count == 0) 
+            {
+                var parentId = appData ? APPDATA_ALIAS : ROOT_ALIAS;
+                path = Path.GetDirectoryName(path).Replace('\\', '/');
+                var parentNames = path.Split('/').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+
+                for (int i = 0; i < parentNames.Length; i++)
+                {
+                    using (var listRequest = new GoogleDriveFiles.ListRequest())
+                    {
+                        listRequest.Fields = new List<string> { "files(id)" };
+                        listRequest.Spaces = appData ? APPDATA_SPACE : DRIVE_SPACE;
+                        listRequest.Q = $"'{parentId}' in parents and name = '{parentNames[i]}' and mimeType = '{FOLDER_MIME_TYPE}' and trashed = false";
+
+                        await listRequest.Send();
+
+                        if (listRequest == null || listRequest.IsError) return null;
+
+                        // Next folder at the current level is missing; create it.
+                        if (listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
+                        {
+                            var folder = new Data.File { Name = parentNames[i], MimeType = FOLDER_MIME_TYPE, Parents = new List<string> { parentId } };
+                            using (var createRequest = GoogleDriveFiles.Create(folder))
+                            {
+                                createRequest.Fields = new List<string> { "id" };
+                                var createdFolder = await createRequest.Send();
+                                parentId = createdFolder.Id;
+                                continue;
+                            }
+                        } // Next folder exists; use it's ID and travers higher.
+                        else parentId = listRequest.ResponseData.Files[0].Id;
+                    }
+                }
+
+                parentIds.Add(parentId);
+            }
+
+            // Create the file.
+            file.Parents = new List<string> { parentIds.First() };
+            using (var createRequest = GoogleDriveFiles.Create(file))
+            {
+                createRequest.Fields = new List<string> { "id" };
+                var createdFile = await createRequest.Send();
+                return createdFile?.Id;
+            }
+        }
+
+        /// <summary>
         /// Traverses the entire path and returns ID of the top-level folder(s) (if found), null otherwise.
         /// </summary>
         /// <param name="path">Path to validate.</param>
+        /// <param name="appData">Whether to use the AppData space instead of the drive root.</param>
+        /// <param name="parentId">ID of the parent folder, when path starts not from the root level.</param>
         /// <returns>ID of the final folders in the path; null if the path is not valid.</returns>
         public static async System.Threading.Tasks.Task<HashSet<string>> ValidatePath (string path, bool appData, string parentId = null)
         {
@@ -89,7 +172,7 @@ namespace UnityGoogleDrive
             {
                 using (var listRequest = new GoogleDriveFiles.ListRequest())
                 {
-                    listRequest.Fields = new List<string> { "files(id, name)" };
+                    listRequest.Fields = new List<string> { "files(id)" };
                     listRequest.Spaces = appData ? APPDATA_SPACE : DRIVE_SPACE;
                     listRequest.PageSize = 1000; // Assume we can't have more than 1K folders with equal names at the same level and skip the pagination.
                     listRequest.Q = $"'{parentId}' in parents and name = '{parentNames[i]}' and mimeType = '{FOLDER_MIME_TYPE}' and trashed = false";

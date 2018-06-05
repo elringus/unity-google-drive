@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityGoogleDrive;
 
@@ -9,6 +10,7 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
 
     private bool running;
     private string filePath = string.Empty;
+    private string uploadFilePath = string.Empty;
     private bool folder;
     private Dictionary<string, string> results;
     private Vector2 scrollPos;
@@ -45,14 +47,29 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
             filePath = GUILayout.TextField(filePath);
             if (GUILayout.Button("Search", GUILayout.Width(100))) FindFilesByPathAsync(filePath);
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Upload file path:", GUILayout.Width(100));
+            uploadFilePath = GUILayout.TextField(uploadFilePath);
+            GUILayout.EndHorizontal();
         }
     }
 
     private async void FindFilesByPathAsync (string path)
     {
         running = true;
-        var files = await Helpers.FindFilesByPathAsync(path, fields: new List<string> { "files(id, name, size, modifiedTime)" }, mime: folder ? Helpers.FOLDER_MIME_TYPE : null);
-        BuildResults(files);
+
+        if (File.Exists(uploadFilePath))
+        {
+            var uploadFile = new UnityGoogleDrive.Data.File { Content = File.ReadAllBytes(uploadFilePath) };
+            uploadFile.Id = await Helpers.CreateOrUpdateFileAtPathAsync(uploadFile, filePath);
+            BuildResults(new List<UnityGoogleDrive.Data.File> { uploadFile });
+        }
+        else
+        {
+            var files = await Helpers.FindFilesByPathAsync(path, fields: new List<string> { "files(id, name, size, modifiedTime)" }, mime: folder ? Helpers.FOLDER_MIME_TYPE : null);
+            BuildResults(files);
+        }
+
         running = false;
     }
 
@@ -68,7 +85,7 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
                 file.Name,
                 file.Size * .000001f,
                 file.ModifiedTime);
-            results.Add(file.Id, fileInfo);
+            results.Add(file.Id ?? "Failed", fileInfo);
         }
     }
 
