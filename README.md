@@ -90,8 +90,5 @@ The only legit way to allow multiple users share a drive account is to use [Team
 ### Is it possible to access shared files and folders?
 This is possible. To access shared resources you'll have to specify ["Shared with me" collection](https://developers.google.com/drive/v3/web/about-organization#shared_with_me) when resolving ID of the resource. Additionally, if the shared resource has been [added to the user's drive](https://support.google.com/drive/answer/2375057?co=GENIE.Platform%3DDesktop&hl=en) it'll be accessible via the path finding method described above.
 
-### Issues with authentication on iOS Devices.
-In case you're having issues when authenticating on iOS, consider switching to the [.NET 4.x scripting runtime]( https://docs.unity3d.com/Manual/ScriptingRuntimeUpgrade.html). When under .NET 4.x an async HTTP listener will be used while waiting for the auth response, which could resolve the issues in [some cases](https://forum.unity.com/threads/google-drive-sdk-for-unity-free-open-sourced.515360/page-2#post-3498766).
-
 ### Will this plugin appear on the Asset Store?
 I'll consider publishing when (if) it'll be in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
