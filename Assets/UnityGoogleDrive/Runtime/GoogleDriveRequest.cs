@@ -207,7 +207,7 @@ namespace UnityGoogleDrive
             if (OnDone != null)
                 OnDone.Invoke(ResponseData);
 
-            if (WebRequest != null) WebRequest.Dispose();
+            if (WebRequest != null) { WebRequest.Dispose(); WebRequest = null; }
         }
 
         protected virtual void SendWebRequest ()
