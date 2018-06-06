@@ -10,14 +10,6 @@ namespace UnityGoogleDrive
     public static class Helpers
     {
         /// <summary>
-        /// The MIME type of a <see cref="Data.File"/> representing a folder in Google Drive.
-        /// </summary>
-        /// <remarks>
-        /// A folder in Google Drive is actually a file with the special MIME type. 
-        /// More info: https://developers.google.com/drive/api/v3/folder.
-        /// </remarks>
-        public const string FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
-        /// <summary>
         /// ID alias of the drive's root folder.
         /// </summary>
         public const string ROOT_ALIAS = "root";
@@ -33,6 +25,31 @@ namespace UnityGoogleDrive
         /// A special hidden space that your app can use to store application data.
         /// </summary>
         public const string APPDATA_SPACE = "appDataFolder";
+
+        /// <summary>
+        /// The MIME type of a <see cref="Data.File"/> representing a folder in Google Drive.
+        /// </summary>
+        /// <remarks>
+        /// A folder in Google Drive is actually a file with the special MIME type. 
+        /// More info: https://developers.google.com/drive/api/v3/folder.
+        /// </remarks>
+        public const string FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
+        /// <summary>
+        /// The MIME type of a Google Document.
+        /// </summary>
+        public const string DOCUMENT_MIME_TYPE = "application/vnd.google-apps.document";
+        /// <summary>
+        /// The MIME type of a Google Sheet.
+        /// </summary>
+        public const string SHEET_MIME_TYPE = "application/vnd.google-apps.spreadsheet";
+        /// <summary>
+        /// The MIME type of a Google Slides.
+        /// </summary>
+        public const string SLIDES_MIME_TYPE = "application/vnd.google-apps.presentation";
+        /// <summary>
+        /// The MIME type of a Google App Script.
+        /// </summary>
+        public const string SCRIPT_MIME_TYPE = "application/vnd.google-apps.script";
 
         #if NET_4_6 || NET_STANDARD_2_0
         /// <summary>
