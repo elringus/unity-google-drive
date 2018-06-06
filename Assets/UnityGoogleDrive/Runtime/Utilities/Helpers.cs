@@ -82,8 +82,9 @@ namespace UnityGoogleDrive
         /// <param name="path">Created file's path (including file name).</param>
         /// <param name="appData">Whether to use the AppData space instead of the drive root.</param>
         /// <param name="forceUploadContent">Whether to always upload <see cref="Data.File.Content"/>, even when checksum of the content is equal to the one kept on drive.</param>
+        /// <param name="uploadMimeType">When the uploaded content differs from the target type (Eg when uploading plain text to create a google document), specify the uploaded content MIME type here.</param>
         /// <returns>ID of the created (updated) file. Null if failed.</returns>
-        public static async System.Threading.Tasks.Task<string> CreateOrUpdateFileAtPathAsync (Data.File file, string path, bool appData = false, bool forceUploadContent = false)
+        public static async System.Threading.Tasks.Task<string> CreateOrUpdateFileAtPathAsync (Data.File file, string path, bool appData = false, bool forceUploadContent = false, string uploadMimeType = null)
         {
             var fileName = Path.GetFileName(path);
             if (string.IsNullOrWhiteSpace(fileName)) return null;
@@ -95,7 +96,7 @@ namespace UnityGoogleDrive
             {
                 if (files.Count > 1) Debug.LogWarning($"UnityGoogleDrive: Multiple '{path}' files found while attempting to modify the file. Operation will modify only the first found file.");
                 if (!forceUploadContent && file.Content != null && CalculateMD5Checksum(file.Content) == files[0].Md5Checksum) file.Content = null;
-                using (var updateRequest = GoogleDriveFiles.Update(files[0].Id, file))
+                using (var updateRequest = GoogleDriveFiles.Update(files[0].Id, file, uploadMimeType))
                 {
                     updateRequest.Fields = new List<string> { "id" };
                     var updatedFile = await updateRequest.Send();
@@ -148,7 +149,7 @@ namespace UnityGoogleDrive
 
             // Create the file.
             file.Parents = new List<string> { parentIds.First() };
-            using (var createRequest = GoogleDriveFiles.Create(file))
+            using (var createRequest = GoogleDriveFiles.Create(file, uploadMimeType))
             {
                 createRequest.Fields = new List<string> { "id" };
                 var createdFile = await createRequest.Send();
