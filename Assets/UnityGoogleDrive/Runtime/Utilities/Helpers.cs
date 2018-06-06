@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 namespace UnityGoogleDrive
@@ -79,18 +81,20 @@ namespace UnityGoogleDrive
         /// <param name="file">Metadata for the created (updated) file.</param>
         /// <param name="path">Created file's path (including file name).</param>
         /// <param name="appData">Whether to use the AppData space instead of the drive root.</param>
+        /// <param name="forceUploadContent">Whether to always upload <see cref="Data.File.Content"/>, even when checksum of the content is equal to the one kept on drive.</param>
         /// <returns>ID of the created (updated) file. Null if failed.</returns>
-        public static async System.Threading.Tasks.Task<string> CreateOrUpdateFileAtPathAsync (Data.File file, string path, bool appData = false)
+        public static async System.Threading.Tasks.Task<string> CreateOrUpdateFileAtPathAsync (Data.File file, string path, bool appData = false, bool forceUploadContent = false)
         {
             var fileName = Path.GetFileName(path);
             if (string.IsNullOrWhiteSpace(fileName)) return null;
             if (string.IsNullOrWhiteSpace(file.Name)) file.Name = fileName;
 
             // Just modify the file if already exists.
-            var files = await FindFilesByPathAsync(path, appData, mime: file.MimeType);
+            var files = await FindFilesByPathAsync(path, appData, new List<string> { "files(md5Checksum)" }, file.MimeType);
             if (files.Count > 0)
             {
                 if (files.Count > 1) Debug.LogWarning($"UnityGoogleDrive: Multiple '{path}' files found while attempting to modify the file. Operation will modify only the first found file.");
+                if (!forceUploadContent && file.Content != null && CalculateMD5Checksum(file.Content) == files[0].Md5Checksum) file.Content = null;
                 using (var updateRequest = GoogleDriveFiles.Update(files[0].Id, file))
                 {
                     updateRequest.Fields = new List<string> { "id" };
@@ -203,5 +207,14 @@ namespace UnityGoogleDrive
             return result.Count == 0 ? null : result;
         }
         #endif
+
+        public static string CalculateMD5Checksum (byte[] content)
+        {
+            using (var md5 = MD5.Create())
+            {
+                    var hash = md5.ComputeHash(content);
+                    return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
+            }
+        }
     }
 }
