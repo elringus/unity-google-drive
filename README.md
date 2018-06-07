@@ -33,7 +33,8 @@ Automated integration tests cover the main features:
     - Final result may [look like that](https://i.gyazo.com/9d28c9b1e0201cb92ed6d8f3fc6dcfaf.png).
   - Click **Save**;
   - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file.
-- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file.
+- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file;
+- When under .NET 3.5 scripting runtime, make sure to set API compatibility level to the full .NET 2.0 profile (not subset) to prevent [JSON parsing issues](https://github.com/Elringus/UnityGoogleDrive/issues/6) on AOT platforms.
 
 ## Examples
 The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
