@@ -117,15 +117,15 @@ namespace UnityGoogleDrive
                     "&access_type=offline" + // Forces to return a refresh token at the auth code exchange phase.
                     "&approval_prompt=force", // Forces to show consent screen for each auth request. Needed to return refresh tokens on consequent auth runs.
                 settings.AuthCredentials.AuthUri,
-                string.Join(" ", settings.AccessScopes.ToArray()),
-                redirectUri,
+                Uri.EscapeDataString(string.Join(" ", settings.AccessScopes.ToArray())),
+                Uri.EscapeDataString(redirectUri),
                 settings.AuthCredentials.ClientId,
                 expectedState,
                 codeChallenge,
                 GoogleDriveSettings.CODE_CHALLENGE_METHOD);
 
             // Open request in the browser.
-            Application.OpenURL(Uri.EscapeUriString(authRequest));
+            Application.OpenURL(authRequest);
 
             // Wait for the authorization response.
             httpListener.BeginGetContext(new AsyncCallback(HandleHttpListenerCallback), httpListener);
