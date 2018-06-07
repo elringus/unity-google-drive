@@ -128,7 +128,7 @@ namespace UnityGoogleDrive
             Application.OpenURL(authRequest);
 
             // Wait for the authorization response.
-            httpListener.BeginGetContext(new AsyncCallback(HandleHttpListenerCallback), httpListener);
+            httpListener.BeginGetContext(HandleHttpListenerCallback, httpListener);
         }
 
         private void HandleHttpListenerCallback (IAsyncResult result)
