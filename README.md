@@ -64,7 +64,7 @@ Most of the response properties are null by default. You have to explicitly requ
 ### How to access a file using its path?
 A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path we have to find ID of the file's parent folder, and for this we need IDs of all the folders in the chain. Thus, we have to traverse the entire hierarchy chain using `GoogleDriveFiles.List` requests. 
 
-You can find a naive implementation of the aforementioned logic in [the example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs) or use [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/12e06a0851691c8cb3cadc266c1caf12a6261bc3/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs#L43) to find files via path (requires .NET 4.x).
+You can find a naive implementation of the aforementioned logic via Unity's coroutine in the [example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs) and use it as a reference for your own solution or utilize the [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
 
 More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
