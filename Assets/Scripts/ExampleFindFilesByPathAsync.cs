@@ -66,7 +66,7 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
         }
         else
         {
-            var files = await Helpers.FindFilesByPathAsync(path, fields: new List<string> { "files(id, name, size, modifiedTime)" }, mime: folder ? Helpers.FOLDER_MIME_TYPE : null);
+            var files = await Helpers.FindFilesByPathAsync(path, fields: new List<string> { "files(id, name, size, mimeType, modifiedTime)" }, mime: folder ? Helpers.FOLDER_MIME_TYPE : null);
             BuildResults(files);
         }
 
@@ -81,9 +81,10 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
 
         foreach (var file in fileList)
         {
-            var fileInfo = string.Format("Name: {0} Size: {1:0.00}MB Modified: {2:dd.MM.yyyy}",
+            var fileInfo = string.Format("Name: {0} Size: {1:0.00}MB '{2}' Modified: {3:dd.MM.yyyy}",
                 file.Name,
                 file.Size * .000001f,
+                file.MimeType,
                 file.ModifiedTime);
             results.Add(file.Id ?? "Failed", fileInfo);
         }
