@@ -586,17 +586,6 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
-        /// Downloads a file's content by ID of the provided file.
-        /// For a partial download provide <paramref name="downloadRange"/> argument. More info: <see cref="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
-        /// </summary>
-        /// <param name="fileId">The file to download content for. File's <see cref="Data.File.Id"/> field must be valid.</param>
-        /// <param name="downloadRange">The portion of the file you want to dowload (a byte range). Will download the full file when null (default).</param>
-        public static DownloadRequest Download (Data.File file, RangeInt? downloadRange = null)
-        {
-            return new DownloadRequest(file, downloadRange);
-        }
-
-        /// <summary>
         /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
         /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
         /// Be aware, that Unity support for encoding formats is limited depending on the platform. 
@@ -606,30 +595,6 @@ namespace UnityGoogleDrive
         /// <param name="audioType">The type of audio encoding for the downloaded audio clip.</param>
         public static DownloadAudioRequest DownloadAudio (string fileId, AudioType audioType)
         {
-            return new DownloadAudioRequest(fileId, audioType);
-        }
-
-        /// <summary>
-        /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
-        /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
-        /// Be aware, that Unity support for encoding formats is limited depending on the platform. 
-        /// Eg: mp3 not supported on editor and standalones, ogg not availabile on WebGL, etc.
-        /// </summary>
-        /// <param name="file">Meta of the audio file to download. Must have a valid <see cref="Data.File.Id"/> and <see cref="Data.File.MimeType"/> fields.</param>
-        public static DownloadAudioRequest DownloadAudio (Data.File file)
-        {
-            var fileId = file.Id;
-            if (string.IsNullOrEmpty(fileId)) Debug.LogError("Invalid file ID.");
-            var audioType = AudioType.UNKNOWN;
-            switch (file.MimeType)
-            {
-                case "audio/aiff": audioType = AudioType.AIFF; break;
-                case "audio/mpeg": audioType = AudioType.MPEG; break;
-                case "audio/ogg": audioType = AudioType.OGGVORBIS; break;
-                case "video/ogg": audioType = AudioType.OGGVORBIS; break;
-                case "audio/wav": audioType = AudioType.WAV; break;
-            }
-            if (audioType == AudioType.UNKNOWN) Debug.LogError("Unsupported audio MIME type.");
             return new DownloadAudioRequest(fileId, audioType);
         }
 

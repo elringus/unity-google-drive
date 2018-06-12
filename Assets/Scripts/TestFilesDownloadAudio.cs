@@ -48,7 +48,7 @@ public class TestFilesDownloadAudio : MonoBehaviour
 
     private void DownloadAudio (UnityGoogleDrive.Data.File file)
     {
-        downloadRequest = GoogleDriveFiles.DownloadAudio(file);
+        downloadRequest = GoogleDriveFiles.DownloadAudio(file.Id, AudioType.UNKNOWN);
         downloadRequest.Send().OnDone += PlayAudio;
     }
 
