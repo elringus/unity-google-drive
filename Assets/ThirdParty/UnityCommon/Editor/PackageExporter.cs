@@ -13,13 +13,19 @@ namespace UnityCommon
     [InitializeOnLoad]
     public class PackageExporter : EditorWindow
     {
+        public interface IProcessor
+        {
+            void OnPackagePreProcess ();
+            void OnPackagePostProcess ();
+        }
+
         protected static string PackageName { get { return PlayerPrefs.GetString(PREFS_PREFIX + "PackageName"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "PackageName", value); } }
         protected static string Copyright { get { return PlayerPrefs.GetString(PREFS_PREFIX + "Copyright"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "Copyright", value); } }
         protected static string AssetsPath { get { return "Assets/" + PackageName; } }
         protected static string OutputPath { get { return PlayerPrefs.GetString(PREFS_PREFIX + "OutputPath"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "OutputPath", value); } }
         protected static string OutputFileName { get { return PackageName; } }
-        protected static string IgnoredPaths { get { return PlayerPrefs.GetString(PREFS_PREFIX + "IgnoredPaths"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "IgnoredPaths", value); } }
-        private static bool IsAnyPathsIgnored { get { return !string.IsNullOrEmpty(IgnoredPaths); } }
+        protected static string IgnoredAssetGUIds { get { return PlayerPrefs.GetString(PREFS_PREFIX + "IgnoredAssetGUIds"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "IgnoredAssetGUIds", value); } }
+        private static bool IsAnyPathsIgnored { get { return !string.IsNullOrEmpty(IgnoredAssetGUIds); } }
         protected static bool IsReadyToExport { get { return !string.IsNullOrEmpty(OutputPath) && !string.IsNullOrEmpty(OutputFileName); } }
 
         private const string TEMP_FOLDER_NAME = "!TEMP_PACKAGE_EXPORTER";
@@ -27,11 +33,29 @@ namespace UnityCommon
         private const string TAB_CHARS = "    ";
 
         private static Dictionary<string, string> modifiedScripts = new Dictionary<string, string>();
+        private static List<UnityEngine.Object> ignoredAssets = new List<UnityEngine.Object>();
+
+        public static void AddIgnoredAsset (string assetPath)
+        {
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+            if (!IgnoredAssetGUIds.Contains(guid)) IgnoredAssetGUIds += "," + guid;
+        }
+
+        public static void RemoveIgnoredAsset (string assetPath)
+        {
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+            if (!IgnoredAssetGUIds.Contains(guid)) IgnoredAssetGUIds = IgnoredAssetGUIds.Replace(guid, string.Empty);
+        }
 
         private void Awake ()
         {
             if (string.IsNullOrEmpty(PackageName))
                 PackageName = Application.productName;
+        }
+
+        private void OnEnable ()
+        {
+            DeserealizeIgnoredAssets();
         }
 
         [MenuItem("Edit/Project Settings/Package Exporter")]
@@ -62,24 +86,65 @@ namespace UnityCommon
                     OutputPath = EditorUtility.OpenFolderPanel("Output Path", "", "");
             }
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Ignored paths (split with new line, start with 'Assets/...'): ");
-            IgnoredPaths = EditorGUILayout.TextArea(IgnoredPaths);
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.LabelField("Ignored assets: ");
+            for (int i = 0; i < ignoredAssets.Count; i++)
+                ignoredAssets[i] = EditorGUILayout.ObjectField(ignoredAssets[i], typeof(UnityEngine.Object), false);
+            if (GUILayout.Button("+")) ignoredAssets.Add(null);
+            if (EditorGUI.EndChangeCheck()) SerializeIgnoredAssets();
+        }
+
+        private static void SerializeIgnoredAssets ()
+        {
+            var ignoredAseetsGUIDs = new List<string>();
+            foreach (var asset in ignoredAssets)
+            {
+                if (!asset) continue;
+                var assetPath = AssetDatabase.GetAssetPath(asset);
+                var assetGUID = AssetDatabase.AssetPathToGUID(assetPath);
+                ignoredAseetsGUIDs.Add(assetGUID);
+            }
+            IgnoredAssetGUIds = string.Join(",", ignoredAseetsGUIDs.ToArray());
+        }
+
+        private static void DeserealizeIgnoredAssets ()
+        {
+            ignoredAssets.Clear();
+            var ignoredAseetsGUIDs = IgnoredAssetGUIds.Split(',');
+            foreach (var guid in ignoredAseetsGUIDs)
+            {
+                if (string.IsNullOrEmpty(guid)) continue;
+                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+                if (asset) ignoredAssets.Add(asset);
+            }
+        }
+
+        private static bool IsAssetIgnored (string assetPath)
+        {
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+            return IgnoredAssetGUIds.Contains(guid);
         }
 
         private static void ExportPackageImpl ()
         {
+            DisplayProgressBar("Pre-processing assets...", 0f);
+            var processors = GetProcessors();
+            foreach (var proc in processors)
+                proc.OnPackagePreProcess();
+
             // Temporary move-out ignored assets.
-            DisplayProgressBar("Moving-out ignored assets...", 0f);
+            DisplayProgressBar("Moving-out ignored assets...", 1f);
             var tmpFolderPath = string.Empty;
             if (IsAnyPathsIgnored)
             {
                 var tmpFolderGuid = AssetDatabase.CreateFolder("Assets", TEMP_FOLDER_NAME);
                 tmpFolderPath = AssetDatabase.GUIDToAssetPath(tmpFolderGuid);
-                var ignoredPaths = IgnoredPaths.SplitByNewLine().ToList();
                 foreach (var path in AssetDatabase.GetAllAssetPaths())
                 {
                     if (!path.StartsWith(AssetsPath)) continue;
-                    if (!ignoredPaths.Exists(p => path.StartsWith(p))) continue;
+                    if (!IsAssetIgnored(path)) continue;
 
                     var movePath = path.Replace(AssetsPath, tmpFolderPath);
                     var moveDirectory = movePath.GetBeforeLast("/");
@@ -147,12 +212,24 @@ namespace UnityCommon
                 AssetDatabase.DeleteAsset(tmpFolderPath);
             }
 
+            DisplayProgressBar("Post-processing assets...", 1f);
+            foreach (var proc in processors)
+                proc.OnPackagePostProcess();
+
             EditorUtility.ClearProgressBar();
         }
 
         private static void DisplayProgressBar (string activity, float progress)
         {
             EditorUtility.DisplayProgressBar(string.Format("Exporting {0}", PackageName), activity, progress);
+        }
+
+        private static IEnumerable<IProcessor> GetProcessors ()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => typeof(IProcessor).IsAssignableFrom(t) && t.IsClass)
+                .Select(t => (IProcessor)Activator.CreateInstance(t));
         }
     }
 }
