@@ -89,7 +89,7 @@ namespace UnityCommon
             EditorGUILayout.Space();
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.LabelField("Ignored assets: ");
+            EditorGUILayout.LabelField("Ignored folders: ");
             for (int i = 0; i < ignoredAssets.Count; i++)
                 ignoredAssets[i] = EditorGUILayout.ObjectField(ignoredAssets[i], typeof(UnityEngine.Object), false);
             if (GUILayout.Button("+")) ignoredAssets.Add(null);
