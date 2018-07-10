@@ -192,7 +192,7 @@ namespace UnityGoogleDrive
 
         protected void SetDefaultContentHeader (UnityWebRequest webRequest)
         {
-            webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
+            webRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.RequestContentType);
         }
 
         protected void SetQueryPayload (UnityWebRequest webRequest)
@@ -226,7 +226,7 @@ namespace UnityGoogleDrive
 
         protected virtual void HandleWebRequestDone (AsyncOperation requestYeild)
         {
-            if (WebRequest.responseCode == GoogleDriveSettings.UNAUTHORIZED_RESPONSE_CODE)
+            if (WebRequest.responseCode == GoogleDriveSettings.UnauthorizedResponseCode)
             {
                 HandleUnauthorizedResponse();
                 return;

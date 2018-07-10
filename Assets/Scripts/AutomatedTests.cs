@@ -7,7 +7,7 @@ using UnityGoogleDrive;
 
 public class AutomatedTests
 {
-    private const string TEST_RESOURCE_PATH = "TestImage";
+    private const string testResourcePath = "TestImage";
 
     private string createdFileId;
     private string copiedFileId;
@@ -43,7 +43,7 @@ public class AutomatedTests
     [UnityTest]
     public IEnumerator Test004_FilesCreate ()
     {
-        var content = Resources.Load<Texture2D>(TEST_RESOURCE_PATH).EncodeToPNG();
+        var content = Resources.Load<Texture2D>(testResourcePath).EncodeToPNG();
         var file = new UnityGoogleDrive.Data.File() { Name = "AutoTestUpload", Content = content };
         var request = GoogleDriveFiles.Create(file);
         request.Fields = new List<string> { "id" };

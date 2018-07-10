@@ -66,7 +66,7 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
         }
         else
         {
-            var files = await Helpers.FindFilesByPathAsync(path, fields: new List<string> { "files(id, name, size, mimeType, modifiedTime)" }, mime: folder ? Helpers.FOLDER_MIME_TYPE : null);
+            var files = await Helpers.FindFilesByPathAsync(path, fields: new List<string> { "files(id, name, size, mimeType, modifiedTime)" }, mime: folder ? Helpers.FolderMimeType : null);
             BuildResults(files);
         }
 

@@ -40,7 +40,7 @@ namespace UnityGoogleDrive
             refreshRequestForm.AddField("grant_type", "refresh_token");
 
             refreshRequest = UnityWebRequest.Post(refreshRequestURI, refreshRequestForm);
-            refreshRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
+            refreshRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.RequestContentType);
             refreshRequest.SetRequestHeader("Accept", "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             refreshRequest.SendWebRequest().completed += HandleRequestComplete;
         }

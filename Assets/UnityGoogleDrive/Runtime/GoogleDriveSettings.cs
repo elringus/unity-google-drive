@@ -8,9 +8,9 @@ namespace UnityGoogleDrive
     /// </summary>
     public class GoogleDriveSettings : ScriptableObject
     {
-        public const string REQUEST_CONTENT_TYPE = "application/x-www-form-urlencoded";
-        public const string CODE_CHALLENGE_METHOD = "S256";
-        public const int UNAUTHORIZED_RESPONSE_CODE = 401;
+        public const string RequestContentType = "application/x-www-form-urlencoded";
+        public const string CodeChallengeMethod = "S256";
+        public const int UnauthorizedResponseCode = 401;
 
         /// <summary>
         /// Google Drive API application credentials used to authorize requests.

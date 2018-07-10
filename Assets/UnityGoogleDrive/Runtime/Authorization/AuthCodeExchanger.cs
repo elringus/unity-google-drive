@@ -44,7 +44,7 @@ namespace UnityGoogleDrive
             tokenRequestForm.AddField("grant_type", "authorization_code");
 
             exchangeRequest = UnityWebRequest.Post(tokenRequestURI, tokenRequestForm);
-            exchangeRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.REQUEST_CONTENT_TYPE);
+            exchangeRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.RequestContentType);
             exchangeRequest.SetRequestHeader("Accept", "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             exchangeRequest.SendWebRequest().completed += HandleRequestComplete;
         }

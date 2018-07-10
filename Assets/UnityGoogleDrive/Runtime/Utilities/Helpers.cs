@@ -12,19 +12,19 @@ namespace UnityGoogleDrive
         /// <summary>
         /// ID alias of the drive's root folder.
         /// </summary>
-        public const string ROOT_ALIAS = "root";
+        public const string RootAlias = "root";
         /// <summary>
         /// ID alias of the app data folder.
         /// </summary>
-        public const string APPDATA_ALIAS = "appDataFolder";
+        public const string AppDataAlias = "appDataFolder";
         /// <summary>
         /// Main user's space, starting at the root.
         /// </summary>
-        public const string DRIVE_SPACE = "drive";
+        public const string DriveSpace = "drive";
         /// <summary>
         /// A special hidden space that your app can use to store application data.
         /// </summary>
-        public const string APPDATA_SPACE = "appDataFolder";
+        public const string AppDataSpace = "appDataFolder";
 
         /// <summary>
         /// The MIME type of a <see cref="Data.File"/> representing a folder in Google Drive.
@@ -33,23 +33,23 @@ namespace UnityGoogleDrive
         /// A folder in Google Drive is actually a file with the special MIME type. 
         /// More info: https://developers.google.com/drive/api/v3/folder.
         /// </remarks>
-        public const string FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
+        public const string FolderMimeType = "application/vnd.google-apps.folder";
         /// <summary>
         /// The MIME type of a Google Document.
         /// </summary>
-        public const string DOCUMENT_MIME_TYPE = "application/vnd.google-apps.document";
+        public const string DocumentMimeType = "application/vnd.google-apps.document";
         /// <summary>
         /// The MIME type of a Google Sheet.
         /// </summary>
-        public const string SHEET_MIME_TYPE = "application/vnd.google-apps.spreadsheet";
+        public const string SheetMimeType = "application/vnd.google-apps.spreadsheet";
         /// <summary>
         /// The MIME type of a Google Slides.
         /// </summary>
-        public const string SLIDES_MIME_TYPE = "application/vnd.google-apps.presentation";
+        public const string SlidesMimeType = "application/vnd.google-apps.presentation";
         /// <summary>
         /// The MIME type of a Google App Script.
         /// </summary>
-        public const string SCRIPT_MIME_TYPE = "application/vnd.google-apps.script";
+        public const string ScriptMimeType = "application/vnd.google-apps.script";
 
         #if NET_4_6 || NET_STANDARD_2_0
         /// <summary>
@@ -80,7 +80,7 @@ namespace UnityGoogleDrive
             string pageToken = null;
             do
             {
-                var listRequest = GoogleDriveFiles.List(query, fields, appData ? APPDATA_SPACE : DRIVE_SPACE, pageToken);
+                var listRequest = GoogleDriveFiles.List(query, fields, appData ? AppDataSpace : DriveSpace, pageToken);
                 var fileList = await listRequest.Send();
                 if (fileList?.Files?.Count > 0) result.AddRange(fileList.Files);
                 pageToken = fileList?.NextPageToken;
@@ -129,7 +129,7 @@ namespace UnityGoogleDrive
             // Some of the folders are missing; create them.
             if (parentIds.Count == 0) 
             {
-                var parentId = appData ? APPDATA_ALIAS : ROOT_ALIAS;
+                var parentId = appData ? AppDataAlias : RootAlias;
                 path = Path.GetDirectoryName(path).Replace('\\', '/');
                 var parentNames = path.Split('/').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
 
@@ -138,8 +138,8 @@ namespace UnityGoogleDrive
                     using (var listRequest = new GoogleDriveFiles.ListRequest())
                     {
                         listRequest.Fields = new List<string> { "files(id)" };
-                        listRequest.Spaces = appData ? APPDATA_SPACE : DRIVE_SPACE;
-                        listRequest.Q = $"'{parentId}' in parents and name = '{parentNames[i]}' and mimeType = '{FOLDER_MIME_TYPE}' and trashed = false";
+                        listRequest.Spaces = appData ? AppDataAlias : DriveSpace;
+                        listRequest.Q = $"'{parentId}' in parents and name = '{parentNames[i]}' and mimeType = '{FolderMimeType}' and trashed = false";
 
                         await listRequest.Send();
 
@@ -148,7 +148,7 @@ namespace UnityGoogleDrive
                         // Next folder at the current level is missing; create it.
                         if (listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
                         {
-                            var folder = new Data.File { Name = parentNames[i], MimeType = FOLDER_MIME_TYPE, Parents = new List<string> { parentId } };
+                            var folder = new Data.File { Name = parentNames[i], MimeType = FolderMimeType, Parents = new List<string> { parentId } };
                             using (var createRequest = GoogleDriveFiles.Create(folder))
                             {
                                 createRequest.Fields = new List<string> { "id" };
@@ -183,7 +183,7 @@ namespace UnityGoogleDrive
         /// <returns>ID of the final folders in the path; null if the path is not valid.</returns>
         public static async System.Threading.Tasks.Task<HashSet<string>> ValidatePath (string path, bool appData, string parentId = null)
         {
-            if (parentId == null) parentId = appData ? APPDATA_ALIAS : ROOT_ALIAS;
+            if (parentId == null) parentId = appData ? AppDataAlias : RootAlias;
             if (string.IsNullOrWhiteSpace(path)) return new HashSet<string> { parentId };
             path = Path.GetDirectoryName(path).Replace('\\', '/');
             if (string.IsNullOrWhiteSpace(path) || path.Trim() == "/" || path.Trim() == "\\") return new HashSet<string> { parentId };
@@ -195,9 +195,9 @@ namespace UnityGoogleDrive
                 using (var listRequest = new GoogleDriveFiles.ListRequest())
                 {
                     listRequest.Fields = new List<string> { "files(id)" };
-                    listRequest.Spaces = appData ? APPDATA_SPACE : DRIVE_SPACE;
+                    listRequest.Spaces = appData ? AppDataAlias : DriveSpace;
                     listRequest.PageSize = 1000; // Assume we can't have more than 1K folders with equal names at the same level and skip the pagination.
-                    listRequest.Q = $"'{parentId}' in parents and name = '{parentNames[i]}' and mimeType = '{FOLDER_MIME_TYPE}' and trashed = false";
+                    listRequest.Q = $"'{parentId}' in parents and name = '{parentNames[i]}' and mimeType = '{FolderMimeType}' and trashed = false";
 
                     await listRequest.Send();
 
