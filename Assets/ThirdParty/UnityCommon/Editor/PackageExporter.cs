@@ -20,17 +20,17 @@ namespace UnityCommon
             void OnPackagePostProcess ();
         }
 
-        private static string PackageName { get { return PlayerPrefs.GetString(PREFS_PREFIX + "PackageName"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "PackageName", value); } }
-        private static string Copyright { get { return PlayerPrefs.GetString(PREFS_PREFIX + "Copyright"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "Copyright", value); } }
+        private static string PackageName { get { return PlayerPrefs.GetString(prefsPrefix + "PackageName"); } set { PlayerPrefs.SetString(prefsPrefix + "PackageName", value); } }
+        private static string Copyright { get { return PlayerPrefs.GetString(prefsPrefix + "Copyright"); } set { PlayerPrefs.SetString(prefsPrefix + "Copyright", value); } }
         private static string AssetsPath { get { return "Assets/" + PackageName; } }
-        private static string OutputPath { get { return PlayerPrefs.GetString(PREFS_PREFIX + "OutputPath"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "OutputPath", value); } }
+        private static string OutputPath { get { return PlayerPrefs.GetString(prefsPrefix + "OutputPath"); } set { PlayerPrefs.SetString(prefsPrefix + "OutputPath", value); } }
         private static string OutputFileName { get { return PackageName; } }
-        private static string IgnoredAssetGUIds { get { return PlayerPrefs.GetString(PREFS_PREFIX + "IgnoredAssetGUIds"); } set { PlayerPrefs.SetString(PREFS_PREFIX + "IgnoredAssetGUIds", value); } }
+        private static string IgnoredAssetGUIds { get { return PlayerPrefs.GetString(prefsPrefix + "IgnoredAssetGUIds"); } set { PlayerPrefs.SetString(prefsPrefix + "IgnoredAssetGUIds", value); } }
         private static bool IsAnyPathsIgnored { get { return !string.IsNullOrEmpty(IgnoredAssetGUIds); } }
         private static bool IsReadyToExport { get { return !string.IsNullOrEmpty(OutputPath) && !string.IsNullOrEmpty(OutputFileName); } }
 
-        private const string PREFS_PREFIX = "PackageExporter.";
-        private const string AUTO_REFRESH_KEY = "kAutoRefresh";
+        private const string prefsPrefix = "PackageExporter.";
+        private const string autoRefreshKey = "kAutoRefresh";
 
         private static Dictionary<string, string> modifiedScripts = new Dictionary<string, string>();
         private static List<UnityEngine.Object> ignoredAssets = new List<UnityEngine.Object>();
@@ -131,8 +131,8 @@ namespace UnityCommon
         private static void ExportPackageImpl ()
         {
             // Disable auto recompile.
-            var wasAutoRefreshEnabled = EditorPrefs.GetBool(AUTO_REFRESH_KEY);
-            EditorPrefs.SetBool(AUTO_REFRESH_KEY, false);
+            var wasAutoRefreshEnabled = EditorPrefs.GetBool(autoRefreshKey);
+            EditorPrefs.SetBool(autoRefreshKey, false);
 
             DisplayProgressBar("Pre-processing assets...", 0f);
             var processors = GetProcessors();
@@ -214,7 +214,7 @@ namespace UnityCommon
             foreach (var proc in processors)
                 proc.OnPackagePostProcess();
 
-            EditorPrefs.SetBool(AUTO_REFRESH_KEY, wasAutoRefreshEnabled);
+            EditorPrefs.SetBool(autoRefreshKey, wasAutoRefreshEnabled);
             if (IsAnyPathsIgnored) EditorSceneManager.RestoreSceneManagerSetup(sceneSetup);
 
             EditorUtility.ClearProgressBar();
