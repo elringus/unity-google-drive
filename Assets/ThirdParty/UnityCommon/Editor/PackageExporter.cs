@@ -1,6 +1,4 @@
-﻿// Copyright 2012-2018 Elringus (Artyom Sovetnikov). All Rights Reserved.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +20,8 @@ namespace UnityCommon
 
         private static string PackageName { get { return PlayerPrefs.GetString(prefsPrefix + "PackageName"); } set { PlayerPrefs.SetString(prefsPrefix + "PackageName", value); } }
         private static string Copyright { get { return PlayerPrefs.GetString(prefsPrefix + "Copyright"); } set { PlayerPrefs.SetString(prefsPrefix + "Copyright", value); } }
+        private static string LicenseFilePath { get { return PlayerPrefs.GetString(prefsPrefix + "LicenseFilePath"); } set { PlayerPrefs.SetString(prefsPrefix + "LicenseFilePath", value); } }
+        private static string LicenseAssetPath { get { return AssetsPath + "/" + defaultLicenseFileName + ".txt"; } }
         private static string AssetsPath { get { return "Assets/" + PackageName; } }
         private static string OutputPath { get { return PlayerPrefs.GetString(prefsPrefix + "OutputPath"); } set { PlayerPrefs.SetString(prefsPrefix + "OutputPath", value); } }
         private static string OutputFileName { get { return PackageName; } }
@@ -31,6 +31,7 @@ namespace UnityCommon
 
         private const string prefsPrefix = "PackageExporter.";
         private const string autoRefreshKey = "kAutoRefresh";
+        private const string defaultLicenseFileName = "LICENSE";
 
         private static Dictionary<string, string> modifiedScripts = new Dictionary<string, string>();
         private static List<UnityEngine.Object> ignoredAssets = new List<UnityEngine.Object>();
@@ -52,6 +53,8 @@ namespace UnityCommon
         {
             if (string.IsNullOrEmpty(PackageName))
                 PackageName = Application.productName;
+            if (string.IsNullOrEmpty(LicenseFilePath))
+                LicenseFilePath = Application.dataPath.Replace("Assets", "") + defaultLicenseFileName;
         }
 
         private void OnEnable ()
@@ -80,6 +83,7 @@ namespace UnityCommon
             EditorGUILayout.Space();
             PackageName = EditorGUILayout.TextField("Package Name", PackageName);
             Copyright = EditorGUILayout.TextField("Copyright Notice", Copyright);
+            LicenseFilePath = EditorGUILayout.TextField("License File Path", LicenseFilePath);
             using (new EditorGUILayout.HorizontalScope())
             {
                 OutputPath = EditorGUILayout.TextField("Output Path", OutputPath);
@@ -158,6 +162,14 @@ namespace UnityCommon
                 AssetDatabase.Refresh();
             }
 
+            // Add license file.
+            var needToAddLicense = File.Exists(LicenseFilePath);
+            if (needToAddLicense)
+            {
+                File.Copy(LicenseFilePath, LicenseAssetPath);
+                AssetDatabase.Refresh();
+            }
+
             // Modify scripts (namespace and copyright).
             DisplayProgressBar("Modifying scripts...", .25f);
             modifiedScripts.Clear();
@@ -209,6 +221,9 @@ namespace UnityCommon
                 }
                 AssetDatabase.Refresh();
             }
+
+            // Remove previously added license asset.
+            if (needToAddLicense) AssetDatabase.DeleteAsset(LicenseAssetPath);
 
             DisplayProgressBar("Post-processing assets...", 1f);
             foreach (var proc in processors)
