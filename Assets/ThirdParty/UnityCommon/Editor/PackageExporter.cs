@@ -134,9 +134,16 @@ namespace UnityCommon
 
         private static void ExportPackageImpl ()
         {
+            DisplayProgressBar("Preparing for export...", 0f);
+
             // Disable auto recompile.
             var wasAutoRefreshEnabled = EditorPrefs.GetBool(autoRefreshKey);
             EditorPrefs.SetBool(autoRefreshKey, false);
+
+            // Load a temp scene and unload assets to prevent reference errors.
+            sceneSetup = EditorSceneManager.GetSceneManagerSetup();
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
+            EditorUtility.UnloadUnusedAssetsImmediate(true);
 
             DisplayProgressBar("Pre-processing assets...", 0f);
             var processors = GetProcessors();
@@ -151,15 +158,12 @@ namespace UnityCommon
             DisplayProgressBar("Hiding ignored assets...", .1f);
             if (IsAnyPathsIgnored)
             {
-                // Load a temp scene to prevent errors when hiding source assets.
-                sceneSetup = EditorSceneManager.GetSceneManagerSetup();
-                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
                 foreach (var path in ignoredPaths)
                 {
                     File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
                     File.SetAttributes(path + ".meta", File.GetAttributes(path) | FileAttributes.Hidden);
                 }
-                AssetDatabase.Refresh();
+                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             }
 
             // Add license file.
@@ -167,7 +171,7 @@ namespace UnityCommon
             if (needToAddLicense)
             {
                 File.Copy(LicenseFilePath, LicenseAssetPath);
-                AssetDatabase.Refresh();
+                AssetDatabase.ImportAsset(LicenseAssetPath, ImportAssetOptions.ForceSynchronousImport);
             }
 
             // Modify scripts (namespace and copyright).
@@ -230,7 +234,7 @@ namespace UnityCommon
                 proc.OnPackagePostProcess();
 
             EditorPrefs.SetBool(autoRefreshKey, wasAutoRefreshEnabled);
-            if (IsAnyPathsIgnored) EditorSceneManager.RestoreSceneManagerSetup(sceneSetup);
+            EditorSceneManager.RestoreSceneManagerSetup(sceneSetup);
 
             EditorUtility.ClearProgressBar();
         }
