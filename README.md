@@ -56,6 +56,18 @@ var aboutData = await GoogleDriveAbout.Get().Send();
 
 For more examples take a look at [test scripts](https://github.com/Elringus/UnityGoogleDrive/tree/master/Assets/Scripts).
 
+## Implemented APIs
+The following [Google Drive APIs](https://developers.google.com/drive/api/v3/reference/) are currently implemented:
+- [x] [About](https://developers.google.com/drive/api/v3/reference/about)
+- [x] [Changes](https://developers.google.com/drive/api/v3/reference/changes)
+- [ ] [Channels](https://developers.google.com/drive/api/v3/reference/channels)
+- [ ] [Comments](https://developers.google.com/drive/api/v3/reference/comments)
+- [x] [Files](https://developers.google.com/drive/api/v3/reference/files)
+- [ ] [Permissions](https://developers.google.com/drive/api/v3/reference/permissions)
+- [ ] [Replies](https://developers.google.com/drive/api/v3/reference/replies)
+- [ ] [Revisions](https://developers.google.com/drive/api/v3/reference/revisions)
+- [x] [Teamdrives](https://developers.google.com/drive/api/v3/reference/teamdrives)
+
 ## FAQ
 
 ### Why the returned properties of the response are all null?
