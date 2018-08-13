@@ -46,10 +46,9 @@ namespace UnityGoogleDrive
         private void HandleAccessTokenProviderDone (IAccessTokenProvider provider)
         {
             if (provider.IsError)
-            {
                 Debug.LogError("UnityGoogleDrive: Failed to execute authorization procedure. Check application settings and credentials.");
-            }
-            else IsRefreshingAccessToken = false;
+
+            IsRefreshingAccessToken = false;
 
             if (OnAccessTokenRefreshed != null)
                 OnAccessTokenRefreshed.Invoke(!provider.IsError);

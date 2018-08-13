@@ -258,6 +258,7 @@ namespace UnityGoogleDrive
         {
             AuthController.OnAccessTokenRefreshed -= HandleAccessTokenRefreshed;
             if (success) SendWebRequest();
+            else { Error = "Authorization error."; CompleteRequest(); }
         }
 
         /// <summary>
