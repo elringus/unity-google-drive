@@ -38,6 +38,9 @@ public class TestAboutGet : MonoBehaviour
                 request.ResponseData.StorageQuota.Usage * .000001f,
                 request.ResponseData.StorageQuota.Limit * .000001f));
         }
+
+        if (request.IsError)
+            GUILayout.Label(string.Format("Request failed: {0}", request.Error));
     }
 
     private void UpdateInfo ()
