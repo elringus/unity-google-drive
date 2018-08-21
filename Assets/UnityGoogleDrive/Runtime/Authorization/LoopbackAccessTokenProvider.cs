@@ -128,7 +128,11 @@ namespace UnityGoogleDrive
             Application.OpenURL(authRequest);
 
             // Wait for the authorization response.
-            httpListener.BeginGetContext(HandleHttpListenerCallback, httpListener);
+            var asyncResult = httpListener.BeginGetContext(HandleHttpListenerCallback, httpListener);
+
+            // Block the thread when backround mode is not supported to serve HTTP response while the application is not in focus.
+            if ((Application.isMobilePlatform && !Application.isEditor) || !Application.runInBackground)
+                asyncResult.AsyncWaitHandle.WaitOne();
         }
 
         private void HandleHttpListenerCallback (IAsyncResult result)
