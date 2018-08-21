@@ -7,7 +7,13 @@ public class TestAboutGet : MonoBehaviour
     public Rect WindowRect = new Rect(10, 10, 940, 580);
 
     private GoogleDriveAbout.GetRequest request;
-         
+    private GoogleDriveSettings settings;
+
+    private void Awake ()
+    {
+        settings = GoogleDriveSettings.LoadFromResources();
+    }
+
     private void Start ()
     {
         UpdateInfo();
@@ -29,6 +35,9 @@ public class TestAboutGet : MonoBehaviour
             if (GUILayout.Button("Refresh"))
                 UpdateInfo();
         }
+
+        if (settings.IsAnyAuthTokenCached() && GUILayout.Button("Delete Cached Tokens"))
+            settings.DeleteCachedAuthTokens();
 
         if (request.ResponseData != null)
         {
