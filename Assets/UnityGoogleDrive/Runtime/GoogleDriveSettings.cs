@@ -29,7 +29,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// HTML page shown to the user when loopback response is received.
         /// </summary>
-        public string LoopbackResponseHtml { get { return loopbackResponseHtml; } }
+        public string LoopbackResponseHtml { get { return loopbackResponseHtml; } set { loopbackResponseHtml = value; } }
         /// <summary>
         /// Token used to authenticate requests; cached in <see cref="PlayerPrefs"/>.
         /// </summary>
