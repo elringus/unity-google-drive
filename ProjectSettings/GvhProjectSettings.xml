@@ -1,0 +1,13 @@
+<projectSettings>
+  <projectSetting name="Google.VersionHandler.CleanUpPromptEnabled" value="True" />
+  <projectSetting name="Google.VersionHandler.RenameToCanonicalFilenames" value="False" />
+  <projectSetting name="Google.VersionHandler.VerboseLoggingEnabled" value="False" />
+  <projectSetting name="Google.VersionHandler.VersionHandlingEnabled" value="True" />
+  <projectSetting name="GooglePlayServices.AndroidPackageInstallationEnabled" value="True" />
+  <projectSetting name="GooglePlayServices.AutoResolutionDisabledWarning" value="True" />
+  <projectSetting name="GooglePlayServices.AutoResolverEnabled" value="True" />
+  <projectSetting name="GooglePlayServices.ExplodeAars" value="True" />
+  <projectSetting name="GooglePlayServices.PatchAndroidManifest" value="True" />
+  <projectSetting name="GooglePlayServices.UseGradleDaemon" value="False" />
+  <projectSetting name="GooglePlayServices.VerboseLogging" value="False" />
+</projectSettings>
