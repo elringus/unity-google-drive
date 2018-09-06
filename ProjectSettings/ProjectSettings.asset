@@ -151,7 +151,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.Elringus.UnityGoogleDrive
+    Android: com.elringus.unitygoogledrive
     iOS: com.Elringus.UnityGoogleDrive
   buildNumber: {}
   AndroidBundleVersionCode: 1

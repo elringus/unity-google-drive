@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using UnityEngine;
 
 namespace UnityGoogleDrive
@@ -38,6 +39,7 @@ namespace UnityGoogleDrive
         const string authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
         const string tokenEndpoint = "https://accounts.google.com/o/oauth2/token";
 
+        private SynchronizationContext unitySyncContext;
         private GoogleDriveSettings settings;
         private AccessTokenRefresher accessTokenRefresher;
         private AuthCodeExchanger authCodeExchanger;
@@ -45,6 +47,7 @@ namespace UnityGoogleDrive
         public AndroidAccessTokenProvider (GoogleDriveSettings googleDriveSettings)
         {
             settings = googleDriveSettings;
+            unitySyncContext = SynchronizationContext.Current;
 
             accessTokenRefresher = new AccessTokenRefresher(settings);
             accessTokenRefresher.OnDone += HandleAccessTokenRefreshed;
@@ -113,14 +116,13 @@ namespace UnityGoogleDrive
 
         private void ExecuteFullAuth ()
         {
-            var redirectEndpoint = Uri.EscapeDataString(settings.UriSchemeClientCredentials.ReversedClientId + ":/oauth2redirect");
-            var scope = Uri.EscapeDataString(string.Join(" ", settings.AccessScopes.ToArray()));
+            var redirectEndpoint = Application.identifier + ":/oauth2callback";
+            var scope = string.Join(" ", settings.AccessScopes.ToArray());
             var responseListener = new OnAuthorizationResponseListener();
             responseListener.OnAuthResponse += HandleAuthorizationResponse;
 
             var applicationClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             var applicationActivity = applicationClass.GetStatic<AndroidJavaObject>("currentActivity");
-            //var applicationContext = applicationActivity.Call<AndroidJavaObject>("getApplicationContext");
 
             var activityClass = new AndroidJavaClass("net.openid.appauth.AuthorizationClientActivity");
             activityClass.CallStatic("SetResponseListener", responseListener);
@@ -132,13 +134,26 @@ namespace UnityGoogleDrive
             intent.Call<AndroidJavaObject>("putExtra", "redirectEndpoint", ToJavaObject(redirectEndpoint));
             intent.Call<AndroidJavaObject>("putExtra", "scope", ToJavaObject(scope));
             applicationActivity.Call("startActivity", intent);
-
-            Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ExecuteFullAuth END <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         }
 
         private void HandleAuthorizationResponse (AuthorizationResponse response)
         {
-            Debug.Log("Response: " + response.IsError + " " + response.Error + " " + response.AuthorizationCode);
+            // This method is called on a background thread; rerouting it to the Unity's thread.
+            unitySyncContext.Post(HandleAuthorizationResponseOnUnityThread, response);
+        }
+
+        private void HandleAuthorizationResponseOnUnityThread (object responseObj)
+        {
+            var response = (AuthorizationResponse)responseObj;
+
+            if (response.IsError)
+            {
+                Debug.LogError(string.Format("UnityGoogleDrive: OAuth authorization error: {0}.", response.Error));
+                HandleProvideAccessTokenComplete(true);
+                return;
+            }
+
+            authCodeExchanger.ExchangeAuthCode(response.AuthorizationCode, null, null);
         }
 
         private static AndroidJavaObject ToJavaObject (string value)
