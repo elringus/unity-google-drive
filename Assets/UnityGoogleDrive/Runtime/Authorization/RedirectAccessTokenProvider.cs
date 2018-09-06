@@ -26,7 +26,7 @@ namespace UnityGoogleDrive
 
         public void ProvideAccessToken ()
         {
-            if (!settings.AuthCredentials.ContainsSensitiveData())
+            if (!settings.GenericClientCredentials.ContainsSensitiveData())
             {
                 HandleProvideAccessTokenComplete(true);
                 return;
@@ -36,10 +36,10 @@ namespace UnityGoogleDrive
             if (string.IsNullOrEmpty(accessToken)) // Access token isn't available; retrieve it.
             {
                 var authRequest = string.Format("{0}?response_type=token&scope={1}&redirect_uri={2}&client_id={3}",
-                    settings.AuthCredentials.AuthUri,
+                    settings.GenericClientCredentials.AuthUri,
                     string.Join(" ", settings.AccessScopes.ToArray()),
                     Uri.EscapeDataString(Application.absoluteURL),
-                    settings.AuthCredentials.ClientId);
+                    settings.GenericClientCredentials.ClientId);
 
                 Application.OpenURL(authRequest);
             }

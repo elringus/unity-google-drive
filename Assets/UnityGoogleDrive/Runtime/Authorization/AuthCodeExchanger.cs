@@ -32,14 +32,14 @@ namespace UnityGoogleDrive
 
         public void ExchangeAuthCode (string authorizationCode, string codeVerifier, string redirectUri)
         {
-            var tokenRequestURI = settings.AuthCredentials.TokenUri;
+            var tokenRequestURI = settings.GenericClientCredentials.TokenUri;
 
             var tokenRequestForm = new WWWForm();
             tokenRequestForm.AddField("code", authorizationCode);
             tokenRequestForm.AddField("redirect_uri", redirectUri);
-            tokenRequestForm.AddField("client_id", settings.AuthCredentials.ClientId);
+            tokenRequestForm.AddField("client_id", settings.GenericClientCredentials.ClientId);
             tokenRequestForm.AddField("code_verifier", codeVerifier);
-            tokenRequestForm.AddField("client_secret", settings.AuthCredentials.ClientSecret);
+            tokenRequestForm.AddField("client_secret", settings.GenericClientCredentials.ClientSecret);
             tokenRequestForm.AddField("scope", string.Join(" ", settings.AccessScopes.ToArray()));
             tokenRequestForm.AddField("grant_type", "authorization_code");
 

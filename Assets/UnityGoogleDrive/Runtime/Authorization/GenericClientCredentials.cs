@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UnityGoogleDrive
 {
     [System.Serializable]
-    public class AuthCredentials
+    public class GenericClientCredentials
     {
         public string ClientId { get { return client_id; } }
         public string ProjectId { get { return project_id; } }
@@ -22,9 +22,9 @@ namespace UnityGoogleDrive
         [SerializeField] private string client_secret = null;
         [SerializeField] private List<string> redirect_uris = null;
 
-        public static AuthCredentials FromJson (string json)
+        public static GenericClientCredentials FromJson (string json)
         {
-            return JsonUtility.FromJson<AuthCredentials>(json);
+            return JsonUtility.FromJson<GenericClientCredentials>(json);
         }
 
         public void OverwriteFromJson (string json)

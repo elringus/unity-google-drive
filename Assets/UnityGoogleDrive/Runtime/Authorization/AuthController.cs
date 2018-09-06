@@ -25,10 +25,13 @@ namespace UnityGoogleDrive
         {
             settings = googleDriveSettings;
 
-            // WebGL doesn't support loopback method; using redirection scheme instead.
-            #if UNITY_WEBGL && !UNITY_EDITOR
+            #if UNITY_WEBGL && !UNITY_EDITOR // WebGL doesn't support loopback method; using redirection scheme instead.
             accessTokenProvider = new RedirectAccessTokenProvider(settings);
-            #else
+            #elif UNITY_ANDROID && !UNITY_EDITOR // On Android a native OpenID lib is used for better UX.
+            accessTokenProvider = new AndroidAccessTokenProvider(settings);
+            #elif UNITY_IOS && !UNITY_EDITOR // On iOS a native OpenID lib is used for better UX.
+            accessTokenProvider = new IOSAccessTokenProvider(settings);
+            #else // Loopback scheme is used on other platforms.
             accessTokenProvider = new LoopbackAccessTokenProvider(settings);
             #endif
 

@@ -31,11 +31,11 @@ namespace UnityGoogleDrive
 
         public void RefreshAccessToken (string refreshToken)
         {
-            var refreshRequestURI = settings.AuthCredentials.TokenUri;
+            var refreshRequestURI = settings.GenericClientCredentials.TokenUri;
 
             var refreshRequestForm = new WWWForm();
-            refreshRequestForm.AddField("client_id", settings.AuthCredentials.ClientId);
-            refreshRequestForm.AddField("client_secret", settings.AuthCredentials.ClientSecret);
+            refreshRequestForm.AddField("client_id", settings.GenericClientCredentials.ClientId);
+            refreshRequestForm.AddField("client_secret", settings.GenericClientCredentials.ClientSecret);
             refreshRequestForm.AddField("refresh_token", refreshToken);
             refreshRequestForm.AddField("grant_type", "refresh_token");
 

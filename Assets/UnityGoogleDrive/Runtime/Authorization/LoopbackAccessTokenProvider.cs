@@ -40,8 +40,9 @@ namespace UnityGoogleDrive
 
         public void ProvideAccessToken ()
         {
-            if (!settings.AuthCredentials.ContainsSensitiveData())
+            if (!settings.GenericClientCredentials.ContainsSensitiveData())
             {
+                Debug.LogError("Generic credentials are not valid.");
                 HandleProvideAccessTokenComplete(true);
                 return;
             }
@@ -116,10 +117,10 @@ namespace UnityGoogleDrive
             var authRequest = string.Format("{0}?response_type=code&scope={1}&redirect_uri={2}&client_id={3}&state={4}&code_challenge={5}&code_challenge_method={6}" +
                     "&access_type=offline" + // Forces to return a refresh token at the auth code exchange phase.
                     "&approval_prompt=force", // Forces to show consent screen for each auth request. Needed to return refresh tokens on consequent auth runs.
-                settings.AuthCredentials.AuthUri,
+                settings.GenericClientCredentials.AuthUri,
                 Uri.EscapeDataString(string.Join(" ", settings.AccessScopes.ToArray())),
                 Uri.EscapeDataString(redirectUri),
-                settings.AuthCredentials.ClientId,
+                settings.GenericClientCredentials.ClientId,
                 expectedState,
                 codeChallenge,
                 GoogleDriveSettings.CodeChallengeMethod);

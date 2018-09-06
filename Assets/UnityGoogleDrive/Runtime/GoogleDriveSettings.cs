@@ -13,9 +13,13 @@ namespace UnityGoogleDrive
         public const int UnauthorizedResponseCode = 401;
 
         /// <summary>
-        /// Google Drive API application credentials used to authorize requests.
+        /// Google Drive API application credentials used to authorize requests via loopback and redirect schemes.
         /// </summary>
-        public AuthCredentials AuthCredentials { get { return authCredentials; } }
+        public GenericClientCredentials GenericClientCredentials { get { return genericClientCredentials; } }
+        /// <summary>
+        /// Google Drive API application credentials used to authorize requests via custom URI scheme.
+        /// </summary>
+        public UriSchemeClientCredentials UriSchemeClientCredentials { get { return uriSchemeClientCredentials; } }
         /// <summary>
         /// Scopes of access to the user's Google Drive the app will request.
         /// For available scopes see: <see cref="https://developers.google.com/drive/api/v3/about-auth"/>.
@@ -39,7 +43,8 @@ namespace UnityGoogleDrive
         /// </summary>
         public string CachedRefreshToken { get { return PlayerPrefs.GetString(refreshTokenPrefsKey); } set { PlayerPrefs.SetString(refreshTokenPrefsKey, value); } }
 
-        [SerializeField] private AuthCredentials authCredentials = null;
+        [SerializeField] private GenericClientCredentials genericClientCredentials = null;
+        [SerializeField] private UriSchemeClientCredentials uriSchemeClientCredentials = null;
         [SerializeField] private List<string> accessScopes = new List<string> { "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.appdata" };
         [SerializeField] private string loopbackUri = "http://localhost";
         [SerializeField] private string loopbackResponseHtml = "<html><h1>Please return to the app.</h1></html>";
