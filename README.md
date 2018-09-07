@@ -10,7 +10,7 @@ Supports all the major platforms: Windows, Mac, Linux, iOS, Android and WebGL.
 
 [AppAuth-Android](https://github.com/openid/AppAuth-Android) and [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) native libraries are used to perform authentication on Android and iOS respectively for better user experience; accompanying native clients sources: [UnityGoogleDriveAndroid](https://github.com/Elringus/UnityGoogleDriveAndroid), UnityGoogleDriveIOS (TODO). [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) dependency file is provided in the distributed package to automatically resolve dependencies.
 
-Three authentication schemes are used: browser redirection for WebGL builds (because of the sockets limitation), custom URI for iOS/Android and local loopback requests for other platforms. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
+Three authentication schemes are used: browser redirection for WebGL builds, custom URI for iOS/Android and local loopback requests for other platforms. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
 
 ![Settings](https://i.gyazo.com/50c58d42173658a504e0ea19ef522a2f.png) 
 
