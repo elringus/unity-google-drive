@@ -6,7 +6,7 @@ For Unity 2017.3 and later: [UnityGoogleDrive.unitypackage](https://github.com/E
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
 
-Supports all the major platforms: Windows, Mac Linux, iOS, Android and WebGL.
+Supports all the major platforms: Windows, Mac, Linux, iOS, Android and WebGL.
 
 Three authentication schemes are used: browser redirection for WebGL builds (because of the sockets limitation), custom URI for iOS/Android and local loopback requests for other platforms. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
 
