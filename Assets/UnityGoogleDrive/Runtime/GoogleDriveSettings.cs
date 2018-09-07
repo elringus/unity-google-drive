@@ -26,6 +26,10 @@ namespace UnityGoogleDrive
         /// </summary>
         public List<string> AccessScopes { get { return accessScopes; } }
         /// <summary>
+        /// Joined version of the <see cref="AccessScopes"/>.
+        /// </summary>
+        public string AccessScope { get { return string.Join(" ", AccessScopes.ToArray()); } }
+        /// <summary>
         /// A web address for the loopback authentication requests. Defult is 'localhost'.
         /// </summary>
         /// <see cref="https://forum.unity.com/threads/515360/page-2#post-3504547"/>

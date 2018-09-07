@@ -22,27 +22,28 @@ namespace UnityGoogleDrive
         public string RefreshToken { get; private set; }
 
         private GoogleDriveSettings settings;
+        private IClientCredentials credentials;
         private UnityWebRequest exchangeRequest;
 
-        public AuthCodeExchanger (GoogleDriveSettings googleDriveSettings)
+        public AuthCodeExchanger (GoogleDriveSettings googleDriveSettings, IClientCredentials clientCredentials)
         {
             settings = googleDriveSettings;
+            credentials = clientCredentials;
         }
 
         public void ExchangeAuthCode (string authorizationCode, string codeVerifier, string redirectUri)
         {
-            var tokenRequestURI = settings.GenericClientCredentials.TokenUri;
-
             var tokenRequestForm = new WWWForm();
             tokenRequestForm.AddField("code", authorizationCode);
             tokenRequestForm.AddField("redirect_uri", redirectUri);
-            tokenRequestForm.AddField("client_id", settings.GenericClientCredentials.ClientId);
+            tokenRequestForm.AddField("client_id", credentials.ClientId);
             tokenRequestForm.AddField("code_verifier", codeVerifier);
-            tokenRequestForm.AddField("client_secret", settings.GenericClientCredentials.ClientSecret);
-            tokenRequestForm.AddField("scope", string.Join(" ", settings.AccessScopes.ToArray()));
+            if (!string.IsNullOrEmpty(credentials.ClientSecret))
+                tokenRequestForm.AddField("client_secret", credentials.ClientSecret);
+            tokenRequestForm.AddField("scope", settings.AccessScope);
             tokenRequestForm.AddField("grant_type", "authorization_code");
 
-            exchangeRequest = UnityWebRequest.Post(tokenRequestURI, tokenRequestForm);
+            exchangeRequest = UnityWebRequest.Post(credentials.TokenUri, tokenRequestForm);
             exchangeRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.RequestContentType);
             exchangeRequest.SetRequestHeader("Accept", "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             exchangeRequest.SendWebRequest().completed += HandleRequestComplete;

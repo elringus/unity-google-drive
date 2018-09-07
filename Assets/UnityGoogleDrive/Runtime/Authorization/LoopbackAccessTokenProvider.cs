@@ -31,10 +31,10 @@ namespace UnityGoogleDrive
             settings = googleDriveSettings;
             unitySyncContext = SynchronizationContext.Current;
 
-            accessTokenRefresher = new AccessTokenRefresher(settings);
+            accessTokenRefresher = new AccessTokenRefresher(settings.GenericClientCredentials);
             accessTokenRefresher.OnDone += HandleAccessTokenRefreshed;
 
-            authCodeExchanger = new AuthCodeExchanger(settings);
+            authCodeExchanger = new AuthCodeExchanger(settings, settings.GenericClientCredentials);
             authCodeExchanger.OnDone += HandleAuthCodeExchanged;
         }
 
@@ -118,7 +118,7 @@ namespace UnityGoogleDrive
                     "&access_type=offline" + // Forces to return a refresh token at the auth code exchange phase.
                     "&approval_prompt=force", // Forces to show consent screen for each auth request. Needed to return refresh tokens on consequent auth runs.
                 settings.GenericClientCredentials.AuthUri,
-                Uri.EscapeDataString(string.Join(" ", settings.AccessScopes.ToArray())),
+                Uri.EscapeDataString(settings.AccessScope),
                 Uri.EscapeDataString(redirectUri),
                 settings.GenericClientCredentials.ClientId,
                 expectedState,

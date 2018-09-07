@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UnityGoogleDrive
 {
     [System.Serializable]
-    public class GenericClientCredentials
+    public class GenericClientCredentials : IClientCredentials
     {
         public string ClientId { get { return client_id; } }
         public string ProjectId { get { return project_id; } }

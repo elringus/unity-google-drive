@@ -6,9 +6,12 @@ using UnityEngine;
 namespace UnityGoogleDrive
 {
     [System.Serializable]
-    public class UriSchemeClientCredentials
+    public class UriSchemeClientCredentials : IClientCredentials
     {
+        public string AuthUri { get { return "https://accounts.google.com/o/oauth2/v2/auth"; } }
+        public string TokenUri { get { return "https://accounts.google.com/o/oauth2/token"; } }
         public string ClientId { get { return cliendId; } }
+        public string ClientSecret { get { return null; } } // Client secret is not required in custom URI scheme.
         public string ReversedClientId { get { return reversedCliendId; } }
         public string PlistVersion { get { return plistVersion; } }
         public string BundleId { get { return bundleId; } }

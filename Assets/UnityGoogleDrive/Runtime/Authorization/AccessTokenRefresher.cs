@@ -21,25 +21,24 @@ namespace UnityGoogleDrive
         public string Error { get; private set; }
         public string AccesToken { get; private set; }
 
-        private GoogleDriveSettings settings;
+        private IClientCredentials credentials;
         private UnityWebRequest refreshRequest;
 
-        public AccessTokenRefresher (GoogleDriveSettings googleDriveSettings)
+        public AccessTokenRefresher (IClientCredentials clientCredentials)
         {
-            settings = googleDriveSettings;
+            credentials = clientCredentials;
         }
 
         public void RefreshAccessToken (string refreshToken)
         {
-            var refreshRequestURI = settings.GenericClientCredentials.TokenUri;
-
             var refreshRequestForm = new WWWForm();
-            refreshRequestForm.AddField("client_id", settings.GenericClientCredentials.ClientId);
-            refreshRequestForm.AddField("client_secret", settings.GenericClientCredentials.ClientSecret);
+            refreshRequestForm.AddField("client_id", credentials.ClientId);
+            if (!string.IsNullOrEmpty(credentials.ClientSecret))
+                refreshRequestForm.AddField("client_secret", credentials.ClientSecret);
             refreshRequestForm.AddField("refresh_token", refreshToken);
             refreshRequestForm.AddField("grant_type", "refresh_token");
 
-            refreshRequest = UnityWebRequest.Post(refreshRequestURI, refreshRequestForm);
+            refreshRequest = UnityWebRequest.Post(credentials.TokenUri, refreshRequestForm);
             refreshRequest.SetRequestHeader("Content-Type", GoogleDriveSettings.RequestContentType);
             refreshRequest.SetRequestHeader("Accept", "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             refreshRequest.SendWebRequest().completed += HandleRequestComplete;
