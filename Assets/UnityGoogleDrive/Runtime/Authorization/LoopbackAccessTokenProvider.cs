@@ -132,18 +132,8 @@ namespace UnityGoogleDrive
             var asyncResult = httpListener.BeginGetContext(HandleHttpListenerCallback, httpListener);
 
             // Block the thread when backround mode is not supported to serve HTTP response while the application is not in focus.
-            // https://github.com/Elringus/UnityGoogleDrive/issues/21
-            if (UseBlockingHttpListener()) asyncResult.AsyncWaitHandle.WaitOne();
-        }
-
-        private bool UseBlockingHttpListener ()
-        {
-            // iOS doesn't like blocking http listener; need to check whether it will work with async one.
-            if (Application.platform == RuntimePlatform.IPhonePlayer && !Application.isEditor) return false;
-            // Mobile platforms won't allow the app to run in background, so always use blocking listener here.
-            if (Application.isMobilePlatform && !Application.isEditor) return true;
-            // In general, use blocking listener when `run in background` is disabled.
-            return !Application.runInBackground;
+            if (!Application.runInBackground)
+                asyncResult.AsyncWaitHandle.WaitOne();
         }
 
         private void HandleHttpListenerCallback (IAsyncResult result)
