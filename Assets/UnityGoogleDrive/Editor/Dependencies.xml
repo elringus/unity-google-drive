@@ -1,5 +1,5 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.android.support:customtabs:27.1.0" />
+    <androidPackage spec="net.openid:appauth:0.7.0" />
   </androidPackages>
 </dependencies>

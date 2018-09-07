@@ -9,20 +9,22 @@ namespace UnityGoogleDrive
     // </summary>
     public class AndroidAccessTokenProvider : IAccessTokenProvider
     {
-        private struct AuthorizationResponse { public bool IsError; public string Error, AuthorizationCode; };
+        private struct AuthorizationResponse { public bool IsError; public string Error, CodeVerifier, RedirectUri, AuthorizationCode; };
 
         private class OnAuthorizationResponseListener : AndroidJavaProxy
         {
             public event Action<AuthorizationResponse> OnAuthResponse;
 
             public OnAuthorizationResponseListener ()
-                : base("net.openid.appauth.AuthorizationClientActivity$OnAuthorizationResponseListener") { }
+                : base("com.elringus.unitygoogledriveandroid.AuthorizationActivity$OnAuthorizationResponseListener") { }
 
-            private void onAuthorizationResponse (bool isError, string error, string authorizationCode)
+            private void onAuthorizationResponse (bool isError, string error, string codeVerifier, string redirectUri, string authorizationCode)
             {
                 var response = new AuthorizationResponse {
                     IsError = isError,
                     Error = error,
+                    CodeVerifier = codeVerifier,
+                    RedirectUri = redirectUri,
                     AuthorizationCode = authorizationCode
                 };
 
@@ -36,9 +38,6 @@ namespace UnityGoogleDrive
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
 
-        const string authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-        const string tokenEndpoint = "https://accounts.google.com/o/oauth2/token";
-
         private SynchronizationContext unitySyncContext;
         private GoogleDriveSettings settings;
         private AccessTokenRefresher accessTokenRefresher;
@@ -49,10 +48,10 @@ namespace UnityGoogleDrive
             settings = googleDriveSettings;
             unitySyncContext = SynchronizationContext.Current;
 
-            accessTokenRefresher = new AccessTokenRefresher(settings);
+            accessTokenRefresher = new AccessTokenRefresher(settings.UriSchemeClientCredentials);
             accessTokenRefresher.OnDone += HandleAccessTokenRefreshed;
 
-            authCodeExchanger = new AuthCodeExchanger(settings);
+            authCodeExchanger = new AuthCodeExchanger(settings, settings.UriSchemeClientCredentials);
             authCodeExchanger.OnDone += HandleAuthCodeExchanged;
         }
 
@@ -117,22 +116,21 @@ namespace UnityGoogleDrive
         private void ExecuteFullAuth ()
         {
             var redirectEndpoint = Application.identifier + ":/oauth2callback";
-            var scope = string.Join(" ", settings.AccessScopes.ToArray());
             var responseListener = new OnAuthorizationResponseListener();
             responseListener.OnAuthResponse += HandleAuthorizationResponse;
 
             var applicationClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             var applicationActivity = applicationClass.GetStatic<AndroidJavaObject>("currentActivity");
 
-            var activityClass = new AndroidJavaClass("net.openid.appauth.AuthorizationClientActivity");
+            var activityClass = new AndroidJavaClass("com.elringus.unitygoogledriveandroid.AuthorizationActivity");
             activityClass.CallStatic("SetResponseListener", responseListener);
 
             var intent = new AndroidJavaObject("android.content.Intent", applicationActivity, activityClass);
-            intent.Call<AndroidJavaObject>("putExtra", "authorizationEndpoint", ToJavaObject(authorizationEndpoint));
-            intent.Call<AndroidJavaObject>("putExtra", "tokenEndpoint", ToJavaObject(tokenEndpoint));
+            intent.Call<AndroidJavaObject>("putExtra", "authorizationEndpoint", ToJavaObject(settings.UriSchemeClientCredentials.AuthUri));
+            intent.Call<AndroidJavaObject>("putExtra", "tokenEndpoint", ToJavaObject(settings.UriSchemeClientCredentials.TokenUri));
             intent.Call<AndroidJavaObject>("putExtra", "clientId", ToJavaObject(settings.UriSchemeClientCredentials.ClientId));
             intent.Call<AndroidJavaObject>("putExtra", "redirectEndpoint", ToJavaObject(redirectEndpoint));
-            intent.Call<AndroidJavaObject>("putExtra", "scope", ToJavaObject(scope));
+            intent.Call<AndroidJavaObject>("putExtra", "scope", ToJavaObject(settings.AccessScope));
             applicationActivity.Call("startActivity", intent);
         }
 
@@ -153,7 +151,7 @@ namespace UnityGoogleDrive
                 return;
             }
 
-            authCodeExchanger.ExchangeAuthCode(response.AuthorizationCode, null, null);
+            authCodeExchanger.ExchangeAuthCode(response.AuthorizationCode, response.CodeVerifier, response.RedirectUri);
         }
 
         private static AndroidJavaObject ToJavaObject (string value)

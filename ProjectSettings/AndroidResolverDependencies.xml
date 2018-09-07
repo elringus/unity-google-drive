@@ -1,22 +1,11 @@
 <dependencies>
   <packages>
-    <package>com.android.support:customtabs:27.1.0</package>
+    <package>net.openid:appauth:0.7.0</package>
   </packages>
   <files>
-    <file>Assets/Plugins/Android/android.arch.core.common-1.1.0.jar</file>
-    <file>Assets/Plugins/Android/android.arch.core.runtime-1.1.0.aar</file>
-    <file>Assets/Plugins/Android/android.arch.lifecycle.common-1.1.0.jar</file>
-    <file>Assets/Plugins/Android/android.arch.lifecycle.livedata-core-1.1.0.aar</file>
-    <file>Assets/Plugins/Android/android.arch.lifecycle.runtime-1.1.0.aar</file>
-    <file>Assets/Plugins/Android/android.arch.lifecycle.viewmodel-1.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.animated-vector-drawable-27.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.appcompat-v7-27.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.customtabs-27.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.support-annotations-27.1.0.jar</file>
-    <file>Assets/Plugins/Android/com.android.support.support-compat-27.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.support-core-ui-27.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.support-core-utils-27.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.support-fragment-27.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.android.support.support-vector-drawable-27.1.0.aar</file>
+    <file>Assets/Plugins/Android/com.android.support.customtabs-25.3.1.aar</file>
+    <file>Assets/Plugins/Android/com.android.support.support-annotations-25.3.1.jar</file>
+    <file>Assets/Plugins/Android/com.android.support.support-compat-25.3.1.aar</file>
+    <file>Assets/Plugins/Android/net.openid.appauth-0.7.0.aar</file>
   </files>
 </dependencies>
