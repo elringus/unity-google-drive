@@ -55,22 +55,40 @@ namespace UnityGoogleDrive
 
         private void HandleRequestComplete (AsyncOperation requestYeild)
         {
-            if (refreshRequest == null || !string.IsNullOrEmpty(refreshRequest.error))
+            if (CheckRequestErrors(refreshRequest))
             {
                 HandleRefreshComplete(true);
                 return;
             }
 
             var response = JsonUtility.FromJson<RefreshResponse>(refreshRequest.downloadHandler.text);
-            if (!string.IsNullOrEmpty(response.error))
-            {
-                Error = string.Format("{0}: {1}", response.error, response.error_description);
-                HandleRefreshComplete(true);
-                return;
-            }
-
             AccesToken = response.access_token;
             HandleRefreshComplete();
+        }
+
+        private static bool CheckRequestErrors (UnityWebRequest request)
+        {
+            if (request == null)
+            {
+                Debug.LogError("UnityGoogleDrive: Refresh token request failed. Request object is null.");
+                return true;
+            }
+
+            var errorDescription = string.Empty;
+
+            if (!string.IsNullOrEmpty(request.error))
+                errorDescription += " HTTP Error: " + request.error;
+
+            if (request.downloadHandler != null && !string.IsNullOrEmpty(request.downloadHandler.text))
+            {
+                var response = JsonUtility.FromJson<RefreshResponse>(request.downloadHandler.text);
+                if (!string.IsNullOrEmpty(response.error))
+                    errorDescription += " API Error: " + response.error + " API Error Description: " + response.error_description;
+            }
+
+            var isError = errorDescription.Length > 0;
+            if (isError) Debug.LogError("UnityGoogleDrive: Refresh token code request failed." + errorDescription);
+            return isError;
         }
     }
 }

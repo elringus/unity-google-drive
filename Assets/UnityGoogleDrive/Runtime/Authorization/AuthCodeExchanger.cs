@@ -35,9 +35,9 @@ namespace UnityGoogleDrive
 
             var tokenRequestForm = new WWWForm();
             tokenRequestForm.AddField("code", authorizationCode);
-            if (!string.IsNullOrEmpty(redirectUri)) tokenRequestForm.AddField("redirect_uri", redirectUri);
+            tokenRequestForm.AddField("redirect_uri", redirectUri);
             tokenRequestForm.AddField("client_id", settings.GenericClientCredentials.ClientId);
-            if (!string.IsNullOrEmpty(codeVerifier)) tokenRequestForm.AddField("code_verifier", codeVerifier);
+            tokenRequestForm.AddField("code_verifier", codeVerifier);
             tokenRequestForm.AddField("client_secret", settings.GenericClientCredentials.ClientSecret);
             tokenRequestForm.AddField("scope", string.Join(" ", settings.AccessScopes.ToArray()));
             tokenRequestForm.AddField("grant_type", "authorization_code");
@@ -58,30 +58,41 @@ namespace UnityGoogleDrive
 
         private void HandleRequestComplete (AsyncOperation requestYeild)
         {
-            if (exchangeRequest == null)
+            if (CheckRequestErrors(exchangeRequest))
             {
-                HandleExchangeComplete(true);
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(exchangeRequest.error))
-            {
-                Debug.LogError(exchangeRequest.error);
                 HandleExchangeComplete(true);
                 return;
             }
 
             var response = JsonUtility.FromJson<ExchangeResponse>(exchangeRequest.downloadHandler.text);
-            if (!string.IsNullOrEmpty(response.error))
-            {
-                Debug.LogError(string.Format("UnityGoogleDrive: {0}: {1}", response.error, response.error_description));
-                HandleExchangeComplete(true);
-                return;
-            }
-
             AccesToken = response.access_token;
             RefreshToken = response.refresh_token;
             HandleExchangeComplete();
+        }
+
+        private static bool CheckRequestErrors (UnityWebRequest request)
+        {
+            if (request == null)
+            {
+                Debug.LogError("UnityGoogleDrive: Exchange auth code request failed. Request object is null.");
+                return true;
+            }
+
+            var errorDescription = string.Empty;
+
+            if (!string.IsNullOrEmpty(request.error))
+                errorDescription += " HTTP Error: " + request.error;
+
+            if (request.downloadHandler != null && !string.IsNullOrEmpty(request.downloadHandler.text))
+            {
+                var response = JsonUtility.FromJson<ExchangeResponse>(request.downloadHandler.text);
+                if (!string.IsNullOrEmpty(response.error))
+                    errorDescription += " API Error: " + response.error + " API Error Description: " + response.error_description;
+            }
+
+            var isError = errorDescription.Length > 0;
+            if (isError) Debug.LogError("UnityGoogleDrive: Exchange auth code request failed." + errorDescription);
+            return isError;
         }
     }
 }
