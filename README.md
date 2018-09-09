@@ -58,7 +58,7 @@ The design mostly follows the official [Google APIs Client Library for .NET](htt
 GoogleDriveFiles.List().Send().OnDone += fileList => ...;
 
 // Uploading a file.
-var file = new UnityGoogleDrive.Data.File() { Name = "Image.png", Content = rawImageData };
+var file = new UnityGoogleDrive.Data.File { Name = "Image.png", Content = rawImageData };
 GoogleDriveFiles.Create(file).Send();
 
 // Downloading a file.
