@@ -1,5 +1,5 @@
 ## Download package
-For Unity 2017.3 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.19-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
+For Unity 2017.3 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.20-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 **In case you're not familiar with the Google Drive API, please read through the [official documentation](https://developers.google.com/drive/api/v3/about-sdk) and [FAQ](https://github.com/Elringus/UnityGoogleDrive#faq), before using this package or opening new issues.**
 
@@ -8,7 +8,7 @@ For Unity 2017.3 and later: [UnityGoogleDrive.unitypackage](https://github.com/E
 
 Supports all the major platforms: Windows, Mac, Linux, iOS, Android and WebGL.
 
-[AppAuth-Android](https://github.com/openid/AppAuth-Android) and [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) native libraries are used to perform authentication on Android and iOS respectively for better user experience; accompanying native clients sources: [UnityGoogleDriveAndroid](https://github.com/Elringus/UnityGoogleDriveAndroid), UnityGoogleDriveIOS (TODO). [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) dependency file is provided in the distributed package to automatically resolve dependencies.
+[AppAuth-Android](https://github.com/openid/AppAuth-Android) and [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) native libraries are used to perform authentication on Android and iOS respectively for better user experience; accompanying native client sources: [UnityGoogleDriveAndroid](https://github.com/Elringus/UnityGoogleDriveAndroid), [UnityGoogleDriveIOS](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Plugins/com.elringus.unitygoogledriveios.mm). [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) dependency file is provided in the distributed package to automatically resolve dependencies.
 
 Three authentication schemes are used: browser redirection for WebGL builds, custom URI for iOS/Android and local loopback requests for other platforms. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
 
@@ -18,7 +18,7 @@ Automated integration tests cover the main features:
 
 ![Tests](https://i.gyazo.com/128acac61f5c719376b0f32f70144168.png) 
 
-## Setup
+## Setup (editor, standalones and WebGL)
 - Import the package;
 - In the Unity editor navigate to `Edit -> Project Settings -> Google Drive Settings`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
 - Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
@@ -35,8 +35,20 @@ Automated integration tests cover the main features:
     - Final result may [look like that](https://i.gyazo.com/9d28c9b1e0201cb92ed6d8f3fc6dcfaf.png).
   - Click **Save**;
   - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials json file.
-- Return to Unity editor, open Google Drive settings and click **Parse credentials JSON file**; select the downloaded credentials json file;
+- Return to Unity editor, open Google Drive settings and click **Parse generic credentials JSON file**; select the downloaded credentials json file;
 - When under .NET 3.5 scripting runtime, make sure to set API compatibility level to the **full .NET 2.0 profile** (not subset) to prevent [JSON parsing issues](https://github.com/Elringus/UnityGoogleDrive/issues/6) on AOT platforms.
+
+## Additional setup for iOS and Android
+- In the Unity editor navigate to `Edit -> Project Settings -> Google Drive Settings`, click **Manage Google Drive API app** web-browser will open URL to manage the console app that was created during the initial setup;
+- Click **Create credentials** -> **OAuth client ID** to add a new OAuth client to be used when authenticating on iOS and Android;
+- Select **iOS** for the `Application type` (it'll still work for both iOS and Android);
+- Enter anything you like for the `Name` field (eg, `URI Scheme Client`);
+- Enter your Unity's **application ID** for the `Bundle ID` field (eg, `com.elringus.unitygoogledrive`). Make sure your applicaton ID is **lower cased**, otherwise it could cause problems when mapping the custom URI schemes;
+- Leave the remaining fields blank and click **Create** button;
+- Download the credentials file by clicking the **Download plist** button;
+- Return to Unity editor, open Google Drive settings and click **Parse URI scheme credentials PLIST file**; select the downloaded credentials plist file;
+- Add your application ID to the list of **Supported URL Schemes** in the iOS player settings *(for iOS only)*;
+- Download and install [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) package to automatically resolve Android and iOS native dependencies. The dependency file is located at `./UnityGoogleDrive/Editor/Dependencies.xml`. When the PlayServicesResolver is installed and editor is switched to Android build target, all the required .jar and .aar files will automatically be downloaded to the `Assets/Plugins/Android` folder. When swithed to iOS, a [CocoaPods](https://cocoapods.org/) Pod file will be added to the generated iOS project on build post-process. When developing under Windows, you'll have to manually run `pod install` in the XCode project directory to install the iOS dependencies.
 
 ## Examples
 The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
