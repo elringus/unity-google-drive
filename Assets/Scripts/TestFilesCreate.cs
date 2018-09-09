@@ -2,20 +2,14 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesCreate : MonoBehaviour
+public class TestFilesCreate : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
     public Texture2D ImageToUpload;
 
     private GoogleDriveFiles.CreateRequest request;
     private string result;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Upload Image");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

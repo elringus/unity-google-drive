@@ -2,9 +2,8 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesList : MonoBehaviour
+public class TestFilesList : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
     [Range(1, 1000)]
     public int ResultsPerPage = 100;
 
@@ -18,12 +17,7 @@ public class TestFilesList : MonoBehaviour
         ListFiles();
     }
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Files List");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request.IsRunning)
         {

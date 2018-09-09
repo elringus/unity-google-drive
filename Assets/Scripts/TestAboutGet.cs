@@ -2,15 +2,14 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestAboutGet : MonoBehaviour
+public class TestAboutGet : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private GoogleDriveAbout.GetRequest request;
     private GoogleDriveSettings settings;
 
-    private void Awake ()
+    protected override void Awake ()
     {
+        base.Awake();
         settings = GoogleDriveSettings.LoadFromResources();
     }
 
@@ -19,12 +18,7 @@ public class TestAboutGet : MonoBehaviour
         UpdateInfo();
     }
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Info");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request.IsRunning)
         {

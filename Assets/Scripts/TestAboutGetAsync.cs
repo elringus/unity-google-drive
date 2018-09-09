@@ -2,19 +2,15 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestAboutGetAsync : MonoBehaviour
+public class TestAboutGetAsync : AdaptiveWindowGUI
 {
     #if NET_4_6 || NET_STANDARD_2_0
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private GoogleDriveAbout.GetRequest request;
     private UnityGoogleDrive.Data.About aboutData;
          
     private async void Start () => aboutData = await UpdateInfo();
 
-    private void OnGUI () => GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Info (Async)");
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (aboutData != null)
         {
@@ -35,6 +31,6 @@ public class TestAboutGetAsync : MonoBehaviour
     }
 
     #else
-    private void OnGUI () { GUILayout.Label(".NET 4.x scripting backend is not enabled."); }
+    protected override void OnWindowGUI (int windowId) { GUILayout.Label(".NET 4.x scripting backend is not enabled."); }
     #endif
 }

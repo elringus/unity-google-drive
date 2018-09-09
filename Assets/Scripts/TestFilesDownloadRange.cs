@@ -2,21 +2,14 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesDownloadRange : MonoBehaviour
+public class TestFilesDownloadRange : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 300, 200);
-
     private GoogleDriveFiles.DownloadRequest request;
     private string fileId = string.Empty;
     private string result = string.Empty;
     private RangeInt range = new RangeInt();
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Partial Text Downloader");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

@@ -2,20 +2,13 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesGet : MonoBehaviour
+public class TestFilesGet : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private GoogleDriveFiles.GetRequest request;
     private string result;
     private string fileId = string.Empty;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive File");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

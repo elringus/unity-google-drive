@@ -2,21 +2,14 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesCopy : MonoBehaviour
+public class TestFilesCopy : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private GoogleDriveFiles.CopyRequest request;
     private string result;
     private string fileId = string.Empty;
     private string copyName = string.Empty;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Copy File");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

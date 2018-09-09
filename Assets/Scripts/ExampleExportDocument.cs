@@ -2,20 +2,13 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class ExampleExportDocument : MonoBehaviour
+public class ExampleExportDocument : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 300, 200);
-
     private GoogleDriveFiles.ExportRequest request;
     private string fileId = string.Empty;
     private string result = string.Empty;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Export Google Document");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

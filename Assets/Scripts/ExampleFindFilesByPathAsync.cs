@@ -3,11 +3,9 @@ using System.IO;
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class ExampleFindFilesByPathAsync : MonoBehaviour
+public class ExampleFindFilesByPathAsync : AdaptiveWindowGUI
 {
     #if NET_4_6 || NET_STANDARD_2_0
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private bool running;
     private string filePath = string.Empty;
     private string uploadFilePath = string.Empty;
@@ -15,12 +13,7 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
     private Dictionary<string, string> results;
     private Vector2 scrollPos;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Find Files By Path");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (running) GUILayout.Label("Loading, please wait...");
 
@@ -91,6 +84,9 @@ public class ExampleFindFilesByPathAsync : MonoBehaviour
     }
 
     #else
-    private void OnGUI () { GUILayout.Label(".NET 4.x scripting backend is not enabled."); }
+    protected override void OnWindowGUI (int windowId)
+    { 
+        GUILayout.Label(".NET 4.x scripting backend is not enabled.");
+    }
     #endif
 }

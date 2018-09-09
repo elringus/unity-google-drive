@@ -2,21 +2,15 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesDownloadAudio : MonoBehaviour
+public class TestFilesDownloadAudio : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 300, 200);
     public AudioSource AudioSource;
 
     private GoogleDriveFiles.GetRequest getRequest;
     private GoogleDriveFiles.DownloadAudioRequest downloadRequest;
     private string audioFileId = string.Empty;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Audio Downloader");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (IsRunning())
         {

@@ -4,20 +4,13 @@ using UnityCommon;
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class ExampleGetFileByPath : MonoBehaviour
+public class ExampleGetFileByPath : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private GoogleDriveFiles.ListRequest request;
     private string filePath = string.Empty;
     private string result = string.Empty;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Get File By Path");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

@@ -2,20 +2,14 @@
 using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesCreateResumable : MonoBehaviour
+public class TestFilesCreateResumable : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
     public string UploadFilePath;
 
     private GoogleDriveFiles.ResumableCreateRequest request;
     private string resumableSessionUri;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Upload File (Resumable)");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

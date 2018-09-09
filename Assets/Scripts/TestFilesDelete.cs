@@ -1,20 +1,13 @@
 ﻿using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesDelete : MonoBehaviour
+public class TestFilesDelete : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private GoogleDriveFiles.DeleteRequest request;
     private string result;
     private string fileId = string.Empty;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Delete File");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {

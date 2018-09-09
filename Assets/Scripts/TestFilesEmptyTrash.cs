@@ -1,19 +1,12 @@
 ﻿using UnityEngine;
 using UnityGoogleDrive;
 
-public class TestFilesEmptyTrash : MonoBehaviour
+public class TestFilesEmptyTrash : AdaptiveWindowGUI
 {
-    public Rect WindowRect = new Rect(10, 10, 940, 580);
-
     private GoogleDriveFiles.EmptyTrashRequest request;
     private string result;
 
-    private void OnGUI ()
-    {
-        GUILayout.Window(0, WindowRect, InfoWindowGUI, "Google Drive Empty Trash");
-    }
-
-    private void InfoWindowGUI (int windowId)
+    protected override void OnWindowGUI (int windowId)
     {
         if (request != null && request.IsRunning)
         {
