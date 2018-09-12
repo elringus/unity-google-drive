@@ -109,7 +109,7 @@ namespace UnityGoogleDrive
                 settings.UriSchemeClientCredentials.AuthUri, 
                 settings.UriSchemeClientCredentials.TokenUri, 
                 settings.UriSchemeClientCredentials.ClientId,
-                Application.identifier + ":/oauth2callback", 
+                Application.identifier.ToLowerInvariant() + ":/oauth2callback", 
                 settings.AccessScope);
         }
 
