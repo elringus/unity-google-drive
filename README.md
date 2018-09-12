@@ -43,7 +43,7 @@ Automated integration tests cover the main features:
 - Click **Create credentials** -> **OAuth client ID** to add a new OAuth client to be used when authenticating on iOS and Android;
 - Select **iOS** for the `Application type` (it'll still work for both iOS and Android);
 - Enter anything you like for the `Name` field (eg, `URI Scheme Client`);
-- Enter your Unity's **application ID** for the `Bundle ID` field (eg, `com.elringus.unitygoogledrive`). Make sure your applicaton ID is **lower-cased** (both in the editor and in the creadentials). In case you're unable to change Application ID (eg, app is already published), see [FAQ for available workarounds](https://github.com/Elringus/UnityGoogleDrive#implemented-apis);
+- Enter your Unity's **application ID** for the `Bundle ID` field (eg, `com.elringus.unitygoogledrive`). Make sure your applicaton ID is **lower-cased** (both in the editor and in the creadentials). In case you're unable to change Application ID (eg, app is already published), see [FAQ for available workarounds](https://github.com/Elringus/UnityGoogleDrive#my-application-id-andriodios-is-mixed-cased-and-i-cant-change-it);
 - Leave the remaining fields blank and click **Create** button;
 - Download the credentials file by clicking the **Download plist** button;
 - Return to Unity editor, open Google Drive settings and click **Parse URI scheme credentials PLIST file**; select the downloaded credentials plist file;
