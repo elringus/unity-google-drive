@@ -47,7 +47,6 @@ Automated integration tests cover the main features:
 - Leave the remaining fields blank and click **Create** button;
 - Download the credentials file by clicking the **Download plist** button;
 - Return to Unity editor, open Google Drive settings and click **Parse URI scheme credentials PLIST file**; select the downloaded credentials plist file;
-- Add your application ID to the list of **Supported URL Schemes** in the iOS player settings *(for iOS only)*;
 - Download and install [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) package to automatically resolve Android and iOS native dependencies. The dependency file is located at `./UnityGoogleDrive/Editor/Dependencies.xml`. When the PlayServicesResolver is installed and editor is switched to Android build target, [all the required .jar and .aar files](https://i.gyazo.com/8ce9d0b9ad7c45093b3c282843f3b1df.png) will automatically be downloaded to the `Assets/Plugins/Android` folder. When swithed to iOS, a [CocoaPods](https://cocoapods.org/) Pod file will be added to the generated iOS project on build post-process. When developing under Windows, you'll have to manually run `pod install` in the XCode project directory to install the iOS dependencies.
 
 ## Examples
