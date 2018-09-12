@@ -43,7 +43,7 @@ Automated integration tests cover the main features:
 - Click **Create credentials** -> **OAuth client ID** to add a new OAuth client to be used when authenticating on iOS and Android;
 - Select **iOS** for the `Application type` (it'll still work for both iOS and Android);
 - Enter anything you like for the `Name` field (eg, `URI Scheme Client`);
-- Enter your Unity's **application ID** for the `Bundle ID` field (eg, `com.elringus.unitygoogledrive`). Make sure your applicaton ID is **lower cased** (both in the editor and in the creadentials), otherwise it could cause problems when mapping the custom URI schemes;
+- Enter your Unity's **application ID** for the `Bundle ID` field (eg, `com.elringus.unitygoogledrive`). Make sure your applicaton ID is **lower-cased** (both in the editor and in the creadentials). In case you're unable to change Application ID (eg, app is already published), see [FAQ for available workarounds](https://github.com/Elringus/UnityGoogleDrive#implemented-apis);
 - Leave the remaining fields blank and click **Create** button;
 - Download the credentials file by clicking the **Download plist** button;
 - Return to Unity editor, open Google Drive settings and click **Parse URI scheme credentials PLIST file**; select the downloaded credentials plist file;
@@ -115,6 +115,11 @@ The only legit way to allow multiple users share a drive account is to use [Team
 
 ### Is it possible to access shared files and folders?
 This is possible. To access shared resources you'll have to specify ["Shared with me" collection](https://developers.google.com/drive/v3/web/about-organization#shared_with_me) when resolving ID of the resource. Additionally, if the shared resource has been [added to the user's drive](https://support.google.com/drive/answer/2375057?co=GENIE.Platform%3DDesktop&hl=en) it'll be accessible via the path finding method described above.
+
+### My application ID (Andriod/iOS) is mixed-cased and I can't change it.
+Application ID (aka bundle ID, package name) is used as a custom URI scheme on Android and iOS to receive authorization callback from Google’s OAuth server and redirect user back to the app. Even though the initial request sent by UnityGoogleDrive plugin preserves casing of the application ID (as it’s set in the player settings), Google’s OAuth server will forcibly convert it to lowercase when redirecting the user. That’s why it’s mandatory to use lowercased application ID. If, however, you’re unable to change it (eg, app is already published on the store), you can do the following: 
+- Android: override `${applicationId}` record in the `./UnityGoogleDrive/Plugins/com.elringus.unitygoogledriveandroid.aar/AndroidManifest.xml` (you’ll have to unzip the .aar) to your application’s ID (lower-cased);
+- iOS: add your application’s ID (lower-cased) to the [Supported URL schemes](https://i.gyazo.com/efafe276a3d566d7563e83005873746b.png) list. 
 
 ### Will this plugin appear on the Asset Store?
 I'll consider publishing when (if) it'll be in a more mature state (full API cover, more tests, less bugs); and whether that'll happen depends on the ~~amount of stars~~ feedback it'll receive :) In any case, the plugin will remain free and open-sourced.
