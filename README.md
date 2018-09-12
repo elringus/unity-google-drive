@@ -118,7 +118,7 @@ This is possible. To access shared resources you'll have to specify ["Shared wit
 
 ### My application ID (Andriod/iOS) is mixed-cased and I can't change it.
 Application ID (aka bundle ID, package name) is used as a custom URI scheme on Android and iOS to receive authorization callback from Google’s OAuth server and redirect user back to the app. Even though the initial request sent by UnityGoogleDrive plugin preserves casing of the application ID (as it’s set in the player settings), Google’s OAuth server will forcibly convert it to lowercase when redirecting the user. That’s why it’s mandatory to use lowercased application ID. If, however, you’re unable to change it (eg, app is already published on the store), you can do the following: 
-- Android: override `${applicationId}` record in the `./UnityGoogleDrive/Plugins/com.elringus.unitygoogledriveandroid.aar/AndroidManifest.xml` (you’ll have to unzip the .aar) to your application’s ID (lower-cased);
+- Android: replace `${applicationId}` record in the `./UnityGoogleDrive/Plugins/com.elringus.unitygoogledriveandroid.aar/AndroidManifest.xml` (you’ll have to unzip the .aar) to your application’s ID (lower-cased);
 - iOS: add your application’s ID (lower-cased) to the [Supported URL schemes](https://i.gyazo.com/efafe276a3d566d7563e83005873746b.png) list in the iOS player settings. 
 
 ### Will this plugin appear on the Asset Store?
