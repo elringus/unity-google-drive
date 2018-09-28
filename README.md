@@ -12,7 +12,7 @@ Supports all the major platforms: Windows, Mac, Linux, iOS, Android and WebGL.
 
 Three authentication schemes are used: browser redirection for WebGL builds, custom URI for iOS/Android and local loopback requests for other platforms. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
 
-![Settings](https://i.gyazo.com/50c58d42173658a504e0ea19ef522a2f.png) 
+![Settings](https://i.gyazo.com/e1ba884a19531b0804474085f88b2e3d.png) 
 
 Automated integration tests cover the main features:
 
@@ -20,7 +20,7 @@ Automated integration tests cover the main features:
 
 ## Setup (editor, standalones and WebGL)
 - Import the package;
-- In the Unity editor navigate to `Edit -> Project Settings -> Google Drive Settings`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
+- In the Unity editor navigate to `Edit -> Settings -> Google Drive`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
 - Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
   - Select **Create a new project** and click continue;
   - Click **Go to credentials**;
@@ -39,7 +39,7 @@ Automated integration tests cover the main features:
 - When under .NET 3.5 scripting runtime, make sure to set API compatibility level to the **full .NET 2.0 profile** (not subset) to prevent [JSON parsing issues](https://github.com/Elringus/UnityGoogleDrive/issues/6) on AOT platforms.
 
 ## Additional setup for iOS and Android
-- In the Unity editor navigate to `Edit -> Project Settings -> Google Drive Settings`, click **Manage Google Drive API app** web-browser will open URL to manage the console app that was created during the initial setup;
+- In the Unity editor navigate to `Edit -> Settings -> Google Drive`, click **Manage Google Drive API app** web-browser will open URL to manage the console app that was created during the initial setup;
 - Click **Create credentials** -> **OAuth client ID** to add a new OAuth client to be used when authenticating on iOS and Android;
 - Select **iOS** for the `Application type` (it'll still work for both iOS and Android);
 - Enter anything you like for the `Name` field (eg, `URI Scheme Client`);
