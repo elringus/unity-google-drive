@@ -43,11 +43,13 @@ namespace UnityGoogleDrive
             return settings;
         }
 
-        [MenuItem("Edit/Project Settings/Google Drive Settings")]
-        private static void SelectSettings ()
+        [SettingsProvider]
+        internal static SettingsProvider CreateProjectSettingsProvider ()
         {
-            var settings = GetOrCreateSettings();
-            Selection.activeObject = settings;
+            var assetPath = AssetDatabase.GetAssetPath(GetOrCreateSettings());
+            var provider = new AssetSettingsProvider("Project/Google Drive", assetPath);
+            SettingsProvider.GetSearchKeywordsFromSerializedObject(provider.CreateEditor().serializedObject, provider.keywords);
+            return provider;
         }
 
         private void OnEnable ()
