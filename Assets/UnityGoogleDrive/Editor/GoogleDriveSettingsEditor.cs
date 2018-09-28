@@ -54,6 +54,7 @@ namespace UnityGoogleDrive
 
         private void OnEnable ()
         {
+            if (!TargetSettings) return;
             genericClientCredentials = serializedObject.FindProperty("genericClientCredentials");
             uriSchemeClientCredentials = serializedObject.FindProperty("uriSchemeClientCredentials");
             accessScopes = serializedObject.FindProperty("accessScopes");
