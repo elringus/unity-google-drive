@@ -49,24 +49,41 @@ namespace UnityCommon
             if (!IgnoredAssetGUIds.Contains(guid)) IgnoredAssetGUIds = IgnoredAssetGUIds.Replace(guid, string.Empty);
         }
 
-        private void Awake ()
-        {
-            if (string.IsNullOrEmpty(PackageName))
-                PackageName = Application.productName;
-            if (string.IsNullOrEmpty(LicenseFilePath))
-                LicenseFilePath = Application.dataPath.Replace("Assets", "") + defaultLicenseFileName;
-        }
-
         private void OnEnable ()
         {
-            DeserealizeIgnoredAssets();
+            Initialize();
         }
 
+        private void OnGUI ()
+        {
+            RenderGUI();
+        }
+
+        #if UNITY_2018_3_OR_NEWER
+        [SettingsProvider]
+        internal static SettingsProvider CreateProjectSettingsProvider ()
+        {
+            var provider = new SettingsProvider("Project/Package Exporter");
+            provider.activateHandler += (a, b) => Initialize();
+            provider.guiHandler += id => RenderGUI();
+            return provider;
+        }
+        #else
         [MenuItem("Edit/Project Settings/Package Exporter")]
         private static void OpenSettingsWindow ()
         {
             var window = GetWindow<PackageExporter>();
             window.Show();
+        }
+        #endif
+
+        private static void Initialize ()
+        {
+            if (string.IsNullOrEmpty(PackageName))
+                PackageName = Application.productName;
+            if (string.IsNullOrEmpty(LicenseFilePath))
+                LicenseFilePath = Application.dataPath.Replace("Assets", "") + defaultLicenseFileName;
+            DeserealizeIgnoredAssets();
         }
 
         [MenuItem("Assets/+ Export Package", priority = 20)]
@@ -76,7 +93,7 @@ namespace UnityCommon
                 ExportPackageImpl();
         }
 
-        private void OnGUI ()
+        private static void RenderGUI ()
         {
             EditorGUILayout.LabelField("Package Exporter Settings", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Settings are stored in editor's PlayerPrefs and won't be exposed in builds or project assets.", MessageType.Info);
