@@ -44,3 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ExportDocument.unity
     guid: a67bfa30d7186d7439bf59ae9b1fc851
+  - enabled: 1
+    path: Assets/Scenes/FindFilesByPathAsync.unity
+    guid: e4e712e0a6343374abc71fd23426bb05
+  m_configObjects: {}
