@@ -64,6 +64,7 @@ PlayerSettings:
   preserveFramebufferAlpha: 0
   disableDepthAndStencilBuffers: 0
   androidStartInFullscreen: 1
+  androidRenderOutsideSafeArea: 0
   androidBlitType: 0
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
@@ -597,10 +598,10 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   apiCompatibilityLevelPerPlatform:
-    Android: 1
-    Standalone: 1
-    WebGL: 1
-    iOS: 1
+    Android: 6
+    Standalone: 6
+    WebGL: 6
+    iOS: 6
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: UnityGoogleDrive
@@ -680,7 +681,7 @@ PlayerSettings:
   facebookStatus: 1
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 6
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   projectName: 
