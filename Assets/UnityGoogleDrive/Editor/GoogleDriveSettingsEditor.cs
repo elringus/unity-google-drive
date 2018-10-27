@@ -43,6 +43,7 @@ namespace UnityGoogleDrive
             return settings;
         }
 
+        #if UNITY_2018_3_OR_NEWER
         [SettingsProvider]
         internal static SettingsProvider CreateProjectSettingsProvider ()
         {
@@ -51,6 +52,13 @@ namespace UnityGoogleDrive
             SettingsProvider.GetSearchKeywordsFromSerializedObject(provider.CreateEditor().serializedObject, provider.keywords);
             return provider;
         }
+        #else
+        [MenuItem("Edit/Project Settings/Google Drive Settings")]
+        private static void SelectSettings ()
+        {
+            Selection.activeObject = GetOrCreateSettings();
+        }
+        #endif
 
         private void OnEnable ()
         {
