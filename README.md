@@ -104,14 +104,11 @@ When using custom URI authentication scheme on iOS/Android, redirection will be 
 ### How to logout or force user to login/select another Google account?
 Use `GoogleDriveSettings.DeleteCachedAuthTokens` method to clear cached authentication tokens which will force the user to login again on the next request. You can always get `GoogleDriveSettings` instance using `GoogleDriveSettings.LoadFromResources` static method. While in editor, you can also use 'Delete cached tokens' button for the same effect.
 
-### Can I access someone else's Google drive or skip authentication in the browser?
-To work with anyone's Google Drive, it's mandatory to complete OAuth procedure for that user, which requires opening a browser window to login and allow the app to access their drive. It's a security measure [enforced by Google](https://developers.google.com/identity/protocols/OAuth2). 
+### Is it possible for users to access my Google Drive account and use it as a database for my app?
+It's not possible. Google Drive is personal/team storage, not a replacement for a database. To access a Google Drive account, it's mandatory to complete OAuth procedure for the user the account belongs to, which requires opening a browser window to login and allow the app to access their drive. It's a security measure [enforced by Google](https://developers.google.com/identity/protocols/OAuth2). 
 
 ### Is it possible to use an embedded browser (WebView) for the authorization?
 It’s not possible. Google is intentionally [blocking authorization requests sent from any sort of embedded browsers](https://auth0.com/blog/google-blocks-oauth-requests-from-embedded-browsers/) for security reasons.
-
-### Can I share a drive account? 
-The only legit way to allow multiple users share a drive account is to use [Team Drives](https://gsuite.google.com/learning-center/products/drive/get-started-team-drive/).
 
 ### Is it possible to access shared files and folders?
 This is possible. To access shared resources you'll have to specify ["Shared with me" collection](https://developers.google.com/drive/v3/web/about-organization#shared_with_me) when resolving ID of the resource. Additionally, if the shared resource has been [added to the user's drive](https://support.google.com/drive/answer/2375057?co=GENIE.Platform%3DDesktop&hl=en) it'll be accessible via the path finding method described above.
