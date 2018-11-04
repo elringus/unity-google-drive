@@ -83,15 +83,19 @@ The following [Google Drive APIs](https://developers.google.com/drive/api/v3/ref
 
 ## FAQ
 
-### Why the returned properties of the response are all null?
-Most of the response properties are null by default. You have to explicitly require fields in order for the drive API to return them (using `Fields` property of the request object). More info here: https://developers.google.com/drive/v3/web/performance#partial.
+### Why are the returned properties of the response all null?
 
-### How to access a file using its path?
-A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path we have to find ID of the file's parent folder, and for this we need IDs of all the folders in the chain. Thus, we have to traverse the entire hierarchy chain using `GoogleDriveFiles.List` requests.
+Majority of the responses are null by default. Fields must be explicitly required in order for the drive API to return them. Use `Fields` property of the request object. More information here:
+https://developers.google.com/drive/v3/web/performance#partial
 
-You can find a naive implementation of the aforementioned logic via Unity's coroutine in the [example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs) and use it as a reference for your own solution or utilize the [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
 
-More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
+### How is a file accessed using its path?
+
+A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path, the ID of the file’s parent folder must be found. To find ID of the file’s parent folder, the IDs of all folders in the chain must be retrieved. Thus, the entire hierarchy chain must be traversed using `GoogleDriveFiles.List` requests.
+
+The native implementation of the aforementioned logic via Unity's coroutine can be found in the [example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs) and used as a reference for your own solution or utilize the [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
+
+More information on the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
 ### Is it possible to download/upload large files in chunks to reduce memory usage?
 To perform a partial download you have to supply `downloadRange` argument for the `GoogleDriveFiles.Download` request specifying the bytes range you wish to get. Here is an [example script for a partial text file download](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/TestFilesDownloadRange.cs). More info on partial downloads can be found in the [API docs](https://developers.google.com/drive/api/v3/manage-downloads#partial_download).
