@@ -83,14 +83,10 @@ The following [Google Drive APIs](https://developers.google.com/drive/api/v3/ref
 
 ## FAQ
 
-### Why are the returned properties of the response all null?
+### Why some of the returned properties of the response are null?
+Majority of the response properties are null by default. Properties must be explicitly required in order for the drive API to return them (using `Fields` property of the request object). More information here: https://developers.google.com/drive/v3/web/performance#partial.
 
-Majority of the responses are null by default. Fields must be explicitly required in order for the drive API to return them. Use `Fields` property of the request object. More information here:
-https://developers.google.com/drive/v3/web/performance#partial
-
-
-### How is a file accessed using its path?
-
+### How to access a file using its path?
 A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path, the ID of the file’s parent folder must be found. To find ID of the file’s parent folder, the IDs of all folders in the chain must be retrieved. Thus, the entire hierarchy chain must be traversed using `GoogleDriveFiles.List` requests.
 
 The naive implementation of the aforementioned logic via Unity's coroutine can be found in the [example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs) and used as a reference for your own solution or utilize the [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
