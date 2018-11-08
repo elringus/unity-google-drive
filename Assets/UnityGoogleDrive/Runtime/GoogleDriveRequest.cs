@@ -179,8 +179,12 @@ namespace UnityGoogleDrive
             var responseText = downloadHandler.text;
             if (!string.IsNullOrEmpty(responseText))
             {
-                var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
-                if (apiError.IsError) AppendError(apiError.ToString());
+                try
+                {
+                    var apiError = JsonUtility.FromJson<GoogleDriveResponseError>(responseText);
+                    if (apiError.IsError) AppendError(apiError.ToString());
+                }
+                catch (ArgumentException) { AppendError(responseText); }
                 if (!IsError) ResponseData = JsonUtils.FromJsonPrivateCamel<TResponse>(responseText);
             }
         }
