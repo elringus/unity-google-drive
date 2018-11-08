@@ -64,19 +64,28 @@ namespace UnityGoogleDrive
 
         protected UnityWebRequest CreateMultipartUpload (UnityWebRequest webRequest)
         {
-            var boundary = UnityWebRequest.GenerateBoundary();
-            var metadata = new MultipartFormDataSection(null, JsonUtils.ToJsonPrivateCamel(RequestData), RequestContentType);
-            var content = new MultipartFormDataSection(null, RequestPayload, PayloadMimeType);
-            var formData = UnityWebRequest.SerializeFormSections(new List<IMultipartFormSection> { metadata, content }, boundary);
+            // Can't use MultipartFormDataSection utils to build mutlipart body, 
+            // because Google has added strict requirements for the body format. 
+            // Issue: https://github.com/Elringus/UnityGoogleDrive/issues/30).
 
-            // End boundary is missing; adding it manually.
-            var endBoundary = Encoding.ASCII.GetBytes(string.Format("\r\n--{0}--", Encoding.ASCII.GetString(boundary)));
-            var data = new byte[formData.Length + endBoundary.Length];
-            Buffer.BlockCopy(formData, 0, data, 0, formData.Length);
-            Buffer.BlockCopy(endBoundary, 0, data, formData.Length, endBoundary.Length);
+            var newLine = "\r\n";
+            var newLineDouble = newLine + newLine;
+            var boundary = Encoding.ASCII.GetString(UnityWebRequest.GenerateBoundary());
+            var boundaryDelimeter = newLineDouble + "--" + boundary;
 
-            webRequest.uploadHandler = new UploadHandlerRaw(data);
-            webRequest.SetRequestHeader("Content-Type", string.Concat("multipart/related; boundary=", Encoding.ASCII.GetString(boundary)));
+            var dataList = new List<byte>();
+            dataList.AddRange(Encoding.UTF8.GetBytes(
+                boundaryDelimeter +
+                newLine + "Content-Type: " + RequestContentType +
+                newLineDouble + JsonUtils.ToJsonPrivateCamel(RequestData) +
+                boundaryDelimeter +
+                newLine + "Content-Type: " + DefaultMimeType +
+                newLineDouble));
+            dataList.AddRange(RequestPayload);
+            dataList.AddRange(Encoding.UTF8.GetBytes(boundaryDelimeter + "--" + newLine));
+
+            webRequest.uploadHandler = new UploadHandlerRaw(dataList.ToArray());
+            webRequest.SetRequestHeader("Content-Type", string.Concat("multipart/related; boundary=", boundary));
 
             return webRequest;
         }
