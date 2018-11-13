@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityGoogleDrive;
 
 public class TestFilesCreate : AdaptiveWindowGUI
 {
-    public Texture2D ImageToUpload;
+    public string UploadFilePath;
 
     private GoogleDriveFiles.CreateRequest request;
     private string result;
@@ -15,8 +16,12 @@ public class TestFilesCreate : AdaptiveWindowGUI
         {
             GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
         }
-        else if (GUILayout.Button("Upload To Root")) Upload(false);
-        else if (GUILayout.Button("Upload To AddData")) Upload(true);
+        else
+        {
+            UploadFilePath = GUILayout.TextField(UploadFilePath);
+            if (GUILayout.Button("Upload To Root")) Upload(false);
+            if (GUILayout.Button("Upload To AddData")) Upload(true);
+        }
 
         if (!string.IsNullOrEmpty(result))
         {
@@ -26,8 +31,10 @@ public class TestFilesCreate : AdaptiveWindowGUI
 
     private void Upload (bool toAppData)
     {
-        var content = ImageToUpload.EncodeToPNG();
-        var file = new UnityGoogleDrive.Data.File() { Name = "TestUnityGoogleDriveFilesUpload.png", Content = content, MimeType = "image/png" };
+        var content = File.ReadAllBytes(UploadFilePath);
+        if (content == null) return;
+
+        var file = new UnityGoogleDrive.Data.File() { Name = Path.GetFileName(UploadFilePath), Content = content };
         if (toAppData) file.Parents = new List<string> { "appDataFolder" };
         request = GoogleDriveFiles.Create(file);
         request.Fields = new List<string> { "id", "name", "size", "createdTime" };
