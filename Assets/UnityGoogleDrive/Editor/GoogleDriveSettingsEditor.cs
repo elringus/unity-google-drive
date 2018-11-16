@@ -48,9 +48,8 @@ namespace UnityGoogleDrive
         internal static SettingsProvider CreateProjectSettingsProvider ()
         {
             var assetPath = AssetDatabase.GetAssetPath(GetOrCreateSettings());
-            var provider = new AssetSettingsProvider("Project/Google Drive", assetPath);
-            SettingsProvider.GetSearchKeywordsFromSerializedObject(provider.CreateEditor().serializedObject, provider.keywords);
-            return provider;
+            var keywords = SettingsProvider.GetSearchKeywordsFromPath(assetPath);
+            return AssetSettingsProvider.CreateProviderFromAssetPath("Project/Google Drive", assetPath, keywords);
         }
         #else
         [MenuItem("Edit/Project Settings/Google Drive Settings")]
