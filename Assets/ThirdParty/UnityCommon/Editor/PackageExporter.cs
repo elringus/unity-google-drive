@@ -1,4 +1,6 @@
-﻿using System;
+﻿// WARNING: Don't forget to keep compatibility with .NET 3.5 and Unity 2018.1.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

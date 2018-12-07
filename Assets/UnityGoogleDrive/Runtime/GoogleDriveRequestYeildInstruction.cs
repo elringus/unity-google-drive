@@ -18,7 +18,7 @@ namespace UnityGoogleDrive
     /// <summary>
     /// Yield instruction to suspend coroutines while <see cref="GoogleDriveRequest{TData}"/> is running.
     /// </summary>
-    /// <typeparam name="T">Type of the response data of the request the instruction is serving for.</typeparam>
+    /// <typeparam name="TResponse">Type of the response data of the request the instruction is serving for.</typeparam>
     public class GoogleDriveRequestYeildInstruction<TResponse> : GoogleDriveRequestYeildInstruction
     {
         /// <summary>

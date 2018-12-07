@@ -22,7 +22,7 @@ namespace UnityGoogleDrive
         public UriSchemeClientCredentials UriSchemeClientCredentials { get { return uriSchemeClientCredentials; } }
         /// <summary>
         /// Scopes of access to the user's Google Drive the app will request.
-        /// For available scopes see: <see cref="https://developers.google.com/drive/api/v3/about-auth"/>.
+        /// For available scopes see: <see href="https://developers.google.com/drive/api/v3/about-auth"/>.
         /// </summary>
         public List<string> AccessScopes { get { return accessScopes; } }
         /// <summary>
@@ -32,7 +32,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// A web address for the loopback authentication requests. Defult is 'localhost'.
         /// </summary>
-        /// <see cref="https://forum.unity.com/threads/515360/page-2#post-3504547"/>
+        /// <see href="https://forum.unity.com/threads/515360/page-2#post-3504547"/>
         public string LoopbackUri { get { return loopbackUri; } }
         /// <summary>
         /// HTML page shown to the user when loopback response is received.

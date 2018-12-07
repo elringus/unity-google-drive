@@ -9,7 +9,7 @@ namespace UnityGoogleDrive
     /// Allows uploading a <see cref="Data.ResourceData"/> and (optinally) raw payload data in a resumable fashion.
     /// </summary>
     /// <typeparam name="TRequest">Type of the uploaded data.</typeparam>
-    /// <see cref="https://developers.google.com/drive/api/v3/resumable-upload"/>
+    /// <see href="https://developers.google.com/drive/api/v3/resumable-upload"/>
     public class GoogleDriveResumableUploadRequest<TRequest> : GoogleDriveUploadRequest<TRequest, string> where TRequest : Data.ResourceData
     {
         /// <summary>

@@ -210,7 +210,7 @@ namespace UnityGoogleDrive
         {
             /// <summary>
             /// Portion of the file's content to dowload (byte range). Will download the full file when null (default).
-            /// For more info see <see cref="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
+            /// For more info see <see href="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
             /// </summary>
             public RangeInt? DownloadRange { get; private set; }
 
@@ -378,7 +378,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public string PageToken { get; set; }
             /// <summary>
             /// A query for filtering the file results. 
-            /// See <see cref="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax. 
+            /// See <see href="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax. 
             /// </summary>
             [QueryParameter] public string Q { get; set; }
             /// <summary>
@@ -492,7 +492,7 @@ namespace UnityGoogleDrive
         /// Creates a copy of a file and applies any requested updates with patch semantics.
         /// Response data will contain copied <see cref="Data.File"/>.
         /// </summary>
-        /// <param name="fileId">The file to copy. Ensure it has a valid <see cref="Data.File.Id"/>.</param>
+        /// <param name="file">The file to copy. Ensure it has a valid <see cref="Data.File.Id"/>.</param>
         public static CopyRequest Copy (Data.File file)
         {
             return new CopyRequest(file);
@@ -501,7 +501,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Creates a new file.
         /// </summary>
-        /// <param name="fileId">The file to create. Provide <see cref="Data.File.Content"/> to upload the content of the file.</param>
+        /// <param name="file">The file to create. Provide <see cref="Data.File.Content"/> to upload the content of the file.</param>
         /// <param name="uploadMimeType">When the uploaded content differs from the target type (Eg when uploading plain text to create a google document), specify the uploaded content MIME type here.</param>
         public static CreateRequest Create (Data.File file, string uploadMimeType = null)
         {
@@ -510,9 +510,9 @@ namespace UnityGoogleDrive
 
         /// <summary>
         /// Creates a new file and (optionally) uploads the file's content in a resumable fashion.
-        /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest, TResponse}.ResumableSessionUri"/> property of the failed request and start a new one.
+        /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest}.ResumableSessionUri"/> property of the failed request and start a new one.
         /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate 
-        /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see cref="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
+        /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see href="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
         /// </summary>
         /// <param name="file">The file to create. Provide <see cref="Data.File.Content"/> to upload the content of the file.</param>
         /// <param name="resumableSessionUri">Session URI to resume previously unfinished upload. Will upload from start when not provided.</param>
@@ -576,7 +576,7 @@ namespace UnityGoogleDrive
 
         /// <summary>
         /// Downloads a file's content by ID. Only <see cref="Data.File.Id"/> and <see cref="Data.File.Content"/> fields will be returned on success.
-        /// For a partial download provide <paramref name="downloadRange"/> argument. More info: <see cref="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
+        /// For a partial download provide <paramref name="downloadRange"/> argument. More info: <see href="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
         /// </summary>
         /// <param name="fileId">The ID of the file to download content for.</param>
         /// <param name="downloadRange">The portion of the file you want to dowload (a byte range). Will download the full file when null (default).</param>
@@ -639,9 +639,9 @@ namespace UnityGoogleDrive
 
         /// <summary>
         /// Updates a file's metadata and content with patch semantics and upload the content in resumable fashion.
-        /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest, TResponse}.ResumableSessionUri"/> property of the failed request and start a new one.
+        /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest}.ResumableSessionUri"/> property of the failed request and start a new one.
         /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate 
-        /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see cref="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
+        /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see href="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
         /// </summary>
         /// <param name="fileId">ID of the file to update.</param>
         /// <param name="file">Updated metadata of the file. Provide <see cref="Data.File.Content"/> to update the content of the file.</param>

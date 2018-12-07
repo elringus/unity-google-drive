@@ -30,7 +30,7 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
-        /// Invokes <see cref="JsonConvert.DeserializeObject"/> configured with <see cref="PrivateCamelResolver"/>.
+        /// Invokes <see cref="JsonConvert.DeserializeObject(string)"/> configured with <see cref="PrivateCamelResolver"/>.
         /// </summary>
         public static T FromJsonPrivateCamel<T> (string json)
         {
@@ -39,7 +39,7 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
-        /// Invokes <see cref="JsonConvert.SerializeObject"/> configured with <see cref="PrivateCamelResolver"/>.
+        /// Invokes <see cref="JsonConvert.SerializeObject(object)"/> configured with <see cref="PrivateCamelResolver"/>.
         /// </summary>
         public static string ToJsonPrivateCamel (object obj)
         {

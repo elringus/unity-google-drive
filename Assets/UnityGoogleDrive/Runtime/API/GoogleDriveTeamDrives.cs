@@ -70,7 +70,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public string PageToken { get; set; }
             /// <summary>
             /// Query string for searching Team Drives. 
-            /// See <see cref="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax. 
+            /// See <see href="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax. 
             /// </summary>
             [QueryParameter] public string Q { get; set; }
             /// <summary>

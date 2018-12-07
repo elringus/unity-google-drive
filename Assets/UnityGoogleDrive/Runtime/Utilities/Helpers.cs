@@ -58,7 +58,7 @@ namespace UnityGoogleDrive
         /// <param name="path">File's path in Google Drive. Add front slash to find all files in a folder.</param>
         /// <param name="appData">Whether to use the AppData space instead of the drive root.</param>
         /// <param name="fields">Required fields for the list request. To request file's fields, use 'files(id, name, mimeType, ...)'.</param>
-        /// <param name="mimeType">File's MIME type.</param>
+        /// <param name="mime">File's MIME type.</param>
         /// <param name="trashed">Whether to include trashed files.</param>
         public static async System.Threading.Tasks.Task<List<Data.File>> FindFilesByPathAsync (string path, bool appData = false, List<string> fields = null, string mime = null, bool trashed = false)
         {
