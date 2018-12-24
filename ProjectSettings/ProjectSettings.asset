@@ -148,8 +148,8 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.elringus.unitygoogledrive
-    iOS: com.elringus.unitygoogledrive
+    Android: com.elringus.naninovelsandbox
+    iOS: com.elringus.naninovelsandbox
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
