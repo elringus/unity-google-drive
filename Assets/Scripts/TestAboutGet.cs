@@ -48,6 +48,8 @@ public class TestAboutGet : AdaptiveWindowGUI
 
     private void UpdateInfo ()
     {
+        AuthController.CancelAuth();
+
         request = GoogleDriveAbout.Get();
         request.Fields = new List<string> { "user", "storageQuota" };
         request.Send();

@@ -25,6 +25,8 @@ public class TestAboutGetAsync : AdaptiveWindowGUI
 
     private async System.Threading.Tasks.Task<UnityGoogleDrive.Data.About> UpdateInfo ()
     {
+        AuthController.CancelAuth();
+
         request = GoogleDriveAbout.Get();
         request.Fields = new List<string> { "user", "storageQuota" };
         return await request.Send();

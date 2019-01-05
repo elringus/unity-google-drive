@@ -104,7 +104,6 @@ namespace UnityGoogleDrive
         [QueryParameter] public string UserIp { get; set; }
 
         protected static GoogleDriveSettings Settings { get; private set; }
-        protected static AuthController AuthController { get; private set; }
 
         protected UnityWebRequest WebRequest { get; private set; }
         protected GoogleDriveRequestYeildInstruction<TResponse> YeildInstruction { get; private set; }
@@ -116,7 +115,6 @@ namespace UnityGoogleDrive
             Method = method;
 
             if (Settings == null) Settings = GoogleDriveSettings.LoadFromResources();
-            if (AuthController == null) AuthController = new AuthController(Settings);
         }
 
         /// <summary>
