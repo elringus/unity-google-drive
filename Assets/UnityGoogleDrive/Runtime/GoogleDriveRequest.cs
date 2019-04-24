@@ -121,7 +121,7 @@ namespace UnityGoogleDrive
         /// Begin communicating with the Google Drive API to execute the request.
         /// </summary>
         /// <returns>
-        /// A yeild instruction indicating the progress/completion state of the request.
+        /// A yield instruction indicating the progress/completion state of the request.
         /// Yield this object to wait until the request <see cref="IsDone"/> or use <see cref="OnDone"/> event.
         /// </returns>
         public GoogleDriveRequestYeildInstruction<TResponse> Send ()
