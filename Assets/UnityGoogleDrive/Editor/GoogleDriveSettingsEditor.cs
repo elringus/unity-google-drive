@@ -22,7 +22,7 @@ namespace UnityGoogleDrive
         private readonly static GUIContent accessScopesContent = new GUIContent("Access Scopes", "Scopes of access to the user's Google Drive the app will request.");
         private readonly static GUIContent loopbackUriContent = new GUIContent("Loopback URI", "A web address for the loopback authentication requests. Defult is 'localhost'.");
         private readonly static GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
-        private readonly static GUIContent accessTokenPrefsKeyContent = new GUIContent("Acces Token Key", "PlayerPrefs key used to store access token.");
+        private readonly static GUIContent accessTokenPrefsKeyContent = new GUIContent("Access Token Key", "PlayerPrefs key used to store access token.");
         private readonly static GUIContent refreshTokenPrefsKeyContent = new GUIContent("Refresh Token Key", "PlayerPrefs key used to store refresh token.");
         private readonly static GUIContent deleteCachedTokensContent = new GUIContent("Delete cached tokens", "Removes cached access and refresh tokens forcing user to login on the next request.");
 
