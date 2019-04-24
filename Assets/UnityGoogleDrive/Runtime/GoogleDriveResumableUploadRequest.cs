@@ -63,9 +63,9 @@ namespace UnityGoogleDrive
             }
         }
 
-        protected override void HandleWebRequestDone (AsyncOperation requestYeild)
+        protected override void HandleWebRequestDone (AsyncOperation requestYield)
         {
-            base.HandleWebRequestDone(requestYeild);
+            base.HandleWebRequestDone(requestYield);
             if (IsError) { CompleteRequest(); return; }
             ResumableSessionUri = WebRequest.GetResponseHeader("Location");
             // New resumable upload session initiated and we have the payload, so start uploading.

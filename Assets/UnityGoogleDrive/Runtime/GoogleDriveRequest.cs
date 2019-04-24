@@ -65,7 +65,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Whether the request is currently executing.
         /// </summary>
-        public override bool IsRunning { get { return YeildInstruction != null && !IsDone; } }
+        public override bool IsRunning { get { return YieldInstruction != null && !IsDone; } }
         /// <summary>
         /// Whether the request has finished executing and it's safe to use <see cref="ResponseData"/>.
         /// </summary>
@@ -106,7 +106,7 @@ namespace UnityGoogleDrive
         protected static GoogleDriveSettings Settings { get; private set; }
 
         protected UnityWebRequest WebRequest { get; private set; }
-        protected GoogleDriveRequestYieldInstruction<TResponse> YeildInstruction { get; private set; }
+        protected GoogleDriveRequestYieldInstruction<TResponse> YieldInstruction { get; private set; }
         protected virtual bool AutoCompleteOnDone { get { return true; } }
 
         public GoogleDriveRequest (string uri, string method)
@@ -128,10 +128,10 @@ namespace UnityGoogleDrive
         {
             if (!IsRunning)
             {
-                YeildInstruction = new GoogleDriveRequestYieldInstruction<TResponse>(this);
+                YieldInstruction = new GoogleDriveRequestYieldInstruction<TResponse>(this);
                 SendWebRequest();
             }
-            return YeildInstruction;
+            return YieldInstruction;
         }
 
         public override GoogleDriveRequestYieldInstruction SendNonGeneric ()
@@ -226,7 +226,7 @@ namespace UnityGoogleDrive
             WebRequest.SendWebRequest().completed += HandleWebRequestDone;
         }
 
-        protected virtual void HandleWebRequestDone (AsyncOperation requestYeild)
+        protected virtual void HandleWebRequestDone (AsyncOperation requestYield)
         {
             if (WebRequest.responseCode == GoogleDriveSettings.UnauthorizedResponseCode)
             {
