@@ -26,7 +26,7 @@ namespace UnityGoogleDrive
         public abstract bool IsError { get; }
         public abstract string Error { get; protected set; }
 
-        public abstract GoogleDriveRequestYeildInstruction SendNonGeneric ();
+        public abstract GoogleDriveRequestYieldInstruction SendNonGeneric ();
         public abstract T GetResponseData<T> () where T : Data.ResourceData;
         public abstract void Abort ();
         public abstract void Dispose ();
@@ -106,7 +106,7 @@ namespace UnityGoogleDrive
         protected static GoogleDriveSettings Settings { get; private set; }
 
         protected UnityWebRequest WebRequest { get; private set; }
-        protected GoogleDriveRequestYeildInstruction<TResponse> YeildInstruction { get; private set; }
+        protected GoogleDriveRequestYieldInstruction<TResponse> YeildInstruction { get; private set; }
         protected virtual bool AutoCompleteOnDone { get { return true; } }
 
         public GoogleDriveRequest (string uri, string method)
@@ -124,17 +124,17 @@ namespace UnityGoogleDrive
         /// A yield instruction indicating the progress/completion state of the request.
         /// Yield this object to wait until the request <see cref="IsDone"/> or use <see cref="OnDone"/> event.
         /// </returns>
-        public GoogleDriveRequestYeildInstruction<TResponse> Send ()
+        public GoogleDriveRequestYieldInstruction<TResponse> Send ()
         {
             if (!IsRunning)
             {
-                YeildInstruction = new GoogleDriveRequestYeildInstruction<TResponse>(this);
+                YeildInstruction = new GoogleDriveRequestYieldInstruction<TResponse>(this);
                 SendWebRequest();
             }
             return YeildInstruction;
         }
 
-        public override GoogleDriveRequestYeildInstruction SendNonGeneric ()
+        public override GoogleDriveRequestYieldInstruction SendNonGeneric ()
         {
             return Send();
         }

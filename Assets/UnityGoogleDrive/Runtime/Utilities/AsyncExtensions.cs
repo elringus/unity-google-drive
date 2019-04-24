@@ -9,7 +9,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Allows awaiting <see cref="GoogleDriveRequest"/> objects in async methods.
         /// </summary>
-        public static TaskAwaiter<TResponse> GetAwaiter<TResponse> (this GoogleDriveRequestYeildInstruction<TResponse> yeildInstruction)
+        public static TaskAwaiter<TResponse> GetAwaiter<TResponse> (this GoogleDriveRequestYieldInstruction<TResponse> yeildInstruction)
         {
             var taskCompletionSource = new TaskCompletionSource<TResponse>();
             if (yeildInstruction.GoogleDriveRequest.IsDone) taskCompletionSource.SetResult(yeildInstruction.GoogleDriveRequest.ResponseData);
@@ -17,7 +17,7 @@ namespace UnityGoogleDrive
             return taskCompletionSource.Task.GetAwaiter();
         }
 
-        public static TaskAwaiter GetAwaiter (this GoogleDriveRequestYeildInstruction yeildInstruction)
+        public static TaskAwaiter GetAwaiter (this GoogleDriveRequestYieldInstruction yeildInstruction)
         {
             var taskCompletionSource = new TaskCompletionSource<object>();
             if (yeildInstruction.IsDone) taskCompletionSource.SetResult(null);

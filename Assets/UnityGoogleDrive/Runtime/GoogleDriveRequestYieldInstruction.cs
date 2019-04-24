@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityGoogleDrive
 {
-    public abstract class GoogleDriveRequestYeildInstruction : CustomYieldInstruction
+    public abstract class GoogleDriveRequestYieldInstruction : CustomYieldInstruction
     {
         public event Action OnDoneNonGeneric;
         public abstract bool IsDone { get; }
@@ -19,7 +19,7 @@ namespace UnityGoogleDrive
     /// Yield instruction to suspend coroutines while <see cref="GoogleDriveRequest{TData}"/> is running.
     /// </summary>
     /// <typeparam name="TResponse">Type of the response data of the request the instruction is serving for.</typeparam>
-    public class GoogleDriveRequestYeildInstruction<TResponse> : GoogleDriveRequestYeildInstruction
+    public class GoogleDriveRequestYieldInstruction<TResponse> : GoogleDriveRequestYieldInstruction
     {
         /// <summary>
         /// Event invoked when corresponding request is done running.
@@ -32,7 +32,7 @@ namespace UnityGoogleDrive
         public float Progress { get { return GoogleDriveRequest.Progress; } }
         public GoogleDriveRequest<TResponse> GoogleDriveRequest { get; private set; }
 
-        public GoogleDriveRequestYeildInstruction (GoogleDriveRequest<TResponse> googleDriveRequest)
+        public GoogleDriveRequestYieldInstruction (GoogleDriveRequest<TResponse> googleDriveRequest)
         {
             GoogleDriveRequest = googleDriveRequest;
             GoogleDriveRequest.OnDone += HandleRequestDone;
