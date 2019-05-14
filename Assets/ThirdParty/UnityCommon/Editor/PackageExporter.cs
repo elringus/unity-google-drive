@@ -61,7 +61,16 @@ namespace UnityCommon
             RenderGUI();
         }
 
-        #if UNITY_2018_3_OR_NEWER
+        #if UNITY_2019_1_OR_NEWER
+        [SettingsProvider]
+        internal static SettingsProvider CreateProjectSettingsProvider ()
+        {
+            var provider = new SettingsProvider("Project/Package Exporter", SettingsScope.Project);
+            provider.activateHandler += (a, b) => Initialize();
+            provider.guiHandler += id => RenderGUI();
+            return provider;
+        }
+        #elif UNITY_2018_3_OR_NEWER
         [SettingsProvider]
         internal static SettingsProvider CreateProjectSettingsProvider ()
         {
