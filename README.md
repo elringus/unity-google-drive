@@ -83,6 +83,10 @@ The following [Google Drive APIs](https://developers.google.com/drive/api/v3/ref
 - [ ] [Revisions](https://developers.google.com/drive/api/v3/reference/revisions)
 - [x] [Teamdrives](https://developers.google.com/drive/api/v3/reference/teamdrives)
 
+## Access Scopes
+
+By default, the most permissive [access scope](https://developers.google.com/drive/api/v2/about-auth) is set, allowing to use all the available drive APIs. You can restrict the scope in the settings menu, but be aware that it could prevent some of the features from working correctly.
+
 ## FAQ
 
 ### Why some of the returned properties of the response are null?
