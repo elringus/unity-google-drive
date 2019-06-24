@@ -51,6 +51,10 @@ Automated integration tests cover the main features:
 - Return to Unity editor, open Google Drive settings and click **Parse URI scheme credentials PLIST file**; select the downloaded credentials plist file;
 - Download and install [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) package to automatically resolve Android and iOS native dependencies. The dependency file is located at `./UnityGoogleDrive/Editor/Dependencies.xml`. When the PlayServicesResolver is installed and editor is switched to Android build target, [all the required .jar and .aar files](https://i.gyazo.com/8ce9d0b9ad7c45093b3c282843f3b1df.png) will automatically be downloaded to the `Assets/Plugins/Android` folder. When switched to iOS, a [CocoaPods](https://cocoapods.org/) Pod file will be added to the generated iOS project on build post-process. When developing under Windows, you'll have to manually run `pod install` in the XCode project directory to install the iOS dependencies.
 
+## Access Scopes
+
+By default, the most permissive [access scope](https://developers.google.com/drive/api/v2/about-auth) is set, allowing to use all the available drive APIs. You can restrict the scope in the settings menu, but be aware that it could prevent some of the features from working correctly.
+
 ## Examples
 The design mostly follows the official [Google APIs Client Library for .NET](https://github.com/google/google-api-dotnet-client):
 
@@ -82,10 +86,6 @@ The following [Google Drive APIs](https://developers.google.com/drive/api/v3/ref
 - [ ] [Replies](https://developers.google.com/drive/api/v3/reference/replies)
 - [ ] [Revisions](https://developers.google.com/drive/api/v3/reference/revisions)
 - [x] [Teamdrives](https://developers.google.com/drive/api/v3/reference/teamdrives)
-
-## Access Scopes
-
-By default, the most permissive [access scope](https://developers.google.com/drive/api/v2/about-auth) is set, allowing to use all the available drive APIs. You can restrict the scope in the settings menu, but be aware that it could prevent some of the features from working correctly.
 
 ## FAQ
 
