@@ -1,7 +1,7 @@
 ## Download package
 For Unity 2019.1 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.25-alpha/com.elringus.unitygoogledrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
-Please be aware that you don't need to clone the whole repository in order to use the extension in your project. Either download package from the link above or extract `Assets/UnityGoogleDrive` folder from the repository project – it contains all the required assets; other stuff is just for testing purposes.
+Please be aware that you don't need to clone the whole repository in order to use the extension in your project. Either download package from the link above or extract `Assets/com.elringus.unitygoogledrive` folder from the repository project – it contains all the required assets; other stuff is just for testing purposes.
 
 **In case you're not familiar with the Google Drive API, please read through the [official documentation](https://developers.google.com/drive/api/v3/about-sdk) and [FAQ](https://github.com/Elringus/UnityGoogleDrive#faq), before using this package or opening new issues.**
 
@@ -121,5 +121,5 @@ This is possible. To access shared resources you'll have to specify ["Shared wit
 
 ### My application ID (Andriod/iOS) is mixed-cased and I can't change it.
 Application ID (aka bundle ID, package name) is used as a custom URI scheme on Android and iOS to receive authorization callback from Google’s OAuth server and redirect user back to the app. Even though the initial request sent by UnityGoogleDrive plugin preserves casing of the application ID (as it’s set in the player settings), Google’s OAuth server will forcibly convert it to lowercase when redirecting the user. That’s why it’s mandatory to use lowercased application ID. If, however, you’re unable to change it (eg, app is already published on the store), you can do the following:
-- Android: replace `${applicationId}` record in the `./UnityGoogleDrive/Plugins/com.elringus.unitygoogledriveandroid.aar/AndroidManifest.xml` (you’ll have to unzip the .aar) to your application’s ID (lower-cased);
+- Android: replace `${applicationId}` record in the `./com.elringus.unitygoogledrive/Plugins/com.elringus.unitygoogledriveandroid.aar/AndroidManifest.xml` (you’ll have to unzip the .aar) to your application’s ID (lower-cased);
 - iOS: add your application’s ID (lower-cased) to the [Supported URL schemes](https://i.gyazo.com/efafe276a3d566d7563e83005873746b.png) list in the iOS player settings.
