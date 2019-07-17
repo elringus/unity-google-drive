@@ -1,5 +1,5 @@
 ## Download package
-For Unity 2019.1 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.25-alpha/UnityGoogleDrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
+For Unity 2019.1 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.25-alpha/com.elringus.unitygoogledrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
 
 Please be aware that you don't need to clone the whole repository in order to use the extension in your project. Either download package from the link above or extract `Assets/UnityGoogleDrive` folder from the repository project – it contains all the required assets; other stuff is just for testing purposes.
 
