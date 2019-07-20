@@ -1,7 +1,5 @@
-## Download package
-For Unity 2019.1 and later: [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.25-alpha/com.elringus.unitygoogledrive.unitypackage). Check [releases](https://github.com/Elringus/UnityGoogleDrive/releases) for previous versions support.
-
-Please be aware that you don't need to clone the whole repository in order to use the extension in your project. Either download package from the link above or extract `Assets/com.elringus.unitygoogledrive` folder from the repository project – it contains all the required assets; other stuff is just for testing purposes.
+## Installation
+Either add `"com.elringus.unitygoogledrive": "https://github.com/Elringus/UnityGoogleDrive.git#package"` as a dependency for your project's `Packages/manifest.json` ([guide](https://docs.unity3d.com/Manual/upm-git.html)) or use [UpmGitExtension](https://github.com/mob-sakai/UpmGitExtension) to install the extension via Unity's package manager window.
 
 **In case you're not familiar with the Google Drive API, please read through the [official documentation](https://developers.google.com/drive/api/v3/about-sdk) and [FAQ](https://github.com/Elringus/UnityGoogleDrive#faq), before using this package or opening new issues.**
 
