@@ -89,5 +89,5 @@ $RECYCLE.BIN/
 !*.dll 
 
 # Ignore sensitive data
-/Assets/com.elringus.unitygoogledrive/Resources/*
-/Assets/com.elringus.unitygoogledrive/Resources.meta
+/Assets/UnityGoogleDrive/Resources/*
+/Assets/UnityGoogleDrive/Resources.meta

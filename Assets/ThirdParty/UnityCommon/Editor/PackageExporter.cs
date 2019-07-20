@@ -31,6 +31,9 @@ namespace UnityCommon
         private static bool IsAnyPathsIgnored { get { return !string.IsNullOrEmpty(IgnoredAssetGUIds); } }
         private static bool IsReadyToExport { get { return !string.IsNullOrEmpty(OutputPath) && !string.IsNullOrEmpty(OutputFileName); } }
         private static bool ExportAsUnityPackage { get { return PlayerPrefs.GetInt(prefsPrefix + "ExportAsUnityPackage", 1) == 1; } set { PlayerPrefs.SetInt(prefsPrefix + "ExportAsUnityPackage", value ? 1 : 0); } }
+        private static bool PublishToGit { get { return PlayerPrefs.GetInt(prefsPrefix + "PublishToGit", 0) == 1; } set { PlayerPrefs.SetInt(prefsPrefix + "PublishToGit", value ? 1 : 0); } }
+        private static string GitShellPath { get { return PlayerPrefs.GetString(prefsPrefix + "GitShellPath"); } set { PlayerPrefs.SetString(prefsPrefix + "GitShellPath", value); } }
+        private static string GitScriptPath { get { return PlayerPrefs.GetString(prefsPrefix + "GitScriptPath"); } set { PlayerPrefs.SetString(prefsPrefix + "GitScriptPath", value); } }
 
         private const string prefsPrefix = "PackageExporter.";
         private const string autoRefreshKey = "kAutoRefresh";
@@ -120,6 +123,22 @@ namespace UnityCommon
                     OutputPath = EditorUtility.OpenFolderPanel("Output Path", "", "");
             }
             ExportAsUnityPackage = EditorGUILayout.Toggle("Export As Unity Package", ExportAsUnityPackage);
+            PublishToGit = EditorGUILayout.Toggle("Publish To Git", PublishToGit);
+            if (PublishToGit)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GitShellPath = EditorGUILayout.TextField("Git Shell Path", GitShellPath);
+                    if (GUILayout.Button("Select", EditorStyles.miniButton, GUILayout.Width(65)))
+                        GitShellPath = EditorUtility.OpenFilePanelWithFilters("Git Shell Path", "", new[] { "Executable", "exe" });
+                }
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GitScriptPath = EditorGUILayout.TextField("Git Script Path", GitScriptPath);
+                    if (GUILayout.Button("Select", EditorStyles.miniButton, GUILayout.Width(65)))
+                        GitScriptPath = EditorUtility.OpenFilePanelWithFilters("Git Script Path", "", new[] { "Shell", "sh" });
+                }
+            }
             EditorGUILayout.Space();
 
             EditorGUI.BeginChangeCheck();
@@ -257,6 +276,15 @@ namespace UnityCommon
                     }
                 }
                 catch (Exception e) { Debug.LogError(e.Message); }
+            }
+
+            // Publish GitHub branch.
+            if (PublishToGit)
+            {
+                using (var proccess = System.Diagnostics.Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
+                {
+                    proccess.WaitForExit();
+                }
             }
 
             // Restore modified scripts.
