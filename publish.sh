@@ -7,6 +7,7 @@ cd Assets/UnityGoogleDrive
 
 git init
 git add -A
+git add -f ThirdParty/JsonNet-Lite/Newtonsoft.Json.dll
 git reset -- Resources/
 git reset -- Resources.meta
 git commit -m 'publish'
