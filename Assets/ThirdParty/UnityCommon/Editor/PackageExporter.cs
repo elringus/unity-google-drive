@@ -23,7 +23,7 @@ namespace UnityCommon
         private static string PackageName { get { return PlayerPrefs.GetString(prefsPrefix + "PackageName"); } set { PlayerPrefs.SetString(prefsPrefix + "PackageName", value); } }
         private static string Copyright { get { return PlayerPrefs.GetString(prefsPrefix + "Copyright"); } set { PlayerPrefs.SetString(prefsPrefix + "Copyright", value); } }
         private static string LicenseFilePath { get { return PlayerPrefs.GetString(prefsPrefix + "LicenseFilePath"); } set { PlayerPrefs.SetString(prefsPrefix + "LicenseFilePath", value); } }
-        private static string LicenseAssetPath { get { return AssetsPath + "/" + defaultLicenseFileName + ".txt"; } }
+        private static string LicenseAssetPath { get { return AssetsPath + "/" + defaultLicenseFileName + ".md"; } }
         private static string AssetsPath { get { return "Assets/" + PackageName; } }
         private static string OutputPath { get { return PlayerPrefs.GetString(prefsPrefix + "OutputPath"); } set { PlayerPrefs.SetString(prefsPrefix + "OutputPath", value); } }
         private static string OutputFileName { get { return PackageName; } }
