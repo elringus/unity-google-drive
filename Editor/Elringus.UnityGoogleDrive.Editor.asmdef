@@ -1,0 +1,17 @@
+{
+    "name": "Elringus.UnityGoogleDrive.Editor",
+    "references": [
+        "GUID:26c3782e36cc1874587ef07692accab2"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
