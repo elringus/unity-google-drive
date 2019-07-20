@@ -91,5 +91,3 @@ $RECYCLE.BIN/
 # Ignore sensitive data
 /Assets/UnityGoogleDrive/Resources/*
 /Assets/UnityGoogleDrive/Resources.meta
-Resources/*
-Resources.meta
