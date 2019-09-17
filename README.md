@@ -1,6 +1,6 @@
 ## Installation
 
-Either download and import a [standalone Unity package](https://github.com/Elringus/UnityGoogleDrive/releases/download/v0.25-alpha/UnityGoogleDrive.unitypackage) or add `"com.elringus.unitygoogledrive": "https://github.com/Elringus/UnityGoogleDrive.git#package"` as a dependency for your project's `Packages/manifest.json` ([guide](https://docs.unity3d.com/Manual/upm-git.html)).
+Add `"com.elringus.unitygoogledrive": "https://github.com/Elringus/UnityGoogleDrive.git#package"` as a dependency for your project's `Packages/manifest.json` ([guide](https://docs.unity3d.com/Manual/upm-git.html)).
 
 **In case you're not familiar with the Google Drive API, please read through the [official documentation](https://developers.google.com/drive/api/v3/about-sdk) and [FAQ](https://github.com/Elringus/UnityGoogleDrive#faq), before using this package or opening new issues.**
 
