@@ -123,5 +123,5 @@ Application ID (aka bundle ID, package name) is used as a custom URI scheme on A
 - Android: replace `${applicationId}` record in the `{PackageRoot}/Plugins/com.elringus.unitygoogledriveandroid.aar/AndroidManifest.xml` (you’ll have to unzip the .aar) to your application’s ID (lower-cased);
 - iOS: add your application’s ID (lower-cased) to the [Supported URL schemes](https://i.gyazo.com/efafe276a3d566d7563e83005873746b.png) list in the iOS player settings.
 
-### UWP authentication fails on redirect
+### UWP authentication fails on redirect.
 Allow the app to access localhost: https://stackoverflow.com/a/33263253.
