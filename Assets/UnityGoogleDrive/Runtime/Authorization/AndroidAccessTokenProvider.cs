@@ -31,6 +31,11 @@ namespace UnityGoogleDrive
                 if (OnAuthResponse != null)
                     OnAuthResponse.Invoke(response);
             }
+
+            private void onAuthorizationResponse (bool isError, AndroidJavaObject error, string codeVerifier, string redirectUri, string authorizationCode)
+            {
+                onAuthorizationResponse(isError, error?.ToString(), codeVerifier, redirectUri, authorizationCode);
+            }
         }
 
         public event Action<IAccessTokenProvider> OnDone;
@@ -86,7 +91,7 @@ namespace UnityGoogleDrive
                 {
                     var message = "UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.";
                     if (!string.IsNullOrEmpty(refresher.Error))
-                        message += string.Format("\nDetails: {0}", refresher.Error);
+                        message += $"\nDetails: {refresher.Error}";
                     Debug.Log(message);
                 }
                 ExecuteFullAuth();
@@ -146,7 +151,7 @@ namespace UnityGoogleDrive
 
             if (response.IsError)
             {
-                Debug.LogError(string.Format("UnityGoogleDrive: OAuth authorization error: {0}.", response.Error));
+                Debug.LogError($"UnityGoogleDrive: OAuth authorization error: {response.Error}.");
                 HandleProvideAccessTokenComplete(true);
                 return;
             }
