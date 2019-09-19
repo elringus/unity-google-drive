@@ -7,7 +7,7 @@ namespace UnityGoogleDrive
     [CustomEditor(typeof(GoogleDriveSettings))]
     public class GoogleDriveSettingsEditor : Editor
     {
-        protected GoogleDriveSettings TargetSettings { get { return target as GoogleDriveSettings; } }
+        protected GoogleDriveSettings TargetSettings => target as GoogleDriveSettings;
 
         private SerializedProperty genericClientCredentials;
         private SerializedProperty uriSchemeClientCredentials;
@@ -37,13 +37,12 @@ namespace UnityGoogleDrive
                 AssetDatabase.CreateAsset(settings, path);
                 AssetDatabase.Refresh();
                 AssetDatabase.SaveAssets();
-                Debug.Log(string.Format("UnityGoogleDrive: Settings file didn't exist and was created at: {0}.\n" +
-                    "You're free to move it, just make sure it stays in the root of a 'Resources' folder.", path));
+                Debug.Log($"UnityGoogleDrive: Settings file didn't exist and was created at: {path}.\n" +
+                    "You're free to move it, just make sure it stays in the root of a 'Resources' folder.");
             }
             return settings;
         }
 
-        #if UNITY_2018_3_OR_NEWER
         [SettingsProvider]
         internal static SettingsProvider CreateProjectSettingsProvider ()
         {
@@ -51,13 +50,6 @@ namespace UnityGoogleDrive
             var keywords = SettingsProvider.GetSearchKeywordsFromPath(assetPath);
             return AssetSettingsProvider.CreateProviderFromAssetPath("Project/Google Drive", assetPath, keywords);
         }
-        #else
-        [MenuItem("Edit/Project Settings/Google Drive Settings")]
-        private static void SelectSettings ()
-        {
-            Selection.activeObject = GetOrCreateSettings();
-        }
-        #endif
 
         private void OnEnable ()
         {

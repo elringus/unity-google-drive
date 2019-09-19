@@ -6,13 +6,13 @@ namespace UnityGoogleDrive
     [System.Serializable]
     public class GenericClientCredentials : IClientCredentials
     {
-        public string ClientId { get { return client_id; } }
-        public string ProjectId { get { return project_id; } }
-        public string AuthUri { get { return auth_uri; } }
-        public string TokenUri { get { return token_uri; } }
-        public string AuthProviderX509CertUrl { get { return auth_provider_x509_cert_url; } }
-        public string ClientSecret { get { return client_secret; } }
-        public List<string> RedirectUris { get { return redirect_uris; } }
+        public string ClientId => client_id;
+        public string ProjectId => project_id;
+        public string AuthUri => auth_uri;
+        public string TokenUri => token_uri;
+        public string AuthProviderX509CertUrl => auth_provider_x509_cert_url;
+        public string ClientSecret => client_secret;
+        public List<string> RedirectUris => redirect_uris;
 
         [SerializeField] private string client_id = null;
         [SerializeField] private string project_id = null;

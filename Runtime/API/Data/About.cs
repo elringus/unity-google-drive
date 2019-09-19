@@ -51,7 +51,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#about".
         /// </summary>
-        public override string Kind { get { return "drive#about"; } }
+        public override string Kind => "drive#about";
         /// <summary>
         /// Whether the user has installed the requesting app.
         /// </summary>

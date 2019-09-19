@@ -10,7 +10,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#changeList".
         /// </summary>
-        public override string Kind { get { return "drive#changeList"; } }
+        public override string Kind => "drive#changeList";
         /// <summary>
         /// The list of changes. If nextPageToken is populated, then this list may be incomplete
         /// and an additional page of results should be fetched.

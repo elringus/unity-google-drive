@@ -42,7 +42,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#permission".
         /// </summary>
-        public override string Kind { get { return "drive#permission"; } }
+        public override string Kind => "drive#permission";
         /// <summary>
         /// The ID of this permission. This is a unique identifier for the grantee, and is 
         /// published in User resources as permissionId.

@@ -10,7 +10,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#generatedIds".
         /// </summary>
-        public override string Kind { get { return "drive#generatedIds"; } }
+        public override string Kind => "drive#generatedIds";
         /// <summary>
         /// The IDs generated for the requesting user in the specified space.
         /// </summary>

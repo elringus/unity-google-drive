@@ -51,7 +51,6 @@ namespace UnityGoogleDrive
         /// </summary>
         public const string ScriptMimeType = "application/vnd.google-apps.script";
 
-        #if NET_4_6 || NET_STANDARD_2_0
         /// <summary>
         /// Looks for the files located at the provided path.
         /// </summary>
@@ -224,7 +223,6 @@ namespace UnityGoogleDrive
 
             return result.Count == 0 ? null : result;
         }
-        #endif
 
         public static string CalculateMD5Checksum (byte[] content)
         {

@@ -69,7 +69,7 @@ namespace UnityGoogleDrive
                 {
                     var message = "UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.";
                     if (!string.IsNullOrEmpty(refresher.Error))
-                        message += string.Format("\nDetails: {0}", refresher.Error);
+                        message += $"\nDetails: {refresher.Error}";
                     Debug.Log(message);
                 }
                 ExecuteFullAuth();
@@ -105,7 +105,7 @@ namespace UnityGoogleDrive
             var codeChallenge = CryptoUtils.Base64UriEncodeNoPadding(codeVerifierHash);
 
             // Creates a redirect URI using an available port on the loopback address.
-            redirectUri = string.Format("{0}:{1}", settings.LoopbackUri, GetRandomUnusedPort());
+            redirectUri = $"{settings.LoopbackUri}:{GetRandomUnusedPort()}";
 
             // Listen for requests on the redirect URI.
             var httpListener = new HttpListener();
@@ -161,13 +161,13 @@ namespace UnityGoogleDrive
             // Check for errors.
             if (context.Request.QueryString.Get("error") != null)
             {
-                Debug.LogError(string.Format("UnityGoogleDrive: OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
+                Debug.LogError($"UnityGoogleDrive: OAuth authorization error: {context.Request.QueryString.Get("error")}.");
                 HandleProvideAccessTokenComplete(true);
                 return;
             }
             if (context.Request.QueryString.Get("code") == null || context.Request.QueryString.Get("state") == null)
             {
-                Debug.LogError("UnityGoogleDrive: Malformed authorization response. " + context.Request.QueryString);
+                Debug.LogError($"UnityGoogleDrive: Malformed authorization response. {context.Request.QueryString}");
                 HandleProvideAccessTokenComplete(true);
                 return;
             }
@@ -180,7 +180,7 @@ namespace UnityGoogleDrive
             // this app made the request which resulted in authorization.
             if (incomingState != expectedState)
             {
-                Debug.LogError(string.Format("UnityGoogleDrive: Received request with invalid state ({0}).", incomingState));
+                Debug.LogError($"UnityGoogleDrive: Received request with invalid state ({incomingState}).");
                 HandleProvideAccessTokenComplete(true);
                 return;
             }

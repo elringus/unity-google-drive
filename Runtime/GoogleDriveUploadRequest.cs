@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine.Networking;
 
@@ -28,11 +27,11 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Whether the request has <see cref="RequestPayload"/>.
         /// </summary>
-        public bool HasPayload { get { return RequestPayload != null; } }
+        public bool HasPayload => RequestPayload != null;
         /// <summary>
         /// Progress of the data upload, in 0.0 to 1.0 range.
         /// </summary>
-        public override float Progress { get { return WebRequest != null ? WebRequest.uploadProgress : 0; } }
+        public override float Progress => WebRequest != null ? WebRequest.uploadProgress : 0;
 
         /// <summary>
         /// The type of upload request to the /upload URI. Acceptable values are:
@@ -40,7 +39,7 @@ namespace UnityGoogleDrive
         ///   - multipart - Multipart upload. Upload both the media and its metadata, in a single request.
         ///   - resumable - Resumable upload. Upload the file in a resumable fashion.
         /// </summary>
-        [QueryParameter] public virtual string UploadType { get { return HasPayload ? "multipart" : null; } }
+        [QueryParameter] public virtual string UploadType => HasPayload ? "multipart" : null;
 
         private const string RequestContentType = "application/json; charset=UTF-8";
         private const string DefaultMimeType = "application/octet-stream";

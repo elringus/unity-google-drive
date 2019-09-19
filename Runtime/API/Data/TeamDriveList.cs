@@ -10,7 +10,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#teamDriveList".
         /// </summary>
-        public override string Kind { get { return "drive#teamDriveList"; } }
+        public override string Kind => "drive#teamDriveList";
         /// <summary>
         /// The page token for the next page of Team Drives. This will be absent if the end
         /// of the Team Drives list has been reached. If the token is rejected for any reason,

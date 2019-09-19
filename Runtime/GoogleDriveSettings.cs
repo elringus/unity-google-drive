@@ -15,37 +15,37 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Google Drive API application credentials used to authorize requests via loopback and redirect schemes.
         /// </summary>
-        public GenericClientCredentials GenericClientCredentials { get { return genericClientCredentials; } }
+        public GenericClientCredentials GenericClientCredentials => genericClientCredentials;
         /// <summary>
         /// Google Drive API application credentials used to authorize requests via custom URI scheme.
         /// </summary>
-        public UriSchemeClientCredentials UriSchemeClientCredentials { get { return uriSchemeClientCredentials; } }
+        public UriSchemeClientCredentials UriSchemeClientCredentials => uriSchemeClientCredentials;
         /// <summary>
         /// Scopes of access to the user's Google Drive the app will request.
         /// For available scopes see: <see href="https://developers.google.com/drive/api/v3/about-auth"/>.
         /// </summary>
-        public List<string> AccessScopes { get { return accessScopes; } }
+        public List<string> AccessScopes => accessScopes;
         /// <summary>
         /// Joined version of the <see cref="AccessScopes"/>.
         /// </summary>
-        public string AccessScope { get { return string.Join(" ", AccessScopes.ToArray()); } }
+        public string AccessScope => string.Join(" ", AccessScopes.ToArray());
         /// <summary>
         /// A web address for the loopback authentication requests. Defult is 'localhost'.
         /// </summary>
         /// <see href="https://forum.unity.com/threads/515360/page-2#post-3504547"/>
-        public string LoopbackUri { get { return loopbackUri; } }
+        public string LoopbackUri => loopbackUri;
         /// <summary>
         /// HTML page shown to the user when loopback response is received.
         /// </summary>
-        public string LoopbackResponseHtml { get { return loopbackResponseHtml; } set { loopbackResponseHtml = value; } }
+        public string LoopbackResponseHtml { get => loopbackResponseHtml; set => loopbackResponseHtml = value; }
         /// <summary>
         /// Token used to authenticate requests; cached in <see cref="PlayerPrefs"/>.
         /// </summary>
-        public string CachedAccessToken { get { return PlayerPrefs.GetString(accessTokenPrefsKey); } set { PlayerPrefs.SetString(accessTokenPrefsKey, value); } }
+        public string CachedAccessToken { get => PlayerPrefs.GetString(accessTokenPrefsKey); set => PlayerPrefs.SetString(accessTokenPrefsKey, value); }
         /// <summary>
         /// Token used to refresh access tokens; cached in <see cref="PlayerPrefs"/>.
         /// </summary>
-        public string CachedRefreshToken { get { return PlayerPrefs.GetString(refreshTokenPrefsKey); } set { PlayerPrefs.SetString(refreshTokenPrefsKey, value); } }
+        public string CachedRefreshToken { get => PlayerPrefs.GetString(refreshTokenPrefsKey); set => PlayerPrefs.SetString(refreshTokenPrefsKey, value); }
 
         [SerializeField] private GenericClientCredentials genericClientCredentials = null;
         [SerializeField] private UriSchemeClientCredentials uriSchemeClientCredentials = null;

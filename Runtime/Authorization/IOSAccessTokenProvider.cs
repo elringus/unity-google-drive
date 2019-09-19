@@ -72,7 +72,7 @@ namespace UnityGoogleDrive
                 {
                     var message = "UnityGoogleDrive: Failed to refresh access token; executing full auth procedure.";
                     if (!string.IsNullOrEmpty(refresher.Error))
-                        message += string.Format("\nDetails: {0}", refresher.Error);
+                        message += $"\nDetails: {refresher.Error}";
                     Debug.Log(message);
                 }
                 ExecuteFullAuth();
@@ -121,7 +121,7 @@ namespace UnityGoogleDrive
 
             if (string.IsNullOrEmpty(response) || response.Trim().StartsWith("Error"))
             {
-                Debug.LogError(string.Format("UnityGoogleDrive: OAuth authorization error: {0}.", response));
+                Debug.LogError($"UnityGoogleDrive: OAuth authorization error: {response}.");
                 HandleProvideAccessTokenComplete(true);
                 return;
             }
@@ -129,7 +129,7 @@ namespace UnityGoogleDrive
             var splittedResponse = response.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (splittedResponse.Length != 3)
             {
-                Debug.LogError(string.Format("UnityGoogleDrive: Malformed OAuth authorization response: {0}.", response));
+                Debug.LogError($"UnityGoogleDrive: Malformed OAuth authorization response: {response}.");
                 HandleProvideAccessTokenComplete(true);
                 return;
             }

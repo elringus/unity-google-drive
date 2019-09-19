@@ -10,9 +10,9 @@ namespace UnityGoogleDrive
         [Serializable]
         public class ErrorDescription
         {
-            public List<ErrorDefinition> Errors { get { return errors; } }
-            public int Code { get { return code; } }
-            public string Message { get { return message; } }
+            public List<ErrorDefinition> Errors => errors;
+            public int Code => code;
+            public string Message => message;
 
             [SerializeField] private List<ErrorDefinition> errors = new List<ErrorDefinition>();
             [SerializeField] private int code = 0;
@@ -20,7 +20,7 @@ namespace UnityGoogleDrive
 
             public override string ToString ()
             {
-                var output = string.Format("Google Drive API Error Description: Code '{0}' Message: '{1}'", Code, Message);
+                var output = $"Google Drive API Error Description: Code '{Code}' Message: '{Message}'";
                 foreach (var error in Errors)
                     output += Environment.NewLine + " - " + error.ToString();
                 return output;
@@ -30,11 +30,11 @@ namespace UnityGoogleDrive
         [Serializable]
         public class ErrorDefinition
         {
-            public string Domain { get { return domain; } }
-            public string Reason { get { return reason; } }
-            public string Message { get { return message; } }
-            public string LocationType { get { return locationType; } }
-            public string Location { get { return location; } }
+            public string Domain => domain;
+            public string Reason => reason;
+            public string Message => message;
+            public string LocationType => locationType;
+            public string Location => location;
 
             [SerializeField] private string domain = null;
             [SerializeField] private string reason = null;
@@ -44,20 +44,19 @@ namespace UnityGoogleDrive
 
             public override string ToString ()
             {
-                return string.Format("Domain: '{0}' Reason: '{1}' Message: '{2}' LocationType: '{3}' Location: '{4}'", 
-                    Domain, Reason, Message, LocationType, Location);
+                return $"Domain: '{Domain}' Reason: '{Reason}' Message: '{Message}' LocationType: '{LocationType}' Location: '{Location}'";
             }
         }
 
-        public bool IsError { get { return Error != null && Error.Code != 0; } }
-        public ErrorDescription Error { get { return error; } }
+        public bool IsError => Error != null && Error.Code != 0;
+        public ErrorDescription Error => error;
+
+        [SerializeField] private ErrorDescription error = null;
 
         public override string ToString ()
         {
             if (!IsError) return null;
             return Error.ToString();
         }
-
-        [SerializeField] private ErrorDescription error = null;
     }
 }

@@ -235,7 +235,7 @@ namespace UnityGoogleDrive
             {
                 var webRequest = base.CreateWebRequest();
                 if (DownloadRange.HasValue) webRequest.SetRequestHeader("Range", 
-                    string.Format("bytes={0}-{1}", DownloadRange.Value.start, DownloadRange.Value.end));
+                    $"bytes={DownloadRange.Value.start}-{DownloadRange.Value.end}");
                 return webRequest;
             }
 

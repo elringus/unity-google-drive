@@ -61,11 +61,11 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Progress of the data download, in 0.0 to 1.0 range.
         /// </summary>
-        public override float Progress { get { return WebRequest != null ? WebRequest.downloadProgress : 0; } }
+        public override float Progress => WebRequest != null ? WebRequest.downloadProgress : 0;
         /// <summary>
         /// Whether the request is currently executing.
         /// </summary>
-        public override bool IsRunning { get { return YieldInstruction != null && !IsDone; } }
+        public override bool IsRunning => YieldInstruction != null && !IsDone;
         /// <summary>
         /// Whether the request has finished executing and it's safe to use <see cref="ResponseData"/>.
         /// </summary>
@@ -74,7 +74,7 @@ namespace UnityGoogleDrive
         /// Whether the request has finished with errors.
         /// Use <see cref="Error"/> for error description.
         /// </summary>
-        public override bool IsError { get { return !string.IsNullOrEmpty(Error); } }
+        public override bool IsError => !string.IsNullOrEmpty(Error);
         /// <summary>
         /// When <see cref="IsError"/> is true contains description of the occured error.
         /// </summary>
@@ -107,7 +107,7 @@ namespace UnityGoogleDrive
 
         protected UnityWebRequest WebRequest { get; private set; }
         protected GoogleDriveRequestYieldInstruction<TResponse> YieldInstruction { get; private set; }
-        protected virtual bool AutoCompleteOnDone { get { return true; } }
+        protected virtual bool AutoCompleteOnDone => true;
 
         public GoogleDriveRequest (string uri, string method)
         {
@@ -189,7 +189,7 @@ namespace UnityGoogleDrive
 
         protected void SetAuthorizationHeader (UnityWebRequest webRequest)
         {
-            webRequest.SetRequestHeader("Authorization", string.Format("Bearer {0}", AuthController.AccessToken));
+            webRequest.SetRequestHeader("Authorization", $"Bearer {AuthController.AccessToken}");
         }
 
         protected void SetDefaultContentHeader (UnityWebRequest webRequest)
@@ -303,7 +303,7 @@ namespace UnityGoogleDrive
         /// </summary>
         private static string ToFirstLower (string content)
         {
-            var firstChar = Char.ToLowerInvariant(content[0]);
+            var firstChar = char.ToLowerInvariant(content[0]);
             if (content.Length > 1) return string.Concat(firstChar, content.Substring(1));
             else return firstChar.ToString();
         }
