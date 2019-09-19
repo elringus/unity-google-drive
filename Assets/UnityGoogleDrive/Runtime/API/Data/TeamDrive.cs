@@ -109,7 +109,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#teamDrive".
         /// </summary>
-        public override string Kind { get { return "drive#teamDrive"; } }
+        public override string Kind => "drive#teamDrive";
         /// <summary>
         /// An image file and cropping parameters from which a background image for this
         /// Team Drive is set. This is a write only field; it can only be set on drive.teamdrives.update

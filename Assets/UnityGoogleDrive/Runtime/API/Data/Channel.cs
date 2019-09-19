@@ -11,7 +11,7 @@ namespace UnityGoogleDrive.Data
         /// Identifies this as a notification channel used to watch for changes to a resource.
         /// Value: the fixed string "api#channel".
         /// </summary>
-        public override string Kind { get { return "api#channel"; } }
+        public override string Kind => "api#channel";
         /// <summary>
         /// The address where notifications are delivered for this channel.
         /// </summary>

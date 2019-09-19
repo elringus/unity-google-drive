@@ -14,7 +14,7 @@ public class ExampleGetFileByPath : AdaptiveWindowGUI
     {
         if (request != null && request.IsRunning)
         {
-            GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
+            GUILayout.Label($"Loading: {request.Progress:P2}");
         }
         else 
         {
@@ -54,19 +54,18 @@ public class ExampleGetFileByPath : AdaptiveWindowGUI
             {
                 request = new GoogleDriveFiles.ListRequest();
                 request.Fields = new List<string> { "files(id)" };
-                request.Q = string.Format("'{0}' in parents and name = '{1}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false",
-                    parendId, parentNames[i]);
+                request.Q = $"'{parendId}' in parents and name = '{parentNames[i]}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false";
 
                 yield return request.Send();
 
                 if (request.IsError || request.ResponseData.Files == null || request.ResponseData.Files.Count == 0)
                 {
-                    result = string.Format("Failed to retrieve '{0}' part of '{1}' file path.", parentNames[i], filePath);
+                    result = $"Failed to retrieve '{parentNames[i]}' part of '{filePath}' file path.";
                     yield break;
                 }
 
                 if (request.ResponseData.Files.Count > 1)
-                    Debug.LogWarning(string.Format("Multiple '{0}' folders been found.", parentNames[i]));
+                    Debug.LogWarning($"Multiple '{parentNames[i]}' folders been found.");
 
                 parendId = request.ResponseData.Files[0].Id;
             }
@@ -75,18 +74,18 @@ public class ExampleGetFileByPath : AdaptiveWindowGUI
         // Searching the file.
         request = new GoogleDriveFiles.ListRequest();
         request.Fields = new List<string> { "files(id, size, modifiedTime)" };
-        request.Q = string.Format("'{0}' in parents and name = '{1}'", parendId, fileName);
+        request.Q = $"'{parendId}' in parents and name = '{fileName}'";
 
         yield return request.Send();
 
         if (request.IsError || request.ResponseData.Files == null || request.ResponseData.Files.Count == 0)
         {
-            result = string.Format("Failed to retrieve '{0}' file.", filePath);
+            result = $"Failed to retrieve '{filePath}' file.";
             yield break;
         }
 
         if (request.ResponseData.Files.Count > 1)
-            Debug.LogWarning(string.Format("Multiple '{0}' files been found.", filePath));
+            Debug.LogWarning($"Multiple '{filePath}' files been found.");
 
         var file = request.ResponseData.Files[0];
 

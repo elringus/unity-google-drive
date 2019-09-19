@@ -65,7 +65,7 @@ namespace UnityCommon
             RenderGUI();
         }
 
-        #if UNITY_2019_1_OR_NEWER
+#if UNITY_2019_1_OR_NEWER
         [SettingsProvider]
         internal static SettingsProvider CreateProjectSettingsProvider ()
         {
@@ -74,7 +74,7 @@ namespace UnityCommon
             provider.guiHandler += id => RenderGUI();
             return provider;
         }
-        #elif UNITY_2018_3_OR_NEWER
+#elif UNITY_2018_3_OR_NEWER
         [SettingsProvider]
         internal static SettingsProvider CreateProjectSettingsProvider ()
         {
@@ -83,14 +83,14 @@ namespace UnityCommon
             provider.guiHandler += id => RenderGUI();
             return provider;
         }
-        #else
+#else
         [MenuItem("Edit/Project Settings/Package Exporter")]
         private static void OpenSettingsWindow ()
         {
             var window = GetWindow<PackageExporter>();
             window.Show();
         }
-        #endif
+#endif
 
         private static void Initialize ()
         {

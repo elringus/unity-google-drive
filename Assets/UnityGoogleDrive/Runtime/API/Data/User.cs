@@ -9,7 +9,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#user".
         /// </summary>
-        public override string Kind { get { return "drive#user"; } }
+        public override string Kind => "drive#user";
         /// <summary>
         /// The user's ID as visible in Permission resources.
         /// </summary>

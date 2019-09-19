@@ -13,7 +13,7 @@ public class TestFilesCreateResumable : AdaptiveWindowGUI
     {
         if (request != null && request.IsRunning)
         {
-            GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
+            GUILayout.Label($"Loading: {request.Progress:P2}");
             if (GUILayout.Button("Abort Upload")) request.Abort();
         }
         else

@@ -5,7 +5,6 @@ using UnityGoogleDrive;
 
 public class ExampleFindFilesByPathAsync : AdaptiveWindowGUI
 {
-    #if NET_4_6 || NET_STANDARD_2_0
     private bool running;
     private string filePath = string.Empty;
     private string uploadFilePath = string.Empty;
@@ -82,11 +81,4 @@ public class ExampleFindFilesByPathAsync : AdaptiveWindowGUI
             results.Add(file.Id ?? "Failed", fileInfo);
         }
     }
-
-    #else
-    protected override void OnWindowGUI (int windowId)
-    { 
-        GUILayout.Label(".NET 4.x scripting backend is not enabled.");
-    }
-    #endif
 }

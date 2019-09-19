@@ -12,7 +12,7 @@ public class TestFilesDownloadTexture : AdaptiveWindowGUI
     {
         if (request != null && request.IsRunning)
         {
-            GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
+            GUILayout.Label($"Loading: {request.Progress:P2}");
         }
         else
         {

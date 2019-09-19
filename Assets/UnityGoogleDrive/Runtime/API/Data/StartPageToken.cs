@@ -10,7 +10,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#startPageToken".
         /// </summary>
-        public override string Kind { get { return "drive#startPageToken"; } }
+        public override string Kind => "drive#startPageToken";
         /// <summary>
         /// The value of the starting page token for listing changes.
         /// </summary>

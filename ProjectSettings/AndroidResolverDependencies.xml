@@ -13,4 +13,17 @@
     <file>Assets/Plugins/Android/com.android.support.support-core-utils-27.1.1.aar</file>
     <file>Assets/Plugins/Android/net.openid.appauth-0.7.1.aar</file>
   </files>
+  <settings>
+    <setting name="androidAbis" value="armeabi-v7a,x86" />
+    <setting name="bundleId" value="com.elringus.naninovelsandbox" />
+    <setting name="explodeAars" value="False" />
+    <setting name="gradleBuildEnabled" value="True" />
+    <setting name="gradleTemplateEnabled" value="False" />
+    <setting name="installAndroidPackages" value="True" />
+    <setting name="packageDir" value="Assets\Plugins\Android" />
+    <setting name="patchAndroidManifest" value="False" />
+    <setting name="patchMainTemplateGradle" value="True" />
+    <setting name="projectExportEnabled" value="False" />
+    <setting name="useJetifier" value="False" />
+  </settings>
 </dependencies>

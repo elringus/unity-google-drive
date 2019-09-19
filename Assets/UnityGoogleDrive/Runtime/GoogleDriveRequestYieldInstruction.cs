@@ -27,9 +27,9 @@ namespace UnityGoogleDrive
         /// </summary>
         public event Action<TResponse> OnDone;
 
-        public override bool IsDone { get { return GoogleDriveRequest.IsDone; } }
-        public override bool keepWaiting { get { return !IsDone; } }
-        public float Progress { get { return GoogleDriveRequest.Progress; } }
+        public override bool IsDone => GoogleDriveRequest.IsDone;
+        public override bool keepWaiting => !IsDone;
+        public float Progress => GoogleDriveRequest.Progress;
         public GoogleDriveRequest<TResponse> GoogleDriveRequest { get; private set; }
 
         public GoogleDriveRequestYieldInstruction (GoogleDriveRequest<TResponse> googleDriveRequest)

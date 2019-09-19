@@ -1,5 +1,4 @@
-﻿#if NET_4_6 || NET_STANDARD_2_0
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace UnityGoogleDrive
@@ -26,4 +25,3 @@ namespace UnityGoogleDrive
         }
     }
 }
-#endif

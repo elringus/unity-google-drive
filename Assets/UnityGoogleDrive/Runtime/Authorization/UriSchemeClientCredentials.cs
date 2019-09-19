@@ -2,23 +2,22 @@
 using System.IO;
 using System.Xml;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UnityGoogleDrive
 {
     [System.Serializable]
     public class UriSchemeClientCredentials : IClientCredentials
     {
-        public string AuthUri { get { return "https://accounts.google.com/o/oauth2/v2/auth"; } }
-        public string TokenUri { get { return "https://accounts.google.com/o/oauth2/token"; } }
-        public string ClientId { get { return clientId; } }
-        public string ClientSecret { get { return null; } } // Client secret is not required in custom URI scheme.
-        public string ReversedClientId { get { return reversedClientId; } }
-        public string PlistVersion { get { return plistVersion; } }
-        public string BundleId { get { return bundleId; } }
+        public string AuthUri => "https://accounts.google.com/o/oauth2/v2/auth";
+        public string TokenUri => "https://accounts.google.com/o/oauth2/token";
+        public string ClientId => clientId;
+        public string ClientSecret => null; // Client secret is not required in custom URI scheme.
+        public string ReversedClientId => reversedClientId;
+        public string PlistVersion => plistVersion;
+        public string BundleId => bundleId;
 
-        [SerializeField, FormerlySerializedAs("cliendId")] private string clientId = null;
-        [SerializeField, FormerlySerializedAs("reversedCliendId")] private string reversedClientId = null;
+        [SerializeField] private string clientId = null;
+        [SerializeField] private string reversedClientId = null;
         [SerializeField] private string plistVersion = null;
         [SerializeField] private string bundleId = null;
 

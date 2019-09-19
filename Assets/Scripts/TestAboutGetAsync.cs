@@ -4,7 +4,6 @@ using UnityGoogleDrive;
 
 public class TestAboutGetAsync : AdaptiveWindowGUI
 {
-    #if NET_4_6 || NET_STANDARD_2_0
     private GoogleDriveAbout.GetRequest request;
     private UnityGoogleDrive.Data.About aboutData;
          
@@ -20,7 +19,7 @@ public class TestAboutGetAsync : AdaptiveWindowGUI
                 aboutData.StorageQuota.Usage * .000001f,
                 aboutData.StorageQuota.Limit * .000001f));
         }
-        else if (request != null && request.IsRunning) GUILayout.Label(string.Format("Loading: {0:P2}", request.Progress));
+        else if (request != null && request.IsRunning) GUILayout.Label($"Loading: {request.Progress:P2}");
     }
 
     private async System.Threading.Tasks.Task<UnityGoogleDrive.Data.About> UpdateInfo ()
@@ -31,8 +30,4 @@ public class TestAboutGetAsync : AdaptiveWindowGUI
         request.Fields = new List<string> { "user", "storageQuota" };
         return await request.Send();
     }
-
-    #else
-    protected override void OnWindowGUI (int windowId) { GUILayout.Label(".NET 4.x scripting backend is not enabled."); }
-    #endif
 }
