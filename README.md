@@ -124,4 +124,4 @@ Application ID (aka bundle ID, package name) is used as a custom URI scheme on A
 - iOS: add your application’s ID (lower-cased) to the [Supported URL schemes](https://i.gyazo.com/efafe276a3d566d7563e83005873746b.png) list in the iOS player settings.
 
 ### UWP authentication fails on redirect.
-Allow the app to access localhost: https://stackoverflow.com/a/33263253.
+UWP dropped support for local loopback scheme. Custom URI scheme is expected to be used instead. If you're interested in adding support for that, check out the [related issue](https://github.com/Elringus/UnityGoogleDrive/issues/54).
