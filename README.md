@@ -90,6 +90,9 @@ The following [Google Drive APIs](https://developers.google.com/drive/api/v3/ref
 
 ## FAQ
 
+### What's wrong with Google's official .NET API client?
+When this plugin was initially created, the official SDK didn't work with Unity; now that Unity supports .NET 4.5 it could work, though it's still [not officially supported](https://github.com/googleapis/google-api-dotnet-client/blob/master/FAQ.md#why-arent-unity-xamarin-or-uwp-supported). In case you don't need additional features the plugin provides (platform-specific auth options, credentials manager, Unity-related helper methods), by all means use the official SDK instead, as it's much more mature and covers the whole API.
+
 ### Why some of the returned properties of the response are null?
 Majority of the response properties are null by default. Properties must be explicitly required in order for the drive API to return them (using `Fields` property of the request object). More information here: https://developers.google.com/drive/v3/web/performance#partial.
 
