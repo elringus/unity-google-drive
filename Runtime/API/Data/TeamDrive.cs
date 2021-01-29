@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// Representation of a Team Drive.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class TeamDrive : ResourceData
     {
         /// <summary>

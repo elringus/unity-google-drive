@@ -150,10 +150,10 @@ namespace UnityGoogleDrive
             [QueryParameter] public string MimeType { get; private set; }
 
             public ExportRequest (string fileId, string mimeType)
-                : base(string.Format(@"https://www.googleapis.com/drive/v3/files/{0}/export", fileId), UnityWebRequest.kHttpVerbGET)
+                : base($@"https://www.googleapis.com/drive/v3/files/{fileId}/export", UnityWebRequest.kHttpVerbGET)
             {
                 MimeType = mimeType;
-                ResponseData = new Data.File() { Id = fileId };
+                ResponseData = new Data.File { Id = fileId };
             }
 
             protected override void HandleResponseData (DownloadHandler downloadHandler)

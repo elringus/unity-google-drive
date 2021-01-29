@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// A change to a file or Team Drive.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class Change : ResourceData
     {
         /// <summary>

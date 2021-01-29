@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UnityGoogleDrive.Data
 {
@@ -6,6 +7,7 @@ namespace UnityGoogleDrive.Data
     /// Information about the user, the user's Drive, and system capabilities.
     /// Prototype: https://developers.google.com/drive/v3/reference/about#resource-representations.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class About : ResourceData
     {
         /// <summary>

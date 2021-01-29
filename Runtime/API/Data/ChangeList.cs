@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// A list of changes for a user.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class ChangeList : ResourceData
     {
         /// <summary>

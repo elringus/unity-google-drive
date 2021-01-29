@@ -65,7 +65,7 @@ namespace UnityGoogleDrive
             if (!applicationUrl.Contains(tokenArgName))
                 return null;
 
-            var arguments = applicationUrl.Substring(applicationUrl.IndexOf(tokenArgName)).Split('&')
+            var arguments = applicationUrl.Substring(applicationUrl.IndexOf(tokenArgName, StringComparison.Ordinal)).Split('&')
                 .Select(q => q.Split('=')).ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
 
             if (!arguments.ContainsKey(tokenArgName)) return null;
