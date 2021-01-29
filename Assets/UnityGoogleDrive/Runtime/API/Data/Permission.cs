@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UnityGoogleDrive.Data
 {
@@ -7,6 +8,7 @@ namespace UnityGoogleDrive.Data
     /// A permission for a file. A permission grants a user, group, domain or the world access to a file or a folder hierarchy.
     /// Prototype: https://developers.google.com/drive/v3/reference/permissions#resource-representations.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class Permission : ResourceData
     {
         public class TeamDrivePermissionDetailsData

@@ -1,23 +1,48 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
+using UnityEngine;
 
 namespace UnityCommon
 {
+    /// <summary>
+    /// Provides various helper and extension methods for <see cref="string"/> objects.
+    /// </summary>
     public static class StringUtils
     {
         /// <summary>
-        /// Whether compared string is literally-equal (independent of case).
+        /// Characters used to represent new lines, cross-platform (Windows-Mac-Unix).
         /// </summary>
-        public static bool LEquals (this string content, string comparedString)
+        public static readonly char[] NewLineChars = { '\n', '\r' };
+        /// <summary>
+        /// Character combinations used to represent new lines, cross-platform (Windows-Mac-Unix).
+        /// </summary>
+        public static readonly string[] NewLineSymbols = { "\r\n", "\n", "\r" };
+        
+        /// <summary>
+        /// Checks whether provided string contains any line break characters (platform-agnostic).
+        /// </summary>
+        public static bool ContainsLineBreak (this string content)
         {
-            return content.Equals(comparedString, StringComparison.OrdinalIgnoreCase);
+            if (content is null) throw new ArgumentNullException(nameof(content));
+            return content.IndexOfAny(NewLineChars) >= 0;
         }
-
+        
         /// <summary>
         /// Performs <see cref="string.Equals(string, string, StringComparison)"/> with <see cref="StringComparison.Ordinal"/>.
         /// </summary>
         public static bool EqualsFast (this string content, string comparedString)
         {
             return content.Equals(comparedString, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Performs <see cref="string.Equals(string, string, StringComparison)"/> with <see cref="StringComparison.OrdinalIgnoreCase"/>.
+        /// </summary>
+        public static bool EqualsFastIgnoreCase (this string content, string comparedString)
+        {
+            return content.Equals(comparedString, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -34,6 +59,14 @@ namespace UnityCommon
         public static bool StartsWithFast (this string content, string match)
         {
             return content.StartsWith(match, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Performs <see cref="string.StartsWith(string)"/> and <see cref="string.EndsWith(string)"/> with the provided match.
+        /// </summary>
+        public static bool WrappedIn (this string content, string match, StringComparison comp = StringComparison.Ordinal)
+        {
+            return content.StartsWith(match, comp) && content.EndsWith(match, comp);
         }
 
         /// <summary>
@@ -58,25 +91,33 @@ namespace UnityCommon
         /// <summary>
         /// Attempts to extract content between the specified matches (on first occurence).
         /// </summary>
-        public static string GetBetween (this string content, string startMatchString, string endMatchString)
+        public static string GetBetween (this string content, string startMatch, string endMatch, StringComparison comp = StringComparison.Ordinal)
         {
-            if (content.Contains(startMatchString) && content.Contains(endMatchString))
+            if (content.Contains(startMatch) && content.Contains(endMatch))
             {
-                var startIndex = content.IndexOf(startMatchString) + startMatchString.Length;
-                var endIndex = content.IndexOf(endMatchString, startIndex);
+                var startIndex = content.IndexOf(startMatch, comp) + startMatch.Length;
+                var endIndex = content.IndexOf(endMatch, startIndex, comp);
                 return content.Substring(startIndex, endIndex - startIndex);
             }
             else return null;
         }
 
         /// <summary>
+        /// Attempts to extract content wrapped in the specified match (on first occurence).
+        /// </summary>
+        public static string GetBetween (this string content, string match, StringComparison comp = StringComparison.Ordinal)
+        {
+            return content.GetBetween(match, match, comp);
+        }
+
+        /// <summary>
         /// Attempts to extract content before the specified match (on first occurence).
         /// </summary>
-        public static string GetBefore (this string content, string matchString)
+        public static string GetBefore (this string content, string matchString, StringComparison comp = StringComparison.Ordinal)
         {
             if (content.Contains(matchString))
             {
-                var endIndex = content.IndexOf(matchString);
+                var endIndex = content.IndexOf(matchString, comp);
                 return content.Substring(0, endIndex);
             }
             else return null;
@@ -85,11 +126,11 @@ namespace UnityCommon
         /// <summary>
         /// Attempts to extract content before the specified match (on last occurence).
         /// </summary>
-        public static string GetBeforeLast (this string content, string matchString)
+        public static string GetBeforeLast (this string content, string matchString, StringComparison comp = StringComparison.Ordinal)
         {
             if (content.Contains(matchString))
             {
-                var endIndex = content.LastIndexOf(matchString);
+                var endIndex = content.LastIndexOf(matchString, comp);
                 return content.Substring(0, endIndex);
             }
             else return null;
@@ -98,11 +139,11 @@ namespace UnityCommon
         /// <summary>
         /// Attempts to extract content after the specified match (on last occurence).
         /// </summary>
-        public static string GetAfter (this string content, string matchString)
+        public static string GetAfter (this string content, string matchString, StringComparison comp = StringComparison.Ordinal)
         {
             if (content.Contains(matchString))
             {
-                var startIndex = content.LastIndexOf(matchString) + matchString.Length;
+                var startIndex = content.LastIndexOf(matchString, comp) + matchString.Length;
                 if (content.Length <= startIndex) return string.Empty;
                 return content.Substring(startIndex);
             }
@@ -112,11 +153,11 @@ namespace UnityCommon
         /// <summary>
         /// Attempts to extract content after the specified match (on first occurence).
         /// </summary>
-        public static string GetAfterFirst (this string content, string matchString)
+        public static string GetAfterFirst (this string content, string matchString, StringComparison comp = StringComparison.Ordinal)
         {
             if (content.Contains(matchString))
             {
-                var startIndex = content.IndexOf(matchString) + matchString.Length;
+                var startIndex = content.IndexOf(matchString, comp) + matchString.Length;
                 if (content.Length <= startIndex) return string.Empty;
                 return content.Substring(startIndex);
             }
@@ -125,29 +166,38 @@ namespace UnityCommon
 
         /// <summary>
         /// Splits the string using new line symbol as a separator.
-        /// Will split by all type of new lines, independant of environment.
+        /// Will split by all type of new lines, independent of environment.
         /// </summary>
         public static string[] SplitByNewLine (this string content, StringSplitOptions splitOptions = StringSplitOptions.None)
         {
             if (string.IsNullOrEmpty(content)) return null;
-
-            // "\r\n"   (\u000D\u000A)  Windows
-            // "\n"     (\u000A)        Unix
-            // "\r"     (\u000D)        Mac
-            // Not using Environment.NewLine here, as content could've been produced 
-            // in not the same environment we running the program in.
-            return content.Split(new string[] { "\r\n", "\n", "\r" }, splitOptions);
+            
+            return content.Split(NewLineSymbols, splitOptions);
         }
 
         /// <summary>
-        /// Removes mathing trailing string.
+        /// Removes matching trailing string.
         /// </summary>
         public static string TrimEnd (this string source, string value)
         {
             if (!source.EndsWithFast(value))
                 return source;
 
-            return source.Remove(source.LastIndexOf(value));
+            return source.Remove(source.LastIndexOf(value, StringComparison.InvariantCulture));
+        }
+        
+        /// <summary>
+        /// Invokes <see cref="string.Replace(string,string)"/> with an empty string.
+        /// </summary>
+        public static string Remove (this string source, char value)
+        {
+            return source?.Replace(value.ToString(), string.Empty);
+        }
+        
+        /// <inheritdoc cref="Remove(string,char)"/>
+        public static string Remove (this string source, string value)
+        {
+            return source?.Replace(value, string.Empty);
         }
 
         /// <summary>
@@ -155,10 +205,10 @@ namespace UnityCommon
         /// </summary>
         public static bool IsNullEmptyOrWhiteSpace (string content)
         {
-            if (String.IsNullOrEmpty(content))
+            if (string.IsNullOrEmpty(content))
                 return true;
 
-            return String.IsNullOrEmpty(content.TrimFull());
+            return string.IsNullOrEmpty(content.TrimFull());
         }
 
         /// <summary>
@@ -196,7 +246,7 @@ namespace UnityCommon
 
             return source;
             #else
-            return source.Trim().Trim(new char[] { '\uFEFF', '\u200B' });
+            return source.Trim().Trim('\uFEFF', '\u200B');
             #endif
         }
 
@@ -215,7 +265,94 @@ namespace UnityCommon
                 ++unit;
             }
 
-            return string.Format("{0:G4} {1}", size, units[unit]);
+            return $"{size:G4} {units[unit]}";
+        }
+
+        /// <summary>
+        /// Modifies the string by inserting provided char (space by default) based on camel case scheme; eg, `SomeFancyName` becomes `Some Fancy Name`.
+        /// </summary>
+        /// <param name="source">The source string to modify.</param>
+        /// <param name="insert">The string to insert.</param>
+        /// <param name="preserveAcronyms">Whether to account acronyms; eg when enabled `BBCChannel` will result in `BBC Channel`.</param>
+        public static string InsertCamel (this string source, char insert = ' ', bool preserveAcronyms = true)
+        {
+            if (string.IsNullOrWhiteSpace(source) || source.Length < 2)
+                return source;
+
+            bool IsUpperOrNumber (char ch) => char.IsUpper(ch) || char.IsNumber(ch);
+
+            var builder = new StringBuilder(source.Length * 2);
+
+            builder.Append(source[0]);
+            for (int i = 1; i < source.Length; i++)
+            {
+                if (IsUpperOrNumber(source[i]))
+                {
+                    if (source[i - 1] != insert && !IsUpperOrNumber(source[i - 1]) || (preserveAcronyms && IsUpperOrNumber(source[i - 1]) && i < source.Length - 1 && !IsUpperOrNumber(source[i + 1])))
+                        builder.Append(insert);
+                }
+                builder.Append(source[i]);
+            }
+
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// Changes first character in the provided string to lower invariant.
+        /// </summary>
+        public static string FirstToLower (this string source)
+        {
+            if (string.IsNullOrEmpty(source) || char.IsLower(source, 0))
+                return source;
+
+            if (source.Length <= 1) 
+                return source.ToLowerInvariant();
+            
+            return char.ToLowerInvariant(source[0]) + source.Substring(1);
+        }
+        
+        /// <summary>
+        /// Changes first character in the provided string to upper invariant.
+        /// </summary>
+        public static string FirstToUpper (this string source)
+        {
+            if (string.IsNullOrEmpty(source) || char.IsUpper(source, 0))
+                return source;
+
+            if (source.Length <= 1) 
+                return source.ToUpperInvariant();
+            
+            return char.ToUpperInvariant(source[0]) + source.Substring(1);
+        }
+
+        public static byte[] ZipString (string content)
+        {
+            using (var output = new MemoryStream())
+            {
+                using (var gzip = new DeflateStream(output, CompressionMode.Compress))
+                {
+                    using (var writer = new StreamWriter(gzip, Encoding.UTF8))
+                    {
+                        writer.Write(content);
+                    }
+                }
+
+                return output.ToArray();
+            }
+        }
+
+        public static string UnzipString (byte[] content)
+        {
+            using (var inputStream = new MemoryStream(content))
+            {
+                using (var gzip = new DeflateStream(inputStream, CompressionMode.Decompress))
+                {
+                    using (var reader = new StreamReader(gzip, Encoding.UTF8))
+                    {
+                        return reader.ReadToEnd();
+                    }
+                }
+            }
         }
     }
 }

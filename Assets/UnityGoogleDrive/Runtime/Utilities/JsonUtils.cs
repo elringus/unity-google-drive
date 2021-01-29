@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using UnityGoogleDrive.Newtonsoft.Json;
+using UnityGoogleDrive.Newtonsoft.Json.Serialization;
 using System.Reflection;
 
 namespace UnityGoogleDrive
@@ -9,7 +9,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Allows resolving properties with private setters.
         /// </summary>
-        class PrivateCamelResolver : CamelCasePropertyNamesContractResolver
+        private class PrivateCamelResolver : CamelCasePropertyNamesContractResolver
         {
             protected override JsonProperty CreateProperty (MemberInfo member, MemberSerialization memberSerialization)
             {

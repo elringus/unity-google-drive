@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -123,7 +124,7 @@ namespace UnityGoogleDrive
             }
 
             // Extracting auth json object from the initial json string.
-            var startIndex = jsonString.IndexOf(START_MARKER);
+            var startIndex = jsonString.IndexOf(START_MARKER, StringComparison.Ordinal);
             var authJson = jsonString.Substring(startIndex).Replace("}}", "}");
             TargetSettings.GenericClientCredentials.OverwriteFromJson(authJson);
             serializedObject.Update();

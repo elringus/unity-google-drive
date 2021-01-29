@@ -1,9 +1,11 @@
-﻿
+﻿using System.Diagnostics.CodeAnalysis;
+
 namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// Information about a Google Drive user.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class User : ResourceData
     {
         /// <summary>

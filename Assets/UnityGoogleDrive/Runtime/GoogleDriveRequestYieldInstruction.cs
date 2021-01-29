@@ -23,7 +23,7 @@ namespace UnityGoogleDrive
     {
         /// <summary>
         /// Event invoked when corresponding request is done running.
-        /// Make sure to check for <see cref="GoogleDriveRequest.IsError"/> before using the response data.
+        /// Make sure to check for <see cref="UnityGoogleDrive.GoogleDriveRequest.IsError"/> before using the response data.
         /// </summary>
         public event Action<TResponse> OnDone;
 

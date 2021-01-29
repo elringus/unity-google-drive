@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using UnityGoogleDrive.Newtonsoft.Json;
 
 namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// The starting page token for listing changes.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class StartPageToken : ResourceData
     {
         /// <summary>

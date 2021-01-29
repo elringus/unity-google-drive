@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UnityGoogleDrive.Data
 {
@@ -7,6 +8,7 @@ namespace UnityGoogleDrive.Data
     /// The metadata for a file stored in Google Drive.
     /// Prototype: https://developers.google.com/drive/v3/reference/files#resource-representations.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class File : ResourceData
     {
         /// <summary>
