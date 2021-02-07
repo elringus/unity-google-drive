@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UnityGoogleDrive.Data
 {
@@ -6,7 +7,7 @@ namespace UnityGoogleDrive.Data
     /// Information about a Google Drive user.
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    public class User : ResourceData
+    public class User : ResourceData, ICloneable
     {
         /// <summary>
         /// Identifies what kind of resource this is. Value: the fixed string "drive#user".
@@ -33,5 +34,17 @@ namespace UnityGoogleDrive.Data
         /// A link to the user's profile photo, if available.
         /// </summary>
         public string PhotoLink { get; private set; }
+
+        public object Clone()
+        {
+            User cloned = new User();
+            cloned = (User)this.MemberwiseClone();
+            cloned.DisplayName = string.Copy(this.DisplayName);
+            cloned.EmailAddress = string.Copy(this.EmailAddress);
+            cloned.PermissionId = string.Copy(this.PermissionId);
+            cloned.PhotoLink = string.Copy(this.PhotoLink);
+
+            return cloned;
+        }
     }
 }

@@ -9,19 +9,19 @@ namespace UnityGoogleDrive.Data
     /// Prototype: https://developers.google.com/drive/v3/reference/files#resource-representations.
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    public class File : ResourceData
+    public class File : ResourceData, ICloneable
     {
         /// <summary>
         /// Additional information about the content of the file. 
         /// These fields are never populated in responses.
         /// </summary>
-        public class ContentHintsData
+        public class ContentHintsData : ICloneable
         {
             /// <summary>
             /// A thumbnail for the file. 
             /// This will only be used if Drive cannot generate a standard thumbnail.
             /// </summary>
-            public class ThumbnailData
+            public class ThumbnailData : ICloneable
             {
                 /// <summary>
                 /// The thumbnail data encoded with URL-safe Base64 (RFC 4648 section 5).
@@ -31,6 +31,16 @@ namespace UnityGoogleDrive.Data
                 /// The MIME type of the thumbnail.
                 /// </summary>
                 public string MimeType { get; set; }
+
+                public object Clone()
+                {
+                    ThumbnailData cloned = new ThumbnailData();
+
+                    cloned.Image = string.Copy(this.Image);
+                    cloned.MimeType = string.Copy(this.MimeType);
+
+                    return cloned;
+                }
             }
 
             /// <summary>
@@ -43,17 +53,26 @@ namespace UnityGoogleDrive.Data
             /// This will only be used if Drive cannot generate a standard thumbnail.
             /// </summary>
             public ThumbnailData Thumbnail { get; private set; }
+
+            public object Clone()
+            {
+                ContentHintsData cloned = new ContentHintsData();
+                cloned.IndexableText = string.Copy(this.IndexableText);
+                cloned.Thumbnail = (ThumbnailData)this.Thumbnail.Clone();
+
+                return cloned;
+            }
         }
 
         /// <summary>
         /// Additional metadata about image media, if available.
         /// </summary>
-        public class ImageMediaMetadataData
+        public class ImageMediaMetadataData : ICloneable
         {
             /// <summary>
             /// Geographic location information stored in the image.
             /// </summary>
-            public class LocationData
+            public class LocationData : ICloneable
             {
                 /// <summary>
                 /// The altitude stored in the image.
@@ -67,6 +86,11 @@ namespace UnityGoogleDrive.Data
                 /// The longitude stored in the image.
                 /// </summary>
                 public double? Longitude { get; private set; }
+
+                public object Clone()
+                {
+                    return this.MemberwiseClone();
+                }
             }
 
             /// <summary>
@@ -153,13 +177,31 @@ namespace UnityGoogleDrive.Data
             /// The height of the image in pixels.
             /// </summary>
             public int? Height { get; private set; }
+
+            public object Clone()
+            {
+                ImageMediaMetadataData cloned = new ImageMediaMetadataData();
+                cloned = (ImageMediaMetadataData)this.MemberwiseClone();
+                cloned.CameraMake = string.Copy(this.CameraMake);
+                cloned.CameraModel = string.Copy(this.CameraModel);
+                cloned.ColorSpace = string.Copy(this.ColorSpace);
+                cloned.ExposureMode = string.Copy(this.ExposureMode);
+                cloned.Lens = string.Copy(this.Lens);
+                cloned.Location = (LocationData)this.Location.Clone();
+                cloned.MeteringMode = string.Copy(this.MeteringMode);
+                cloned.Sensor = string.Copy(this.Sensor);
+                cloned.Time = string.Copy(this.Time);
+                cloned.WhiteBalance = string.Copy(this.WhiteBalance);
+
+                return cloned;
+            }
         }
 
         /// <summary>
         /// Capabilities the current user has on this file. Each capability corresponds to
         /// a fine-grained action that a user may take.
         /// </summary>
-        public class CapabilitiesData
+        public class CapabilitiesData : ICloneable
         {
             /// <summary>
             /// Whether the current user can modify the sharing settings for this file.
@@ -240,13 +282,18 @@ namespace UnityGoogleDrive.Data
             /// Whether the current user can restore this file from trash.
             /// </summary>
             public bool? CanUntrash { get; private set; }
+
+            public object Clone()
+            {
+                return this.MemberwiseClone();
+            }
         }
 
         /// <summary>
         /// Additional metadata about video media. 
         /// This may not be available immediately upon upload.
         /// </summary>
-        public class VideoMediaMetadataData
+        public class VideoMediaMetadataData : ICloneable
         {
             /// <summary>
             /// The duration of the video in milliseconds.
@@ -260,6 +307,11 @@ namespace UnityGoogleDrive.Data
             /// The width of the video in pixels.
             /// </summary>
             public int? Width { get; private set; }
+
+            public object Clone()
+            {
+                return this.MemberwiseClone();
+            }
         }
 
         /// <summary>
@@ -512,5 +564,50 @@ namespace UnityGoogleDrive.Data
         /// Entries with null values are cleared in update and copy requests.
         /// </summary>
         public Dictionary<string, string> AppProperties { get; private set; }
+
+        /// <summary>
+        /// Performs a Deep Clone
+        /// </summary>
+        /// <returns>A deep cloned version of this <see cref="File"/></returns>
+        public object Clone()
+        {
+            File copiedFile = new File();
+
+            //Copy everything. Structs are deep copied/cloned
+            copiedFile = (File)this.MemberwiseClone();
+
+            //Perform deep clones of everything else
+            copiedFile.AppProperties = new Dictionary<string, string>(this.AppProperties);
+            copiedFile.Capabilities = (CapabilitiesData)this.Capabilities.Clone();
+            copiedFile.ContentHints = (ContentHintsData)this.ContentHints.Clone();
+            copiedFile.Description = string.Copy(this.Description);
+            copiedFile.FileExtension = string.Copy(this.FileExtension);
+            copiedFile.FolderColorRgb = string.Copy(this.FolderColorRgb);
+            copiedFile.FullFileExtension = string.Copy(this.FullFileExtension);
+            copiedFile.HeadRevisionId = string.Copy(this.HeadRevisionId);
+            copiedFile.IconLink = string.Copy(this.IconLink);
+            copiedFile.Id = string.Copy(this.Id);
+            copiedFile.ImageMediaMetadata = (ImageMediaMetadataData)this.ImageMediaMetadata.Clone();
+            copiedFile.LastModifyingUser = (User)this.LastModifyingUser.Clone();
+            copiedFile.Md5Checksum = string.Copy(this.Md5Checksum);
+            copiedFile.MimeType = string.Copy(this.MimeType);
+            copiedFile.Name = string.Copy(this.Name);
+            copiedFile.OriginalFilename = string.Copy(this.OriginalFilename);
+            copiedFile.Owners = new List<User>(this.Owners);
+            copiedFile.Parents = new List<string>(this.Parents);
+            copiedFile.PermissionIds = new List<string>(this.PermissionIds);
+            copiedFile.Permissions = new List<Permission>(this.Permissions);
+            copiedFile.Properties = new Dictionary<string, string>(this.Properties);
+            copiedFile.SharingUser = (User)this.SharingUser.Clone();
+            copiedFile.Spaces = new List<string>(this.Spaces);
+            copiedFile.TeamDriveId = string.Copy(this.TeamDriveId);
+            copiedFile.ThumbnailLink = string.Copy(ThumbnailLink);
+            copiedFile.TrashingUser = (User)this.TrashingUser.Clone();
+            copiedFile.VideoMediaMetadata = (VideoMediaMetadataData)this.VideoMediaMetadata.Clone();
+            copiedFile.WebContentLink = string.Copy(this.WebContentLink);
+            copiedFile.WebViewLink = string.Copy(this.WebViewLink);
+
+            return copiedFile;
+        }
     }
 }
