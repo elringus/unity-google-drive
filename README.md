@@ -23,6 +23,7 @@ Automated integration tests cover the main features:
 
 ## Setup (editor, standalones and WebGL)
 - Import the package;
+- In the Unity Editor navigate to `Edit -> Settings -> Player - Other Settings` ensure that 'Managed Stripping Level' is set to Disabled/Minimal/Low and no higher than that (if the stripping is higher than Low, necessary JSON parsing will not work and the plugin may misbehave in builds only while working fine in the editor)
 - In the Unity editor navigate to `Edit -> Settings -> Google Drive`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
 - Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
   - Select **Create a new project** and click continue;
