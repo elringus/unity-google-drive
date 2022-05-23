@@ -21,9 +21,13 @@ Automated integration tests cover the main features:
 
 ![Tests](https://i.gyazo.com/128acac61f5c719376b0f32f70144168.png)
 
+## Limitations
+
+ - When under .NET 3.5 scripting runtime, make sure to set API compatibility level to the **full .NET 2.0 profile** (not subset) to prevent [JSON parsing issues](https://github.com/Elringus/UnityGoogleDrive/issues/6) on AOT platforms.
+ - Make sure ['Managed Stripping Level'](https://docs.unity3d.com/Manual/ManagedCodeStripping.html) in no higher than `Low`; otherwise, necessary JSON parsing will not work and the plugin may misbehave in builds while working fine in the editor.
+
 ## Setup (editor, standalones and WebGL)
 - Import the package;
-- In the Unity Editor navigate to `Edit -> Settings -> Player - Other Settings` ensure that 'Managed Stripping Level' is set to Disabled/Minimal/Low and no higher than that (if the stripping is higher than Low, necessary JSON parsing will not work and the plugin may misbehave in builds only while working fine in the editor)
 - In the Unity editor navigate to `Edit -> Settings -> Google Drive`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
 - Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
   - Select **Create a new project** and click continue;
@@ -40,7 +44,6 @@ Automated integration tests cover the main features:
   - Click **Save**;
   - Close the appeared popup and click [**Download JSON** button](https://i.gyazo.com/d6b620221f1326aada98b02e011b9094.png) to get the credentials JSON file.
 - Return to Unity editor, open Google Drive settings and click **Parse generic credentials JSON file**; select the downloaded credentials JSON file;
-- When under .NET 3.5 scripting runtime, make sure to set API compatibility level to the **full .NET 2.0 profile** (not subset) to prevent [JSON parsing issues](https://github.com/Elringus/UnityGoogleDrive/issues/6) on AOT platforms.
 
 ## Additional setup for iOS and Android
 - In the Unity editor navigate to `Edit -> Settings -> Google Drive`, click **Manage Google Drive API app** web-browser will open URL to manage the console app that was created during the initial setup;
