@@ -31,10 +31,11 @@ Automated integration tests cover the main features:
 - In the Unity editor navigate to `Edit -> Settings -> Google Drive`; **GoogleDriveSettings.asset** file will be automatically created at `Assets/UnityGoogleDrive/Resources`, select the file (if it wasn't selected automatically);
 - Click **Create Google Drive API app** button; web-browser will open URL to setup the app:
   - Select **Create a new project** and click continue;
-  - Click **Go to credentials**;
-  - Click **Cancel**;
-  - Select **OAuth consent screen** tab and enter required info, click **Save**;
-  - Return to **Credentials** tab and click **Create credentials** -> **OAuth client ID**;
+    - Fill in all of the details of your project and then continue to the next step
+  - On Dashboard click the **≡ menu icon** and select **APIs & Services**
+  - From the menu on the left side of your screen select **OAuth consent screen** tab, choose **User Type** and click **Create**;
+  - Insert necesarry information and click **Save and Continue** (After this you will see **Scopes** tab, at this point just click **Cancel**)
+  - Navigate to **Credentials** on the menu on the left side of your screen tab and click **Create credentials** -> **OAuth client ID**;
   - Select **Web application** for 'Application type', give your app a name and enter the following restrictions:
     - Authorised JavaScript origins: enter host names which will serve WebGL builds *(not required for platforms other than WebGL)*;
     - Authorised redirect URIs:
