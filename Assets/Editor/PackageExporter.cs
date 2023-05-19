@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace UnityCommon
+namespace Naninovel
 {
     public class PackageExporter : EditorWindow
     {
@@ -18,6 +18,13 @@ namespace UnityCommon
             Task OnPackagePostProcessAsync ();
         }
 
+        public enum DistributionType
+        {
+            Legacy,
+            UPM
+        }
+
+        private static DistributionType Distribution { get => (DistributionType)PlayerPrefs.GetInt(prefsPrefix + "Distribution"); set => PlayerPrefs.SetInt(prefsPrefix + "Distribution", (int)value); }
         private static string PackageName { get => PlayerPrefs.GetString(prefsPrefix + "PackageName"); set => PlayerPrefs.SetString(prefsPrefix + "PackageName", value); }
         private static string Copyright { get => PlayerPrefs.GetString(prefsPrefix + "Copyright"); set => PlayerPrefs.SetString(prefsPrefix + "Copyright", value); }
         private static string LicenseFilePath { get => PlayerPrefs.GetString(prefsPrefix + "LicenseFilePath"); set => PlayerPrefs.SetString(prefsPrefix + "LicenseFilePath", value); }
@@ -40,8 +47,8 @@ namespace UnityCommon
         private const string defaultLicenseFileName = "LICENSE";
         private const char newLine = '\n';
 
-        private static Dictionary<string, string> modifiedScripts = new Dictionary<string, string>();
-        private static List<UnityEngine.Object> ignoredAssets = new List<UnityEngine.Object>();
+        private static readonly Dictionary<string, string> modifiedScripts = new Dictionary<string, string>();
+        private static readonly List<UnityEngine.Object> ignoredAssets = new List<UnityEngine.Object>();
         private static SceneSetup[] sceneSetup;
 
         public static void AddIgnoredAsset (string assetPath)
@@ -96,6 +103,7 @@ namespace UnityCommon
             EditorGUILayout.LabelField("Package Exporter Settings", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Settings are stored in editor's PlayerPrefs and won't be exposed in builds or project assets.", MessageType.Info);
             EditorGUILayout.Space();
+            Distribution = (DistributionType)EditorGUILayout.EnumPopup("Distribution", Distribution);
             PackageName = EditorGUILayout.TextField("Package Name", PackageName);
             Copyright = EditorGUILayout.TextField("Copyright Notice", Copyright);
             OverrideNamespace = EditorGUILayout.TextField("Override Namespace", OverrideNamespace);
@@ -208,7 +216,7 @@ namespace UnityCommon
             // Publish GitHub branch before modifications.
             if (!ApplyModificationsToGit && PublishToGit)
             {
-                using (var process = Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
+                using (var process = System.Diagnostics.Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
                 {
                     process?.WaitForExit();
                 }
@@ -237,7 +245,9 @@ namespace UnityCommon
                     scriptText += originalScriptText;
 
                     if (!string.IsNullOrEmpty(OverrideNamespace))
-                        scriptText = scriptText.Replace($"namespace {PackageName}{newLine}{{", $"namespace {OverrideNamespace}{newLine}{{");
+                        scriptText = scriptText
+                            .Replace($"namespace {PackageName}", $"namespace {OverrideNamespace}")
+                            .Replace($"using {PackageName}", $"using {OverrideNamespace}");
 
                     File.WriteAllText(fullPath, scriptText);
 
@@ -248,7 +258,15 @@ namespace UnityCommon
             // Export the package.
             DisplayProgressBar("Writing package file...", .5f);
             if (ExportAsUnityPackage)
-                AssetDatabase.ExportPackage(AssetsPath, OutputPath + "/" + OutputFileName + ".unitypackage", ExportPackageOptions.Recurse);
+            {
+                if (Distribution == DistributionType.Legacy)
+                    AssetDatabase.ExportPackage(AssetsPath, OutputPath + "/" + OutputFileName + ".unitypackage", ExportPackageOptions.Recurse);
+                else
+                {
+                    var request = Client.Pack(AssetsPath, OutputPath);
+                    while (!request.IsCompleted) await Task.Delay(100);
+                }
+            }
             else
             {
                 try
@@ -272,13 +290,13 @@ namespace UnityCommon
                         File.Copy(sourceFilePath, destFilePath, true);
                     }
                 }
-                catch (Exception e) { UnityEngine.Debug.LogError(e.Message); }
+                catch (Exception e) { Debug.LogError(e.Message); }
             }
 
             // Publish GitHub branch after modifications.
             if (ApplyModificationsToGit && PublishToGit)
             {
-                using (var process = Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
+                using (var process = System.Diagnostics.Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
                 {
                     process.WaitForExit();
                 }

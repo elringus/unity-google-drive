@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityCommon;
 using UnityEngine;
 using UnityGoogleDrive;
 
@@ -43,8 +43,8 @@ public class ExampleGetFileByPath : AdaptiveWindowGUI
         // Thus, we need to traverse the entire hierarchy chain using List requests.
         // More info about the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
-        var fileName = filePath.Contains("/") ? filePath.GetAfter("/") : filePath;
-        var parentNames = filePath.Contains("/") ? filePath.GetBeforeLast("/").Split('/') : null;
+        var fileName = filePath.Contains("/") ? GetAfter(filePath, "/") : filePath;
+        var parentNames = filePath.Contains("/") ? GetBeforeLast(filePath, "/").Split('/') : null;
 
         // Resolving folder IDs one by one to find ID of the file's parent folder.
         var parentId = "root"; // 'root' is alias ID for the root folder in Google Drive.
@@ -89,7 +89,27 @@ public class ExampleGetFileByPath : AdaptiveWindowGUI
 
         var file = request.ResponseData.Files[0];
 
-        result = string.Format("ID: {0} Size: {1:0.00}MB Modified: {2:dd.MM.yyyy HH:MM:ss}",
-            file.Id, file.Size * .000001f, file.CreatedTime);
+        result = $"ID: {file.Id} Size: {file.Size * .000001f:0.00}MB Modified: {file.CreatedTime:dd.MM.yyyy HH:MM:ss}";
+    }
+
+    private static string GetBeforeLast (string content, string matchString)
+    {
+        if (content.Contains(matchString))
+        {
+            var endIndex = content.LastIndexOf(matchString, StringComparison.Ordinal);
+            return content.Substring(0, endIndex);
+        }
+        return null;
+    }
+
+    private static string GetAfter (string content, string matchString)
+    {
+        if (content.Contains(matchString))
+        {
+            var startIndex = content.LastIndexOf(matchString, StringComparison.Ordinal) + matchString.Length;
+            if (content.Length <= startIndex) return string.Empty;
+            return content.Substring(startIndex);
+        }
+        return null;
     }
 }
