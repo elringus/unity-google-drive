@@ -11,18 +11,20 @@ namespace UnityGoogleDrive
     public class AuthCodeExchanger
     {
         #pragma warning disable 0649
+        // ReSharper disable NotAccessedField.Local
         [Serializable] struct ExchangeResponse { public string error, error_description, access_token, refresh_token, expires_in, id_token, token_type; }
+        // ReSharper restore NotAccessedField.Local
         #pragma warning restore 0649
 
         public event Action<AuthCodeExchanger> OnDone;
 
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
-        public string AccesToken { get; private set; }
+        public string AccessToken { get; private set; }
         public string RefreshToken { get; private set; }
 
-        private GoogleDriveSettings settings;
-        private IClientCredentials credentials;
+        private readonly GoogleDriveSettings settings;
+        private readonly IClientCredentials credentials;
         private UnityWebRequest exchangeRequest;
 
         public AuthCodeExchanger (GoogleDriveSettings googleDriveSettings, IClientCredentials clientCredentials)
@@ -66,7 +68,7 @@ namespace UnityGoogleDrive
             }
 
             var response = JsonUtility.FromJson<ExchangeResponse>(exchangeRequest.downloadHandler.text);
-            AccesToken = response.access_token;
+            AccessToken = response.access_token;
             RefreshToken = response.refresh_token;
             HandleExchangeComplete();
         }

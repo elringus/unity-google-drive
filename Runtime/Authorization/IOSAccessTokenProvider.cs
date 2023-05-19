@@ -1,4 +1,5 @@
 ﻿using System;
+// ReSharper disable once RedundantUsingDirective
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -79,7 +80,7 @@ namespace UnityGoogleDrive
             }
             else
             {
-                settings.CachedAccessToken = refresher.AccesToken;
+                settings.CachedAccessToken = refresher.AccessToken;
                 HandleProvideAccessTokenComplete();
             }
         }
@@ -93,7 +94,7 @@ namespace UnityGoogleDrive
             }
             else
             {
-                settings.CachedAccessToken = authCodeExchanger.AccesToken;
+                settings.CachedAccessToken = authCodeExchanger.AccessToken;
                 settings.CachedRefreshToken = authCodeExchanger.RefreshToken;
                 HandleProvideAccessTokenComplete();
             }
@@ -106,11 +107,11 @@ namespace UnityGoogleDrive
             responseMessageHandler.OnResponse += HandleAuthorizationResponse;
 
             #if UNITY_IOS
-            _UnityGoogleDriveIOS_PerformAuth( 
-                settings.UriSchemeClientCredentials.AuthUri, 
-                settings.UriSchemeClientCredentials.TokenUri, 
+            _UnityGoogleDriveIOS_PerformAuth(
+                settings.UriSchemeClientCredentials.AuthUri,
+                settings.UriSchemeClientCredentials.TokenUri,
                 settings.UriSchemeClientCredentials.ClientId,
-                Application.identifier.ToLowerInvariant() + ":/oauth2callback", 
+                Application.identifier.ToLowerInvariant() + ":/oauth2callback",
                 settings.AccessScope);
             #endif
         }

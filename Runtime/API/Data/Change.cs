@@ -18,7 +18,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public string FileId { get; private set; }
         /// <summary>
-        /// Whether the file or Team Drive has been removed from this list of changes, 
+        /// Whether the file or Team Drive has been removed from this list of changes,
         /// for example by deletion or loss of access.
         /// </summary>
         public bool? Removed { get; private set; }
@@ -27,7 +27,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public DateTime? Time { get; private set; }
         /// <summary>
-        /// The updated state of the file. Present if the type is file and the file 
+        /// The updated state of the file. Present if the type is file and the file
         /// has not been removed from this list of changes.
         /// </summary>
         public File File { get; private set; }
@@ -40,7 +40,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public string TeamDriveId { get; private set; }
         /// <summary>
-        /// The updated state of the Team Drive. Present if the type is teamDrive, 
+        /// The updated state of the Team Drive. Present if the type is teamDrive,
         /// the user is still a member of the Team Drive, and the Team Drive has not been removed.
         /// </summary>
         public TeamDrive TeamDrive { get; private set; }

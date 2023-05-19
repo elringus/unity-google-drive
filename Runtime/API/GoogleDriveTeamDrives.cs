@@ -21,7 +21,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public string RequestId { get; private set; }
 
-            public CreateRequest (Data.TeamDrive teamDrive, string requestId) 
+            public CreateRequest (Data.TeamDrive teamDrive, string requestId)
                 : base(@"https://www.googleapis.com/drive/v3/teamdrives", UnityWebRequest.kHttpVerbPOST, teamDrive)
             {
                 RequestId = requestId;
@@ -29,8 +29,8 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
-        /// Permanently deletes a Team Drive for which the user is an organizer. 
-        /// The Team Drive cannot contain any untrashed items. 
+        /// Permanently deletes a Team Drive for which the user is an organizer.
+        /// The Team Drive cannot contain any un-trashed items.
         /// </summary>
         public class DeleteRequest : GoogleDriveRequest<string>
         {
@@ -69,8 +69,8 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public string PageToken { get; set; }
             /// <summary>
-            /// Query string for searching Team Drives. 
-            /// See <see href="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax. 
+            /// Query string for searching Team Drives.
+            /// See <see href="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax.
             /// </summary>
             [QueryParameter] public string Q { get; set; }
             /// <summary>
@@ -89,7 +89,7 @@ namespace UnityGoogleDrive
         /// </summary>
         public class UpdateRequest : GoogleDriveUploadRequest<Data.TeamDrive, Data.TeamDrive>
         {
-            public UpdateRequest (string teamDriveId, Data.TeamDrive teamDrive) 
+            public UpdateRequest (string teamDriveId, Data.TeamDrive teamDrive)
                 : base(string.Concat(@"https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), "PATCH", teamDrive) { }
         }
 
@@ -109,8 +109,8 @@ namespace UnityGoogleDrive
         }
 
         /// <summary>
-        /// Permanently deletes a Team Drive for which the user is an organizer. 
-        /// The Team Drive cannot contain any untrashed items. 
+        /// Permanently deletes a Team Drive for which the user is an organizer.
+        /// The Team Drive cannot contain any untrashed items.
         /// </summary>
         /// <param name="teamDriveId">The ID of the Team Drive to delete.</param>
         public static DeleteRequest Delete (string teamDriveId)

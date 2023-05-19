@@ -26,7 +26,7 @@ namespace UnityGoogleDrive.Data
         /// <summary>
         /// The page token for the next page of changes. This will be absent if the end of
         /// the changes list has been reached. If the token is rejected for any reason, it
-        /// should be discarded, and pagination should be restarted from the first page of 
+        /// should be discarded, and pagination should be restarted from the first page of
         /// results.
         /// </summary>
         public string NextPageToken { get; private set; }

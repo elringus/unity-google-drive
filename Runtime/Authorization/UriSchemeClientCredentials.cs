@@ -16,10 +16,10 @@ namespace UnityGoogleDrive
         public string PlistVersion => plistVersion;
         public string BundleId => bundleId;
 
-        [SerializeField] private string clientId = null;
-        [SerializeField] private string reversedClientId = null;
-        [SerializeField] private string plistVersion = null;
-        [SerializeField] private string bundleId = null;
+        [SerializeField] private string clientId;
+        [SerializeField] private string reversedClientId;
+        [SerializeField] private string plistVersion;
+        [SerializeField] private string bundleId;
 
         public void OverwriteFromXml (string xmlString)
         {
@@ -27,7 +27,7 @@ namespace UnityGoogleDrive
             xml.XmlResolver = null;
             using (TextReader reader = new StringReader(xmlString))
                 xml.Load(reader);
-            var rootNode = xml.DocumentElement.ChildNodes[0];
+            var rootNode = xml.DocumentElement?.ChildNodes[0];
             var dict = ParsePlistDictionary(rootNode);
 
             clientId = dict["CLIENT_ID"];

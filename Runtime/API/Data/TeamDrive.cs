@@ -127,7 +127,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public CapabilitiesData Capabilities { get; private set; }
         /// <summary>
-        /// The color of this Team Drive as an RGB hex string. It can only be set on a drive.teamdrives.update 
+        /// The color of this Team Drive as an RGB hex string. It can only be set on a drive.teamdrives.update
         /// request that does not set themeId.
         /// </summary>
         public string ColorRgb { get; set; }
@@ -144,7 +144,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public string Name { get; private set; }
         /// <summary>
-        /// The ID of the theme from which the background image and color will be set. The 
+        /// The ID of the theme from which the background image and color will be set. The
         /// set of possible teamDriveThemes can be retrieved from a drive.about.get response.
         /// When not specified on a drive.teamdrives.create request, a random theme is chosen
         /// from which the background image and color are set. This is a write-only field;
