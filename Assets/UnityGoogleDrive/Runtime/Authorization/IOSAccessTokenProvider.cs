@@ -80,7 +80,7 @@ namespace UnityGoogleDrive
             }
             else
             {
-                settings.CachedAccessToken = refresher.AccesToken;
+                settings.CachedAccessToken = refresher.AccessToken;
                 HandleProvideAccessTokenComplete();
             }
         }
@@ -94,7 +94,7 @@ namespace UnityGoogleDrive
             }
             else
             {
-                settings.CachedAccessToken = authCodeExchanger.AccesToken;
+                settings.CachedAccessToken = authCodeExchanger.AccessToken;
                 settings.CachedRefreshToken = authCodeExchanger.RefreshToken;
                 HandleProvideAccessTokenComplete();
             }

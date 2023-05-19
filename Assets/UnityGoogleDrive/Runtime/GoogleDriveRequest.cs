@@ -48,11 +48,11 @@ namespace UnityGoogleDrive
         /// <summary>
         /// The URI of the request.
         /// </summary>
-        public override string Uri { get; protected set; }
+        public sealed override string Uri { get; protected set; }
         /// <summary>
         /// HTTP method of the request.
         /// </summary>
-        public override string Method { get; protected set; }
+        public sealed override string Method { get; protected set; }
         /// <summary>
         /// The response data of the request.
         /// Make sure to check for <see cref="IsDone"/> and <see cref="IsError"/> before using.

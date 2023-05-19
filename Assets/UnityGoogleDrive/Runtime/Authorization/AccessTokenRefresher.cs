@@ -11,17 +11,19 @@ namespace UnityGoogleDrive
     public class AccessTokenRefresher
     {
         #pragma warning disable 0649
+        // ReSharper disable NotAccessedField.Local
         [Serializable] struct RefreshResponse { public string error, error_description, access_token, expires_in, token_type; }
+        // ReSharper restore NotAccessedField.Local
         #pragma warning restore 0649
 
         public event Action<AccessTokenRefresher> OnDone;
 
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
-        public string Error { get; private set; }
-        public string AccesToken { get; private set; }
+        public string Error { get; } = "";
+        public string AccessToken { get; private set; }
 
-        private IClientCredentials credentials;
+        private readonly IClientCredentials credentials;
         private UnityWebRequest refreshRequest;
 
         public AccessTokenRefresher (IClientCredentials clientCredentials)
@@ -61,7 +63,7 @@ namespace UnityGoogleDrive
             }
 
             var response = JsonUtility.FromJson<RefreshResponse>(refreshRequest.downloadHandler.text);
-            AccesToken = response.access_token;
+            AccessToken = response.access_token;
             HandleRefreshComplete();
         }
 

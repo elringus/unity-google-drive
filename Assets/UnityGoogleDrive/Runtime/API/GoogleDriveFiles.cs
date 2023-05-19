@@ -142,7 +142,7 @@ namespace UnityGoogleDrive
         /// Exports a Google Doc to the requested MIME type and returns the exported content.
         /// Please note that the exported content is limited to 10MB.
         /// </summary>
-        public class ExportRequest : GoogleDriveRequest<Data.File>
+        public sealed class ExportRequest : GoogleDriveRequest<Data.File>
         {
             /// <summary>
             /// The MIME type of the format requested for this export.
@@ -206,10 +206,10 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Downloads a file's content by ID.
         /// </summary>
-        public class DownloadRequest : GetRequest
+        public sealed class DownloadRequest : GetRequest
         {
             /// <summary>
-            /// Portion of the file's content to dowload (byte range). Will download the full file when null (default).
+            /// Portion of the file's content to download (byte range). Will download the full file when null (default).
             /// For more info see <see href="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
             /// </summary>
             public RangeInt? DownloadRange { get; private set; }
@@ -251,7 +251,7 @@ namespace UnityGoogleDrive
         /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
         /// Using this class significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
         /// </summary>
-        public class DownloadAudioRequest : GoogleDriveRequest<Data.AudioFile>
+        public sealed class DownloadAudioRequest : GoogleDriveRequest<Data.AudioFile>
         {
             /// <summary>
             /// Whether the requesting application supports Team Drives. (Default: false)
@@ -298,7 +298,7 @@ namespace UnityGoogleDrive
         /// Downloads a file's content by ID and creates a <see cref="Texture2D"/> based on the retrieved data.
         /// Using this class significantly reduces memory reallocation compared to downloading raw bytes and creating a texture manually in script.
         /// </summary>
-        public class DownloadTextureRequest : GoogleDriveRequest<Data.TextureFile>
+        public sealed class DownloadTextureRequest : GoogleDriveRequest<Data.TextureFile>
         {
             /// <summary>
             /// Whether the requesting application supports Team Drives. (Default: false)
@@ -415,7 +415,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
-            public WatchRequest (string fileId, Data.Channel channel) : base(string.Format(@"https://www.googleapis.com/drive/v3/files/{0}/watch", fileId),
+            public WatchRequest (string fileId, Data.Channel channel) : base($@"https://www.googleapis.com/drive/v3/files/{fileId}/watch",
                 UnityWebRequest.kHttpVerbPOST, channel) { }
         }
 
@@ -580,7 +580,7 @@ namespace UnityGoogleDrive
         /// For a partial download provide <paramref name="downloadRange"/> argument. More info: <see href="https://developers.google.com/drive/api/v3/manage-downloads#partial_download"/>.
         /// </summary>
         /// <param name="fileId">The ID of the file to download content for.</param>
-        /// <param name="downloadRange">The portion of the file you want to dowload (a byte range). Will download the full file when null (default).</param>
+        /// <param name="downloadRange">The portion of the file you want to download (a byte range). Will download the full file when null (default).</param>
         public static DownloadRequest Download (string fileId, RangeInt? downloadRange = null)
         {
             return new DownloadRequest(fileId, downloadRange);
@@ -590,7 +590,7 @@ namespace UnityGoogleDrive
         /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
         /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
         /// Be aware, that Unity support for encoding formats is limited depending on the platform.
-        /// Eg: mp3 not supported on editor and standalones, ogg not availabile on WebGL, etc.
+        /// Eg: mp3 not supported on editor and standalone, ogg not available on WebGL, etc.
         /// </summary>
         /// <param name="fileId">The ID of the audio file to download.</param>
         /// <param name="audioType">The type of audio encoding for the downloaded audio clip.</param>
