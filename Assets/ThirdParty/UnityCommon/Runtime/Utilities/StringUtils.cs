@@ -2,7 +2,6 @@
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using UnityEngine;
 
 namespace UnityCommon
 {
@@ -19,7 +18,7 @@ namespace UnityCommon
         /// Character combinations used to represent new lines, cross-platform (Windows-Mac-Unix).
         /// </summary>
         public static readonly string[] NewLineSymbols = { "\r\n", "\n", "\r" };
-        
+
         /// <summary>
         /// Checks whether provided string contains any line break characters (platform-agnostic).
         /// </summary>
@@ -28,7 +27,7 @@ namespace UnityCommon
             if (content is null) throw new ArgumentNullException(nameof(content));
             return content.IndexOfAny(NewLineChars) >= 0;
         }
-        
+
         /// <summary>
         /// Performs <see cref="string.Equals(string, string, StringComparison)"/> with <see cref="StringComparison.Ordinal"/>.
         /// </summary>
@@ -171,7 +170,7 @@ namespace UnityCommon
         public static string[] SplitByNewLine (this string content, StringSplitOptions splitOptions = StringSplitOptions.None)
         {
             if (string.IsNullOrEmpty(content)) return null;
-            
+
             return content.Split(NewLineSymbols, splitOptions);
         }
 
@@ -185,7 +184,7 @@ namespace UnityCommon
 
             return source.Remove(source.LastIndexOf(value, StringComparison.InvariantCulture));
         }
-        
+
         /// <summary>
         /// Invokes <see cref="string.Replace(string,string)"/> with an empty string.
         /// </summary>
@@ -193,7 +192,7 @@ namespace UnityCommon
         {
             return source?.Replace(value.ToString(), string.Empty);
         }
-        
+
         /// <inheritdoc cref="Remove(string,char)"/>
         public static string Remove (this string source, string value)
         {
@@ -305,12 +304,12 @@ namespace UnityCommon
             if (string.IsNullOrEmpty(source) || char.IsLower(source, 0))
                 return source;
 
-            if (source.Length <= 1) 
+            if (source.Length <= 1)
                 return source.ToLowerInvariant();
-            
+
             return char.ToLowerInvariant(source[0]) + source.Substring(1);
         }
-        
+
         /// <summary>
         /// Changes first character in the provided string to upper invariant.
         /// </summary>
@@ -319,9 +318,9 @@ namespace UnityCommon
             if (string.IsNullOrEmpty(source) || char.IsUpper(source, 0))
                 return source;
 
-            if (source.Length <= 1) 
+            if (source.Length <= 1)
                 return source.ToUpperInvariant();
-            
+
             return char.ToUpperInvariant(source[0]) + source.Substring(1);
         }
 

@@ -47,8 +47,8 @@ namespace UnityGoogleDrive
         /// </summary>
         public string CachedRefreshToken { get => PlayerPrefs.GetString(refreshTokenPrefsKey); set => PlayerPrefs.SetString(refreshTokenPrefsKey, value); }
 
-        [SerializeField] private GenericClientCredentials genericClientCredentials = null;
-        [SerializeField] private UriSchemeClientCredentials uriSchemeClientCredentials = null;
+        [SerializeField] private GenericClientCredentials genericClientCredentials;
+        [SerializeField] private UriSchemeClientCredentials uriSchemeClientCredentials;
         [SerializeField] private List<string> accessScopes = new List<string> { "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.appdata" };
         [SerializeField] private string loopbackUri = "http://localhost";
         [SerializeField] private string loopbackResponseHtml = "<html><h1>Please return to the app.</h1></html>";
@@ -66,7 +66,7 @@ namespace UnityGoogleDrive
             if (!settings && !silent)
             {
                 Debug.LogError("UnityGoogleDrive: Settings file not found. " +
-                    "Use 'Edit > Project Settings > Google Drive Settings' to create a new one.");
+                               "Use 'Edit > Project Settings > Google Drive Settings' to create a new one.");
             }
 
             return settings;

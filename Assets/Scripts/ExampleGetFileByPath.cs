@@ -16,7 +16,7 @@ public class ExampleGetFileByPath : AdaptiveWindowGUI
         {
             GUILayout.Label($"Loading: {request.Progress:P2}");
         }
-        else 
+        else
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label("File path:", GUILayout.Width(70));

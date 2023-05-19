@@ -22,7 +22,7 @@ public class ProjectFileHook
     {
         ProjectFilesGenerator.ProjectFileGeneration += (string name, string content) => {
             var document = XDocument.Parse(content);
-            
+
             var propGroupElement = new XElement(defaultNamespace + "PropertyGroup");
             var docElement = new XElement(defaultNamespace + "DocumentationFile", "Assembly-CSharp.xml");
             propGroupElement.Add(docElement);

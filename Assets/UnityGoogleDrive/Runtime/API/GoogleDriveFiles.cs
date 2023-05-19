@@ -109,7 +109,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
 
-            public ResumableCreateRequest (Data.File file, string resumableSessionUri = null, string uploadMimeType = null) : base(@"https://www.googleapis.com/upload/drive/v3/files", 
+            public ResumableCreateRequest (Data.File file, string resumableSessionUri = null, string uploadMimeType = null) : base(@"https://www.googleapis.com/upload/drive/v3/files",
                 UnityWebRequest.kHttpVerbPOST, file, file.Content, uploadMimeType ?? file.MimeType, resumableSessionUri) { }
         }
 
@@ -234,8 +234,9 @@ namespace UnityGoogleDrive
             protected override UnityWebRequest CreateWebRequest ()
             {
                 var webRequest = base.CreateWebRequest();
-                if (DownloadRange.HasValue) webRequest.SetRequestHeader("Range", 
-                    $"bytes={DownloadRange.Value.start}-{DownloadRange.Value.end}");
+                if (DownloadRange.HasValue)
+                    webRequest.SetRequestHeader("Range",
+                        $"bytes={DownloadRange.Value.start}-{DownloadRange.Value.end}");
                 return webRequest;
             }
 
@@ -266,8 +267,8 @@ namespace UnityGoogleDrive
             /// </summary>
             public AudioType AudioType { get; private set; }
 
-            public DownloadAudioRequest (string fileId, AudioType audioType) 
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET) 
+            public DownloadAudioRequest (string fileId, AudioType audioType)
+                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
             {
                 Alt = "media";
                 AudioType = audioType;
@@ -484,7 +485,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
 
-            public ResumableUpdateRequest (string fileId, Data.File file, string resumableSessionUri = null, string uploadMimeType = null) 
+            public ResumableUpdateRequest (string fileId, Data.File file, string resumableSessionUri = null, string uploadMimeType = null)
                 : base(string.Concat(@"https://www.googleapis.com/upload/drive/v3/files/", fileId), "PATCH", file, file.Content, uploadMimeType ?? file.MimeType, resumableSessionUri) { }
         }
 

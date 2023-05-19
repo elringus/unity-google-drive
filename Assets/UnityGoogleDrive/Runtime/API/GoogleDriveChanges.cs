@@ -145,7 +145,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public virtual string TeamDriveId { get; set; }
 
-            public WatchRequest (string pageToken, Data.Channel channel) 
+            public WatchRequest (string pageToken, Data.Channel channel)
                 : base(@"https://www.googleapis.com/drive/v3/changes/watch", UnityWebRequest.kHttpVerbPOST, channel)
             {
                 PageToken = pageToken;

@@ -39,7 +39,7 @@ namespace UnityGoogleDrive
                 AssetDatabase.Refresh();
                 AssetDatabase.SaveAssets();
                 Debug.Log($"UnityGoogleDrive: Settings file didn't exist and was created at: {path}.\n" +
-                    "You're free to move it, just make sure it stays in the root of a 'Resources' folder.");
+                          "You're free to move it, just make sure it stays in the root of a 'Resources' folder.");
             }
             return settings;
         }
@@ -68,7 +68,7 @@ namespace UnityGoogleDrive
         {
             if (TargetSettings.GenericClientCredentials.ContainsSensitiveData() || TargetSettings.UriSchemeClientCredentials.ContainsSensitiveData())
                 EditorGUILayout.HelpBox("The asset contains sensitive data about your Google Drive API app. " +
-                    "Consider excluding it from the version control systems.", MessageType.Info);
+                                        "Consider excluding it from the version control systems.", MessageType.Info);
 
             EditorGUILayout.Space();
 

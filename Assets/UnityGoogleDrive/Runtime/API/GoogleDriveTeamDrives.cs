@@ -21,7 +21,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public string RequestId { get; private set; }
 
-            public CreateRequest (Data.TeamDrive teamDrive, string requestId) 
+            public CreateRequest (Data.TeamDrive teamDrive, string requestId)
                 : base(@"https://www.googleapis.com/drive/v3/teamdrives", UnityWebRequest.kHttpVerbPOST, teamDrive)
             {
                 RequestId = requestId;
@@ -89,7 +89,7 @@ namespace UnityGoogleDrive
         /// </summary>
         public class UpdateRequest : GoogleDriveUploadRequest<Data.TeamDrive, Data.TeamDrive>
         {
-            public UpdateRequest (string teamDriveId, Data.TeamDrive teamDrive) 
+            public UpdateRequest (string teamDriveId, Data.TeamDrive teamDrive)
                 : base(string.Concat(@"https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), "PATCH", teamDrive) { }
         }
 

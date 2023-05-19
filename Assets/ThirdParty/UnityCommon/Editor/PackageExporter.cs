@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -42,7 +42,7 @@ namespace UnityCommon
 
         private static Dictionary<string, string> modifiedScripts = new Dictionary<string, string>();
         private static List<UnityEngine.Object> ignoredAssets = new List<UnityEngine.Object>();
-        private static SceneSetup[] sceneSetup = null;
+        private static SceneSetup[] sceneSetup;
 
         public static void AddIgnoredAsset (string assetPath)
         {
@@ -208,7 +208,7 @@ namespace UnityCommon
             // Publish GitHub branch before modifications.
             if (!ApplyModificationsToGit && PublishToGit)
             {
-                using (var process = System.Diagnostics.Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
+                using (var process = Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
                 {
                     process?.WaitForExit();
                 }
@@ -262,7 +262,7 @@ namespace UnityCommon
                         .Select(d => d.FullName).ToList();
                     var packageFiles = sourceDir.GetFiles("*.*", SearchOption.AllDirectories)
                         .Where(f => (f.Attributes & FileAttributes.Hidden) == 0 &&
-                        !hiddenFolders.Any(d => f.FullName.StartsWith(d))).ToList();
+                                    !hiddenFolders.Any(d => f.FullName.StartsWith(d))).ToList();
 
                     foreach (var packageFile in packageFiles)
                     {
@@ -272,13 +272,13 @@ namespace UnityCommon
                         File.Copy(sourceFilePath, destFilePath, true);
                     }
                 }
-                catch (Exception e) { Debug.LogError(e.Message); }
+                catch (Exception e) { UnityEngine.Debug.LogError(e.Message); }
             }
 
             // Publish GitHub branch after modifications.
             if (ApplyModificationsToGit && PublishToGit)
             {
-                using (var process = System.Diagnostics.Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
+                using (var process = Process.Start(GitShellPath, $"\"{GitScriptPath}\""))
                 {
                     process.WaitForExit();
                 }

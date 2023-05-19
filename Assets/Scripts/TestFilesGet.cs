@@ -38,8 +38,8 @@ public class TestFilesGet : AdaptiveWindowGUI
     private void BuildResultString (UnityGoogleDrive.Data.File file)
     {
         result = string.Format("Name: {0} Size: {1:0.00}MB Created: {2:dd.MM.yyyy HH:MM:ss}",
-                file.Name,
-                file.Size * .000001f,
-                file.CreatedTime);
+            file.Name,
+            file.Size * .000001f,
+            file.CreatedTime);
     }
 }

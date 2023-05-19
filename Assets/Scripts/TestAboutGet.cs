@@ -35,7 +35,7 @@ public class TestAboutGet : AdaptiveWindowGUI
 
         if (request.ResponseData != null)
         {
-            GUILayout.Label(string.Format("User name: {0}\nUser email: {1}\nSpace used: {2:0}/{3:0} MB", 
+            GUILayout.Label(string.Format("User name: {0}\nUser email: {1}\nSpace used: {2:0}/{3:0} MB",
                 request.ResponseData.User.DisplayName,
                 request.ResponseData.User.EmailAddress,
                 request.ResponseData.StorageQuota.Usage * .000001f,

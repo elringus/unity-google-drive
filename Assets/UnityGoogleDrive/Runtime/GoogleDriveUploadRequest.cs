@@ -81,7 +81,7 @@ namespace UnityGoogleDrive
                 newLine + "Content-Type: " + DefaultMimeType +
                 newLineDouble));
             dataList.AddRange(RequestPayload);
-            dataList.AddRange(Encoding.UTF8.GetBytes(newLine+ "--" + boundary + "--"));
+            dataList.AddRange(Encoding.UTF8.GetBytes(newLine + "--" + boundary + "--"));
 
             webRequest.uploadHandler = new UploadHandlerRaw(dataList.ToArray());
             webRequest.SetRequestHeader("Content-Type", string.Concat("multipart/related; boundary=", boundary));

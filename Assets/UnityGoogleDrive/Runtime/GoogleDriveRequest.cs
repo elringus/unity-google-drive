@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 namespace UnityGoogleDrive
 {
     /// <summary>
-    /// A request intended to communicate with the Google Drive API. 
+    /// A request intended to communicate with the Google Drive API.
     /// </summary>
     public abstract class GoogleDriveRequest : IDisposable
     {
@@ -33,7 +33,7 @@ namespace UnityGoogleDrive
     }
 
     /// <summary>
-    /// A request intended to communicate with the Google Drive API. 
+    /// A request intended to communicate with the Google Drive API.
     /// Handles base networking and authorization flow.
     /// </summary>
     /// <typeparam name="TResponse">Type of the response data.</typeparam>
@@ -61,7 +61,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Progress of the data download, in 0.0 to 1.0 range.
         /// </summary>
-        public override float Progress => WebRequest != null ? WebRequest.downloadProgress : 0;
+        public override float Progress => WebRequest?.downloadProgress ?? 0;
         /// <summary>
         /// Whether the request is currently executing.
         /// </summary>
@@ -94,8 +94,8 @@ namespace UnityGoogleDrive
         /// </summary>
         [QueryParameter] public bool? PrettyPrint { get; set; }
         /// <summary>
-        /// Allows to enforce per-user quotas from a server-side application even 
-        /// in cases when the user's IP address is unknown. 
+        /// Allows to enforce per-user quotas from a server-side application even
+        /// in cases when the user's IP address is unknown.
         /// </summary>
         [QueryParameter] public string QuotaUser { get; set; }
         /// <summary>
@@ -153,8 +153,7 @@ namespace UnityGoogleDrive
         /// </summary>
         public override void Dispose ()
         {
-            if (WebRequest != null)
-                WebRequest.Dispose();
+            WebRequest?.Dispose();
         }
 
         public override T GetResponseData<T> ()
@@ -206,10 +205,13 @@ namespace UnityGoogleDrive
         {
             IsDone = true;
 
-            if (OnDone != null)
-                OnDone.Invoke(ResponseData);
+            OnDone?.Invoke(ResponseData);
 
-            if (WebRequest != null) { WebRequest.Dispose(); WebRequest = null; }
+            if (WebRequest != null)
+            {
+                WebRequest.Dispose();
+                WebRequest = null;
+            }
         }
 
         protected virtual void SendWebRequest ()
@@ -283,9 +285,9 @@ namespace UnityGoogleDrive
             {
                 var valueType = properties[propertyName].GetType();
                 var valueElemType = valueType.IsGenericType
-                                        ? valueType.GetGenericArguments()[0]
-                                        : valueType.GetElementType();
-                if (valueElemType.IsPrimitive || valueElemType == typeof(string))
+                    ? valueType.GetGenericArguments()[0]
+                    : valueType.GetElementType();
+                if ((valueElemType?.IsPrimitive ?? false) || valueElemType == typeof(string))
                 {
                     var enumerable = properties[propertyName] as IEnumerable;
                     properties[propertyName] = string.Join(",", enumerable.Cast<string>().ToArray());

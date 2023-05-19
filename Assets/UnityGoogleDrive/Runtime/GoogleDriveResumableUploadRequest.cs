@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 namespace UnityGoogleDrive
 {
     /// <summary>
-    /// A request intended to communicate with the Google Drive API. 
+    /// A request intended to communicate with the Google Drive API.
     /// Allows uploading a <see cref="Data.ResourceData"/> and (optinally) raw payload data in a resumable fashion.
     /// </summary>
     /// <typeparam name="TRequest">Type of the uploaded data.</typeparam>
@@ -37,7 +37,7 @@ namespace UnityGoogleDrive
         private UnityWebRequest uploadRequest;
         private UnityWebRequest statusRequest;
 
-        public GoogleDriveResumableUploadRequest (string uri, string method, TRequest requestData, byte[] requestPayload = null, 
+        public GoogleDriveResumableUploadRequest (string uri, string method, TRequest requestData, byte[] requestPayload = null,
             string payloadMimeType = null, string resumableSessionUri = null) : base(uri, method, requestData, requestPayload, payloadMimeType)
         {
             ResumableSessionUri = resumableSessionUri;
@@ -78,16 +78,16 @@ namespace UnityGoogleDrive
         {
             base.Dispose();
 
-            if (uploadRequest != null) uploadRequest.Dispose();
-            if (statusRequest != null) statusRequest.Dispose();
+            uploadRequest?.Dispose();
+            statusRequest?.Dispose();
         }
 
         public override void Abort ()
         {
             base.Abort();
 
-            if (uploadRequest != null) uploadRequest.Abort();
-            if (statusRequest != null) statusRequest.Abort();
+            uploadRequest?.Abort();
+            statusRequest?.Abort();
         }
 
         private void GetStatusAndResumeUpload ()
