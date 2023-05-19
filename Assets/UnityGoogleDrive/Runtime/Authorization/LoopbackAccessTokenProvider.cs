@@ -76,7 +76,7 @@ namespace UnityGoogleDrive
             }
             else
             {
-                settings.CachedAccessToken = refresher.AccesToken;
+                settings.CachedAccessToken = refresher.AccessToken;
                 HandleProvideAccessTokenComplete();
             }
         }
@@ -90,7 +90,7 @@ namespace UnityGoogleDrive
             }
             else
             {
-                settings.CachedAccessToken = authCodeExchanger.AccesToken;
+                settings.CachedAccessToken = authCodeExchanger.AccessToken;
                 settings.CachedRefreshToken = authCodeExchanger.RefreshToken;
                 HandleProvideAccessTokenComplete();
             }
@@ -131,7 +131,7 @@ namespace UnityGoogleDrive
             // Wait for the authorization response.
             var asyncResult = httpListener.BeginGetContext(HandleHttpListenerCallback, httpListener);
 
-            // Block the thread when backround mode is not supported to serve HTTP response while the application is not in focus.
+            // Block the thread when background mode is not supported to serve HTTP response while the application is not in focus.
             if (!Application.runInBackground)
                 asyncResult.AsyncWaitHandle.WaitOne();
         }

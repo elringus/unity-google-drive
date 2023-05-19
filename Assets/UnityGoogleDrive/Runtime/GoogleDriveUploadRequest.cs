@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 namespace UnityGoogleDrive
 {
     /// <summary>
-    /// A request intended to communicate with the Google Drive API. 
+    /// A request intended to communicate with the Google Drive API.
     /// Allows uploading a <see cref="Data.ResourceData"/> and (optionally) raw payload data.
     /// </summary>
     /// <typeparam name="TRequest">Type of the uploaded data.</typeparam>
@@ -31,7 +31,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Progress of the data upload, in 0.0 to 1.0 range.
         /// </summary>
-        public override float Progress => WebRequest != null ? WebRequest.uploadProgress : 0;
+        public override float Progress => WebRequest?.uploadProgress ?? 0;
 
         /// <summary>
         /// The type of upload request to the /upload URI. Acceptable values are:
@@ -63,25 +63,25 @@ namespace UnityGoogleDrive
 
         protected UnityWebRequest CreateMultipartUpload (UnityWebRequest webRequest)
         {
-            // Can't use MultipartFormDataSection utils to build mutlipart body, 
-            // because Google has added strict requirements for the body format. 
+            // Can't use MultipartFormDataSection utils to build multipart body,
+            // because Google has added strict requirements for the body format.
             // Issue: https://github.com/Elringus/UnityGoogleDrive/issues/30).
 
             var newLine = "\r\n";
             var newLineDouble = newLine + newLine;
             var boundary = Encoding.ASCII.GetString(UnityWebRequest.GenerateBoundary());
-            var boundaryDelimeter = newLineDouble + "--" + boundary;
+            var boundaryDelimiter = newLineDouble + "--" + boundary;
 
             var dataList = new List<byte>();
             dataList.AddRange(Encoding.UTF8.GetBytes(
-                boundaryDelimeter +
+                boundaryDelimiter +
                 newLine + "Content-Type: " + RequestContentType +
                 newLineDouble + JsonUtils.ToJsonPrivateCamel(RequestData) +
-                boundaryDelimeter +
+                boundaryDelimiter +
                 newLine + "Content-Type: " + DefaultMimeType +
                 newLineDouble));
             dataList.AddRange(RequestPayload);
-            dataList.AddRange(Encoding.UTF8.GetBytes(newLine+ "--" + boundary + "--"));
+            dataList.AddRange(Encoding.UTF8.GetBytes(newLine + "--" + boundary + "--"));
 
             webRequest.uploadHandler = new UploadHandlerRaw(dataList.ToArray());
             webRequest.SetRequestHeader("Content-Type", string.Concat("multipart/related; boundary=", boundary));
@@ -95,7 +95,6 @@ namespace UnityGoogleDrive
             var requestData = Encoding.UTF8.GetBytes(requestJson);
             webRequest.uploadHandler = new UploadHandlerRaw(requestData);
             webRequest.SetRequestHeader("Content-Type", RequestContentType);
-
             return webRequest;
         }
     }

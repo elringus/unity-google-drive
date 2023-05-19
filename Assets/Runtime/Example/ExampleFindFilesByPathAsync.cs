@@ -67,7 +67,11 @@ public class ExampleFindFilesByPathAsync : AdaptiveWindowGUI
 
     private void BuildResults (List<UnityGoogleDrive.Data.File> fileList)
     {
-        if (fileList.Count == 0) { results = new Dictionary<string, string> { [string.Empty] = "Non files found." }; return; }
+        if (fileList.Count == 0)
+        {
+            results = new Dictionary<string, string> { [string.Empty] = "Non files found." };
+            return;
+        }
 
         results = new Dictionary<string, string>();
 

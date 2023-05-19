@@ -30,7 +30,7 @@ namespace UnityGoogleDrive
         /// The MIME type of a <see cref="Data.File"/> representing a folder in Google Drive.
         /// </summary>
         /// <remarks>
-        /// A folder in Google Drive is actually a file with the special MIME type. 
+        /// A folder in Google Drive is actually a file with the special MIME type.
         /// More info: https://developers.google.com/drive/api/v3/folder.
         /// </remarks>
         public const string FolderMimeType = "application/vnd.google-apps.folder";
@@ -84,14 +84,13 @@ namespace UnityGoogleDrive
                 if (fileList?.Files?.Count > 0) result.AddRange(fileList.Files);
                 pageToken = fileList?.NextPageToken;
                 listRequest.Dispose();
-
             } while (pageToken != null);
 
             return result;
         }
 
         /// <summary>
-        /// Creates a new (or update existsing) <see cref="Data.File"/> at the provided path.
+        /// Creates a new (or update existing) <see cref="Data.File"/> at the provided path.
         /// Will also create any missing folders at the provided path.
         /// </summary>
         /// <param name="file">Metadata for the created (updated) file.</param>
@@ -121,15 +120,14 @@ namespace UnityGoogleDrive
             }
 
             // Check if all the folders in the path exist.
-            var parentIds = await ValidatePath(path, appData);
-            if (parentIds == null) parentIds = new HashSet<string>();
-            if (parentIds.Count > 1) Debug.LogWarning($"UnityGoogleDrive: Multiple '{Path.GetDirectoryName(path)}' pathes found while attempting to create a file. Operation will create a file at the first found path.");
+            var parentIds = await ValidatePath(path, appData) ?? new HashSet<string>();
+            if (parentIds.Count > 1) Debug.LogWarning($"UnityGoogleDrive: Multiple '{Path.GetDirectoryName(path)}' paths found while attempting to create a file. Operation will create a file at the first found path.");
 
             // Some of the folders are missing; create them.
-            if (parentIds.Count == 0) 
+            if (parentIds.Count == 0)
             {
                 var parentId = appData ? AppDataAlias : RootAlias;
-                path = Path.GetDirectoryName(path).Replace('\\', '/');
+                path = Path.GetDirectoryName(path)?.Replace('\\', '/') ?? path;
                 var parentNames = path.Split('/').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
 
                 for (int i = 0; i < parentNames.Length; i++)
@@ -184,7 +182,7 @@ namespace UnityGoogleDrive
         {
             if (parentId == null) parentId = appData ? AppDataAlias : RootAlias;
             if (string.IsNullOrWhiteSpace(path)) return new HashSet<string> { parentId };
-            path = Path.GetDirectoryName(path).Replace('\\', '/');
+            path = Path.GetDirectoryName(path)?.Replace('\\', '/') ?? path;
             if (string.IsNullOrWhiteSpace(path) || path.Trim() == "/" || path.Trim() == "\\") return new HashSet<string> { parentId };
             var parentNames = path.Split('/').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
             var result = new HashSet<string>();
@@ -204,7 +202,11 @@ namespace UnityGoogleDrive
                         return null;
 
                     // When at the top level, add all the folder's IDs.
-                    if (i + 1 == parentNames.Length) { result.UnionWith(listRequest.ResponseData.Files.Select(f => f.Id)); break; }
+                    if (i + 1 == parentNames.Length)
+                    {
+                        result.UnionWith(listRequest.ResponseData.Files.Select(f => f.Id));
+                        break;
+                    }
 
                     // Multiple folders with equal names found at the same level (but not top), travers them recursively.
                     if (listRequest.ResponseData.Files.Count > 1)
@@ -228,8 +230,8 @@ namespace UnityGoogleDrive
         {
             using (var md5 = MD5.Create())
             {
-                    var hash = md5.ComputeHash(content);
-                    return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
+                var hash = md5.ComputeHash(content);
+                return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
             }
         }
     }

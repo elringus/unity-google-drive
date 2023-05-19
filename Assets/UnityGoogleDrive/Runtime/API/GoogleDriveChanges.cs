@@ -8,7 +8,7 @@ namespace UnityGoogleDrive
     /// </summary>
     /// <remarks>
     /// If you wish to start tracking changes to the files in the user's drive, first
-    /// execute the <see cref="GetStartPageTokenRequest"/> request and then use the returned 
+    /// execute the <see cref="GetStartPageTokenRequest"/> request and then use the returned
     /// token with the <see cref="ListRequest"/>. Returned <see cref="Data.Change"/> list will
     /// list the changes that happened after the <see cref="GetStartPageTokenRequest"/> request.
     /// </remarks>
@@ -71,7 +71,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? RestrictToMyDrive { get; set; }
             /// <summary>
-            /// A comma-separated list of spaces to query within the user corpus. 
+            /// A comma-separated list of spaces to query within the user corpus.
             /// Supported values are 'drive', 'appDataFolder' and 'photos'.
             /// </summary>
             [QueryParameter] public string Spaces { get; set; }
@@ -130,7 +130,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? RestrictToMyDrive { get; set; }
             /// <summary>
-            /// A comma-separated list of spaces to query within the user corpus. 
+            /// A comma-separated list of spaces to query within the user corpus.
             /// Supported values are 'drive', 'appDataFolder' and 'photos'.
             /// </summary>
             [QueryParameter] public string Spaces { get; set; }
@@ -145,7 +145,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public virtual string TeamDriveId { get; set; }
 
-            public WatchRequest (string pageToken, Data.Channel channel) 
+            public WatchRequest (string pageToken, Data.Channel channel)
                 : base(@"https://www.googleapis.com/drive/v3/changes/watch", UnityWebRequest.kHttpVerbPOST, channel)
             {
                 PageToken = pageToken;
@@ -166,7 +166,7 @@ namespace UnityGoogleDrive
         /// </summary>
         /// <param name="pageToken">
         /// The token for continuing a previous list request on the next page. This should
-        /// be set to the value of <see cref="Data.ChangeList.NextPageToken"/> from the previous 
+        /// be set to the value of <see cref="Data.ChangeList.NextPageToken"/> from the previous
         /// response or to the response from the <see cref="GetStartPageToken"/> method.
         /// </param>
         public static ListRequest List (string pageToken)

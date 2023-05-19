@@ -7,7 +7,7 @@ public class TestFilesDownloadRange : AdaptiveWindowGUI
     private GoogleDriveFiles.DownloadRequest request;
     private string fileId = string.Empty;
     private string result = string.Empty;
-    private RangeInt range = new RangeInt();
+    private RangeInt range;
 
     protected override void OnWindowGUI (int windowId)
     {

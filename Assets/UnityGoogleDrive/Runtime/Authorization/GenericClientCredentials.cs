@@ -14,13 +14,13 @@ namespace UnityGoogleDrive
         public string ClientSecret => client_secret;
         public List<string> RedirectUris => redirect_uris;
 
-        [SerializeField] private string client_id = null;
-        [SerializeField] private string project_id = null;
-        [SerializeField] private string auth_uri = null;
-        [SerializeField] private string token_uri = null;
-        [SerializeField] private string auth_provider_x509_cert_url = null;
-        [SerializeField] private string client_secret = null;
-        [SerializeField] private List<string> redirect_uris = null;
+        [SerializeField] private string client_id;
+        [SerializeField] private string project_id;
+        [SerializeField] private string auth_uri;
+        [SerializeField] private string token_uri;
+        [SerializeField] private string auth_provider_x509_cert_url;
+        [SerializeField] private string client_secret;
+        [SerializeField] private List<string> redirect_uris;
 
         public static GenericClientCredentials FromJson (string json)
         {

@@ -9,6 +9,5 @@
         /// Identifies what kind of resource this is.
         /// </summary>
         public abstract string Kind { get; }
-
     }
 }

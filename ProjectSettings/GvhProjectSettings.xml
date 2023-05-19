@@ -1,23 +1,23 @@
 <projectSettings>
-  <projectSetting name="Google.IOSResolver.AutoPodToolInstallInEditor" value="True" />
-  <projectSetting name="Google.IOSResolver.CocoapodsIntegrationMethod" value="2" />
-  <projectSetting name="Google.IOSResolver.Enabled" value="True" />
-  <projectSetting name="Google.IOSResolver.PodfileEnabled" value="True" />
-  <projectSetting name="Google.IOSResolver.PodToolExecutionViaShellEnabled" value="True" />
-  <projectSetting name="Google.IOSResolver.VerboseLoggingEnabled" value="False" />
-  <projectSetting name="Google.VersionHandler.CleanUpPromptEnabled" value="True" />
-  <projectSetting name="Google.VersionHandler.RenameToCanonicalFilenames" value="False" />
-  <projectSetting name="Google.VersionHandler.VerboseLoggingEnabled" value="False" />
-  <projectSetting name="Google.VersionHandler.VersionHandlingEnabled" value="True" />
-  <projectSetting name="GooglePlayServices.AndroidPackageInstallationEnabled" value="True" />
-  <projectSetting name="GooglePlayServices.AutoResolutionDisabledWarning" value="True" />
-  <projectSetting name="GooglePlayServices.AutoResolveOnBuild" value="True" />
-  <projectSetting name="GooglePlayServices.AutoResolverEnabled" value="False" />
-  <projectSetting name="GooglePlayServices.ExplodeAars" value="False" />
-  <projectSetting name="GooglePlayServices.PatchAndroidManifest" value="False" />
-  <projectSetting name="GooglePlayServices.PatchMainTemplateGradle" value="True" />
-  <projectSetting name="GooglePlayServices.PromptBeforeAutoResolution" value="False" />
-  <projectSetting name="GooglePlayServices.UseGradleDaemon" value="False" />
-  <projectSetting name="GooglePlayServices.UseJetifier" value="False" />
-  <projectSetting name="GooglePlayServices.VerboseLogging" value="False" />
+    <projectSetting name="Google.IOSResolver.AutoPodToolInstallInEditor" value="True"/>
+    <projectSetting name="Google.IOSResolver.CocoapodsIntegrationMethod" value="2"/>
+    <projectSetting name="Google.IOSResolver.Enabled" value="True"/>
+    <projectSetting name="Google.IOSResolver.PodfileEnabled" value="True"/>
+    <projectSetting name="Google.IOSResolver.PodToolExecutionViaShellEnabled" value="True"/>
+    <projectSetting name="Google.IOSResolver.VerboseLoggingEnabled" value="False"/>
+    <projectSetting name="Google.VersionHandler.CleanUpPromptEnabled" value="True"/>
+    <projectSetting name="Google.VersionHandler.RenameToCanonicalFilenames" value="False"/>
+    <projectSetting name="Google.VersionHandler.VerboseLoggingEnabled" value="False"/>
+    <projectSetting name="Google.VersionHandler.VersionHandlingEnabled" value="True"/>
+    <projectSetting name="GooglePlayServices.AndroidPackageInstallationEnabled" value="True"/>
+    <projectSetting name="GooglePlayServices.AutoResolutionDisabledWarning" value="True"/>
+    <projectSetting name="GooglePlayServices.AutoResolveOnBuild" value="True"/>
+    <projectSetting name="GooglePlayServices.AutoResolverEnabled" value="False"/>
+    <projectSetting name="GooglePlayServices.ExplodeAars" value="False"/>
+    <projectSetting name="GooglePlayServices.PatchAndroidManifest" value="False"/>
+    <projectSetting name="GooglePlayServices.PatchMainTemplateGradle" value="True"/>
+    <projectSetting name="GooglePlayServices.PromptBeforeAutoResolution" value="False"/>
+    <projectSetting name="GooglePlayServices.UseGradleDaemon" value="False"/>
+    <projectSetting name="GooglePlayServices.UseJetifier" value="False"/>
+    <projectSetting name="GooglePlayServices.VerboseLogging" value="False"/>
 </projectSettings>

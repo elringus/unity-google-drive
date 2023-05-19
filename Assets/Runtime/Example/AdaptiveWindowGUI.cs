@@ -36,8 +36,8 @@ public abstract class AdaptiveWindowGUI : MonoBehaviour
 
     protected virtual void SetWindowRect ()
     {
-        windowRect = new Rect(LeftMargin, TopMargin, 
-            Screen.width - LeftMargin - RightMargin, 
+        windowRect = new Rect(LeftMargin, TopMargin,
+            Screen.width - LeftMargin - RightMargin,
             Screen.height - TopMargin - BottomMargin);
     }
 }

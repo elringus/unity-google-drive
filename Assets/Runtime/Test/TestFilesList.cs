@@ -74,8 +74,8 @@ public class TestFilesList : AdaptiveWindowGUI
 
     private bool NextPageExists ()
     {
-        return request != null && 
-            request.ResponseData != null && 
-            !string.IsNullOrEmpty(request.ResponseData.NextPageToken);
+        return request != null &&
+               request.ResponseData != null &&
+               !string.IsNullOrEmpty(request.ResponseData.NextPageToken);
     }
 }

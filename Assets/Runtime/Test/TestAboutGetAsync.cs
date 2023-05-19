@@ -6,7 +6,7 @@ public class TestAboutGetAsync : AdaptiveWindowGUI
 {
     private GoogleDriveAbout.GetRequest request;
     private UnityGoogleDrive.Data.About aboutData;
-         
+
     private async void Start () => aboutData = await UpdateInfo();
 
     protected override void OnWindowGUI (int windowId)
