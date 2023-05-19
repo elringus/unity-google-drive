@@ -16,7 +16,7 @@ namespace UnityGoogleDrive.Data
         public class StorageQuotaData
         {
             /// <summary>
-            /// The usage limit, if applicable. 
+            /// The usage limit, if applicable.
             /// This will not be present if the user has unlimited storage.
             /// </summary>
             public long? Limit { get; private set; }

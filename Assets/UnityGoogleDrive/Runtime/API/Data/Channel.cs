@@ -34,7 +34,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public virtual bool? Payload { get; set; }
         /// <summary>
-        /// An opaque ID that identifies the resource being watched on this channel. 
+        /// An opaque ID that identifies the resource being watched on this channel.
         /// Stable across different API versions.
         /// </summary>
         public virtual string ResourceId { get; set; }

@@ -37,7 +37,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
-            public CopyRequest (Data.File file) : base(string.Format(@"https://www.googleapis.com/drive/v3/files/{0}/copy", file.Id),
+            public CopyRequest (Data.File file) : base($@"https://www.googleapis.com/drive/v3/files/{file.Id}/copy",
                 UnityWebRequest.kHttpVerbPOST, file)
             {
                 // API don't like receiving ID in the request body.
@@ -58,7 +58,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? IgnoreDefaultVisibility { get; set; }
             /// <summary>
-            /// Whether to set the 'keepForever' field in the new head revision. This is only 
+            /// Whether to set the 'keepForever' field in the new head revision. This is only
             /// applicable to files with binary content in Drive.
             /// </summary>
             [QueryParameter] public bool? KeepRevisionForever { get; set; }
@@ -92,7 +92,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? IgnoreDefaultVisibility { get; set; }
             /// <summary>
-            /// Whether to set the 'keepForever' field in the new head revision. This is only 
+            /// Whether to set the 'keepForever' field in the new head revision. This is only
             /// applicable to files with binary content in Drive.
             /// </summary>
             [QueryParameter] public bool? KeepRevisionForever { get; set; }
@@ -121,7 +121,7 @@ namespace UnityGoogleDrive
         public class DeleteRequest : GoogleDriveRequest<string>
         {
             /// <summary>
-            /// Whether the requesting application supports Team Drives. (Default: false) 
+            /// Whether the requesting application supports Team Drives. (Default: false)
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
@@ -173,7 +173,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public int? Count { get; private set; }
             /// <summary>
-            /// The space in which the IDs can be used to create new files. 
+            /// The space in which the IDs can be used to create new files.
             /// Supported values are 'drive' and 'appDataFolder'.
             /// </summary>
             [QueryParameter] public string Space { get; private set; }
@@ -192,7 +192,7 @@ namespace UnityGoogleDrive
         public class GetRequest : GoogleDriveRequest<Data.File>
         {
             /// <summary>
-            /// Whether the requesting application supports Team Drives. (Default: false) 
+            /// Whether the requesting application supports Team Drives. (Default: false)
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
@@ -215,7 +215,7 @@ namespace UnityGoogleDrive
             public RangeInt? DownloadRange { get; private set; }
 
             /// <summary>
-            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
+            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files.
             /// </summary>
             [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
 
@@ -254,11 +254,11 @@ namespace UnityGoogleDrive
         public class DownloadAudioRequest : GoogleDriveRequest<Data.AudioFile>
         {
             /// <summary>
-            /// Whether the requesting application supports Team Drives. (Default: false) 
+            /// Whether the requesting application supports Team Drives. (Default: false)
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
             /// <summary>
-            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
+            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files.
             /// </summary>
             [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
 
@@ -301,11 +301,11 @@ namespace UnityGoogleDrive
         public class DownloadTextureRequest : GoogleDriveRequest<Data.TextureFile>
         {
             /// <summary>
-            /// Whether the requesting application supports Team Drives. (Default: false) 
+            /// Whether the requesting application supports Team Drives. (Default: false)
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
             /// <summary>
-            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files. 
+            /// Whether the user is acknowledging the risk of downloading known malware or other abusive files.
             /// </summary>
             [QueryParameter] public bool? AcknowledgeAbuse { get; set; }
 
@@ -348,7 +348,7 @@ namespace UnityGoogleDrive
             /// <summary>
             /// Comma-separated list of bodies of items (files/documents) to which the query
             /// applies. Supported bodies are 'user', 'domain', 'teamDrive' and 'allTeamDrives'.
-            /// 'allTeamDrives' must be combined with 'user'; all other values must be used in 
+            /// 'allTeamDrives' must be combined with 'user'; all other values must be used in
             /// isolation. Prefer 'user' or 'teamDrive' to 'allTeamDrives' for efficiency.
             /// </summary>
             [QueryParameter] public string Corpora { get; set; }
@@ -359,31 +359,31 @@ namespace UnityGoogleDrive
             /// <summary>
             /// A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder',
             /// 'modifiedByMeTime', 'modifiedTime', 'name', 'name_natural', 'quotaBytesUsed',
-            /// 'recency', 'sharedWithMeTime', 'starred', and 'viewedByMeTime'. 
-            /// Each key sorts ascending by default, but may be reversed with the 'desc' modifier. 
-            /// Example usage: ?orderBy=folder,modifiedTime desc,name. 
-            /// Please note that there is a current limitation for users with approximately 
+            /// 'recency', 'sharedWithMeTime', 'starred', and 'viewedByMeTime'.
+            /// Each key sorts ascending by default, but may be reversed with the 'desc' modifier.
+            /// Example usage: ?orderBy=folder,modifiedTime desc,name.
+            /// Please note that there is a current limitation for users with approximately
             /// one million files in which the requested sort order is ignored.
             /// </summary>
             [QueryParameter] public string OrderBy { get; set; }
             /// <summary>
             /// The maximum number of files to return per page. Partial or empty result pages
             /// are possible even before the end of the files list has been reached.
-            /// Acceptable values are 1 to 1000, inclusive. (Default: 100) 
+            /// Acceptable values are 1 to 1000, inclusive. (Default: 100)
             /// </summary>
             [QueryParameter] public int? PageSize { get; set; }
             /// <summary>
-            /// The token for continuing a previous list request on the next page. 
+            /// The token for continuing a previous list request on the next page.
             /// This should be set to the value of 'nextPageToken' from the previous response.
             /// </summary>
             [QueryParameter] public string PageToken { get; set; }
             /// <summary>
-            /// A query for filtering the file results. 
-            /// See <see href="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax. 
+            /// A query for filtering the file results.
+            /// See <see href="https://developers.google.com/drive/v3/web/search-parameters"/> for the supported syntax.
             /// </summary>
             [QueryParameter] public string Q { get; set; }
             /// <summary>
-            /// A comma-separated list of spaces to query within the corpus. 
+            /// A comma-separated list of spaces to query within the corpus.
             /// Supported values are 'drive', 'appDataFolder' and 'photos'.
             /// </summary>
             [QueryParameter] public string Spaces { get; set; }
@@ -512,7 +512,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Creates a new file and (optionally) uploads the file's content in a resumable fashion.
         /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest}.ResumableSessionUri"/> property of the failed request and start a new one.
-        /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate 
+        /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate
         /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see href="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
         /// </summary>
         /// <param name="file">The file to create. Provide <see cref="Data.File.Content"/> to upload the content of the file.</param>
@@ -558,7 +558,7 @@ namespace UnityGoogleDrive
         /// </summary>
         /// <param name="count">The number of IDs to return.</param>
         /// <param name="space">
-        /// The space in which the IDs can be used to create new files. 
+        /// The space in which the IDs can be used to create new files.
         /// Supported values are 'drive' and 'appDataFolder'.
         /// </param>
         public static GenerateIdsRequest GenerateIds (int? count = null, string space = null)
@@ -589,7 +589,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Downloads a file's content by ID and creates an <see cref="AudioClip"/> based on the retrieved data.
         /// Using this method significantly reduces memory reallocation compared to downloading raw bytes and creating an audio clip manually in script.
-        /// Be aware, that Unity support for encoding formats is limited depending on the platform. 
+        /// Be aware, that Unity support for encoding formats is limited depending on the platform.
         /// Eg: mp3 not supported on editor and standalones, ogg not availabile on WebGL, etc.
         /// </summary>
         /// <param name="fileId">The ID of the audio file to download.</param>
@@ -641,7 +641,7 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Updates a file's metadata and content with patch semantics and upload the content in resumable fashion.
         /// In case the upload is interrupted get <see cref="GoogleDriveResumableUploadRequest{TRequest}.ResumableSessionUri"/> property of the failed request and start a new one.
-        /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate 
+        /// In case you wish to manually upload the file's data (for example using a chunked transfer), don't set <see cref="Data.File.Content"/>, so the request will just initiate
         /// a new resumable upload session. You can then use the returned session URI to manually upload the data. For more info see <see href="https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable"/>.
         /// </summary>
         /// <param name="fileId">ID of the file to update.</param>

@@ -12,13 +12,13 @@ namespace UnityGoogleDrive.Data
     public class File : ResourceData
     {
         /// <summary>
-        /// Additional information about the content of the file. 
+        /// Additional information about the content of the file.
         /// These fields are never populated in responses.
         /// </summary>
         public class ContentHintsData
         {
             /// <summary>
-            /// A thumbnail for the file. 
+            /// A thumbnail for the file.
             /// This will only be used if Drive cannot generate a standard thumbnail.
             /// </summary>
             public class ThumbnailData
@@ -34,12 +34,12 @@ namespace UnityGoogleDrive.Data
             }
 
             /// <summary>
-            /// Text to be indexed for the file to improve fullText queries. 
+            /// Text to be indexed for the file to improve fullText queries.
             /// This is limited to 128KB in length and may contain HTML elements.
             /// </summary>
             public string IndexableText { get; set; }
             /// <summary>
-            /// A thumbnail for the file. 
+            /// A thumbnail for the file.
             /// This will only be used if Drive cannot generate a standard thumbnail.
             /// </summary>
             public ThumbnailData Thumbnail { get; private set; }
@@ -170,7 +170,7 @@ namespace UnityGoogleDrive.Data
             /// </summary>
             public bool? CanRename { get; private set; }
             /// <summary>
-            /// Whether the current user can remove children from this folder. 
+            /// Whether the current user can remove children from this folder.
             /// This is always false when the item is not a folder.
             /// </summary>
             public bool? CanRemoveChildren { get; private set; }
@@ -180,8 +180,8 @@ namespace UnityGoogleDrive.Data
             /// </summary>
             public bool? CanReadTeamDrive { get; private set; }
             /// <summary>
-            /// Whether the current user can read the revisions resource of this file. 
-            /// For a Team Drive item, whether revisions of non-folder descendants of this item, 
+            /// Whether the current user can read the revisions resource of this file.
+            /// For a Team Drive item, whether revisions of non-folder descendants of this item,
             /// or this item itself if it is not a folder, can be read.
             /// </summary>
             public bool? CanReadRevisions { get; private set; }
@@ -197,7 +197,7 @@ namespace UnityGoogleDrive.Data
             /// </summary>
             public bool? CanMoveItemIntoTeamDrive { get; private set; }
             /// <summary>
-            /// Whether the current user can list the children of this folder. 
+            /// Whether the current user can list the children of this folder.
             /// This is always false when the item is not a folder.
             /// </summary>
             public bool? CanListChildren { get; private set; }
@@ -214,7 +214,7 @@ namespace UnityGoogleDrive.Data
             /// </summary>
             public bool? CanDelete { get; private set; }
             /// <summary>
-            /// Whether the current user can copy this file. For a Team Drive item, whether the 
+            /// Whether the current user can copy this file. For a Team Drive item, whether the
             /// current user can copy non-folder descendants of this item, or this item itself
             /// if it is not a folder.
             /// </summary>
@@ -228,7 +228,7 @@ namespace UnityGoogleDrive.Data
             /// </summary>
             public bool? CanChangeViewersCanCopyContent { get; private set; }
             /// <summary>
-            /// Whether the current user can add children to this folder. 
+            /// Whether the current user can add children to this folder.
             /// This is always false when the item is not a folder.
             /// </summary>
             public bool? CanAddChildren { get; private set; }
@@ -243,7 +243,7 @@ namespace UnityGoogleDrive.Data
         }
 
         /// <summary>
-        /// Additional metadata about video media. 
+        /// Additional metadata about video media.
         /// This may not be available immediately upon upload.
         /// </summary>
         public class VideoMediaMetadataData
@@ -316,12 +316,12 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public long? Size { get; private set; }
         /// <summary>
-        /// The MD5 checksum for the content of the file. This is only applicable to files 
+        /// The MD5 checksum for the content of the file. This is only applicable to files
         /// with binary content in Drive.
         /// </summary>
         public string Md5Checksum { get; private set; }
         /// <summary>
-        /// A monotonically increasing version number for the file. This reflects every change 
+        /// A monotonically increasing version number for the file. This reflects every change
         /// made to the file on the server, even those not visible to the user.
         /// </summary>
         public long? Version { get; private set; }
@@ -381,7 +381,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public string TeamDriveId { get; private set; }
         /// <summary>
-        /// A short-lived link to the file's thumbnail, if available. Typically lasts on 
+        /// A short-lived link to the file's thumbnail, if available. Typically lasts on
         /// the order of hours. Only populated when the requesting app can access the file's content.
         /// </summary>
         public string ThumbnailLink { get; private set; }
@@ -508,7 +508,7 @@ namespace UnityGoogleDrive.Data
         /// </summary>
         public DateTime? ModifiedByMeTime { get; private set; }
         /// <summary>
-        /// A collection of arbitrary key-value pairs which are private to the requesting app. 
+        /// A collection of arbitrary key-value pairs which are private to the requesting app.
         /// Entries with null values are cleared in update and copy requests.
         /// </summary>
         public Dictionary<string, string> AppProperties { get; private set; }
