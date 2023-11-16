@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.elringus.unitygoogledriveandroid">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.elringus.unitygoogledriveandroid">
 
     <application>
         <activity android:name=".AuthorizationActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+                  android:launchMode="singleTask"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity"
-            tools:node="replace">
+                  tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
