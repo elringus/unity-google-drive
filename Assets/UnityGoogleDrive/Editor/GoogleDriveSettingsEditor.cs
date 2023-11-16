@@ -18,14 +18,14 @@ namespace UnityGoogleDrive
         private SerializedProperty accessTokenPrefsKey;
         private SerializedProperty refreshTokenPrefsKey;
 
-        private readonly static GUIContent genericClientCredentialsContent = new GUIContent("Generic Credentials", "Google Drive API application credentials used to authorize requests via loopback and redirect schemes.");
-        private readonly static GUIContent uriSchemeClientCredentialsContent = new GUIContent("URI Scheme Credentials", "Google Drive API application credentials used to authorize requests via custom URI scheme.");
-        private readonly static GUIContent accessScopesContent = new GUIContent("Access Scopes", "Scopes of access to the user's Google Drive the app will request.");
-        private readonly static GUIContent loopbackUriContent = new GUIContent("Loopback URI", "A web address for the loopback authentication requests. Defult is 'localhost'.");
-        private readonly static GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
-        private readonly static GUIContent accessTokenPrefsKeyContent = new GUIContent("Access Token Key", "PlayerPrefs key used to store access token.");
-        private readonly static GUIContent refreshTokenPrefsKeyContent = new GUIContent("Refresh Token Key", "PlayerPrefs key used to store refresh token.");
-        private readonly static GUIContent deleteCachedTokensContent = new GUIContent("Delete cached tokens", "Removes cached access and refresh tokens forcing user to login on the next request.");
+        private static readonly GUIContent genericClientCredentialsContent = new GUIContent("Generic Credentials", "Google Drive API application credentials used to authorize requests via loopback and redirect schemes.");
+        private static readonly GUIContent uriSchemeClientCredentialsContent = new GUIContent("URI Scheme Credentials", "Google Drive API application credentials used to authorize requests via custom URI scheme.");
+        private static readonly GUIContent accessScopesContent = new GUIContent("Access Scopes", "Scopes of access to the user's Google Drive the app will request.");
+        private static readonly GUIContent loopbackUriContent = new GUIContent("Loopback URI", "A web address for the loopback authentication requests. Defult is 'localhost'.");
+        private static readonly GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
+        private static readonly GUIContent accessTokenPrefsKeyContent = new GUIContent("Access Token Key", "PlayerPrefs key used to store access token.");
+        private static readonly GUIContent refreshTokenPrefsKeyContent = new GUIContent("Refresh Token Key", "PlayerPrefs key used to store refresh token.");
+        private static readonly GUIContent deleteCachedTokensContent = new GUIContent("Delete cached tokens", "Removes cached access and refresh tokens forcing user to login on the next request.");
 
         private static GoogleDriveSettings GetOrCreateSettings ()
         {
@@ -83,11 +83,11 @@ namespace UnityGoogleDrive
             EditorGUILayout.Space();
 
             if (GUILayout.Button("Create Google Drive API app"))
-                Application.OpenURL(@"https://console.developers.google.com/start/api?id=drive");
+                Application.OpenURL("https://console.developers.google.com/start/api?id=drive");
 
             using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(TargetSettings.GenericClientCredentials.ProjectId)))
                 if (GUILayout.Button("Manage Google Drive API app"))
-                    Application.OpenURL(string.Format(@"https://console.developers.google.com/apis/credentials?project={0}",
+                    Application.OpenURL(string.Format("https://console.developers.google.com/apis/credentials?project={0}",
                         TargetSettings.GenericClientCredentials.ProjectId));
 
             if (GUILayout.Button("Parse generic credentials JSON file..."))

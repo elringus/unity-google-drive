@@ -262,7 +262,11 @@ namespace UnityGoogleDrive
         {
             AuthController.OnAccessTokenRefreshed -= HandleAccessTokenRefreshed;
             if (success) SendWebRequest();
-            else { Error = "Authorization error."; CompleteRequest(); }
+            else
+            {
+                Error = "Authorization error.";
+                CompleteRequest();
+            }
         }
 
         /// <summary>
@@ -307,7 +311,7 @@ namespace UnityGoogleDrive
         {
             var firstChar = char.ToLowerInvariant(content[0]);
             if (content.Length > 1) return string.Concat(firstChar, content.Substring(1));
-            else return firstChar.ToString();
+            return firstChar.ToString();
         }
     }
 }

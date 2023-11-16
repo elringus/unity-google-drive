@@ -12,7 +12,7 @@ namespace UnityGoogleDrive
     {
         #pragma warning disable 0649
         // ReSharper disable NotAccessedField.Local
-        [Serializable] struct RefreshResponse { public string error, error_description, access_token, expires_in, token_type; }
+        [Serializable] private struct RefreshResponse { public string error, error_description, access_token, expires_in, token_type; }
         // ReSharper restore NotAccessedField.Local
         #pragma warning restore 0649
 
@@ -50,8 +50,7 @@ namespace UnityGoogleDrive
         {
             IsError = error;
             IsDone = true;
-            if (OnDone != null)
-                OnDone.Invoke(this);
+            OnDone?.Invoke(this);
         }
 
         private void HandleRequestComplete (AsyncOperation requestYield)

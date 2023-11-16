@@ -16,7 +16,7 @@ namespace UnityGoogleDrive
 
             private void HandleResponseMessage (string message)
             {
-                if (OnResponse != null) OnResponse.Invoke(message);
+                OnResponse?.Invoke(message);
             }
         }
 
@@ -26,9 +26,9 @@ namespace UnityGoogleDrive
         public bool IsError { get; private set; }
 
         private const string responseHandlerObjectName = "UnityGoogleDrive_IOSAccessTokenProvider_ResponseHandler";
-        private GoogleDriveSettings settings;
-        private AccessTokenRefresher accessTokenRefresher;
-        private AuthCodeExchanger authCodeExchanger;
+        private readonly GoogleDriveSettings settings;
+        private readonly AccessTokenRefresher accessTokenRefresher;
+        private readonly AuthCodeExchanger authCodeExchanger;
         private ResponseMessageHandler responseMessageHandler;
 
         public IOSAccessTokenProvider (GoogleDriveSettings googleDriveSettings)
@@ -61,8 +61,7 @@ namespace UnityGoogleDrive
         {
             IsError = error;
             IsDone = true;
-            if (OnDone != null)
-                OnDone.Invoke(this);
+            OnDone?.Invoke(this);
         }
 
         private void HandleAccessTokenRefreshed (AccessTokenRefresher refresher)

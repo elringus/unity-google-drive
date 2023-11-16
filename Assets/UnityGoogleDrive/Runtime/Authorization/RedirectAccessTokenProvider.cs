@@ -17,7 +17,7 @@ namespace UnityGoogleDrive
 
         private const string tokenArgName = "access_token";
 
-        private GoogleDriveSettings settings;
+        private readonly GoogleDriveSettings settings;
 
         public RedirectAccessTokenProvider (GoogleDriveSettings googleDriveSettings)
         {
@@ -54,8 +54,7 @@ namespace UnityGoogleDrive
         {
             IsError = error;
             IsDone = true;
-            if (OnDone != null)
-                OnDone.Invoke(this);
+            OnDone?.Invoke(this);
         }
 
         private string ExtractAccessTokenFromApplicationUrl ()
@@ -69,7 +68,7 @@ namespace UnityGoogleDrive
                 .Select(q => q.Split('=')).ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
 
             if (!arguments.ContainsKey(tokenArgName)) return null;
-            else return arguments[tokenArgName];
+            return arguments[tokenArgName];
         }
     }
 }
