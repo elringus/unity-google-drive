@@ -1,4 +1,4 @@
-﻿namespace UnityGoogleDrive.Data
+namespace UnityGoogleDrive.Data
 {
     /// <summary>
     /// Base class for a Google Drive resource data representation.

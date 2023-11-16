@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityGoogleDrive;
 
 public class TestFilesEmptyTrash : AdaptiveWindowGUI

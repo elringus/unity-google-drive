@@ -1,4 +1,4 @@
-﻿namespace UnityGoogleDrive
+namespace UnityGoogleDrive
 {
     public interface IClientCredentials
     {

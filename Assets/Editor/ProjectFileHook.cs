@@ -1,4 +1,4 @@
-﻿#if ENABLE_VSTU
+#if ENABLE_VSTU
 
 using SyntaxTree.VisualStudio.Unity.Bridge;
 using System.IO;
