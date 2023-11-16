@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using UnityGoogleDrive.Newtonsoft.Json;
 
 namespace UnityGoogleDrive.Data

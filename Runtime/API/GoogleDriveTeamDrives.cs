@@ -1,4 +1,4 @@
-﻿using UnityEngine.Networking;
+using UnityEngine.Networking;
 
 namespace UnityGoogleDrive
 {
@@ -22,7 +22,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public string RequestId { get; private set; }
 
             public CreateRequest (Data.TeamDrive teamDrive, string requestId)
-                : base(@"https://www.googleapis.com/drive/v3/teamdrives", UnityWebRequest.kHttpVerbPOST, teamDrive)
+                : base("https://www.googleapis.com/drive/v3/teamdrives", UnityWebRequest.kHttpVerbPOST, teamDrive)
             {
                 RequestId = requestId;
             }
@@ -35,7 +35,7 @@ namespace UnityGoogleDrive
         public class DeleteRequest : GoogleDriveRequest<string>
         {
             public DeleteRequest (string teamDriveId)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), UnityWebRequest.kHttpVerbDELETE) { }
+                : base(string.Concat("https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), UnityWebRequest.kHttpVerbDELETE) { }
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public bool? UseDomainAdminAccess { get; set; }
 
             public GetRequest (string teamDriveId)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), UnityWebRequest.kHttpVerbGET) { }
+                : base(string.Concat("https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), UnityWebRequest.kHttpVerbGET) { }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public bool? UseDomainAdminAccess { get; set; }
 
             public ListRequest ()
-                : base(@"https://www.googleapis.com/drive/v3/teamdrives", UnityWebRequest.kHttpVerbGET) { }
+                : base("https://www.googleapis.com/drive/v3/teamdrives", UnityWebRequest.kHttpVerbGET) { }
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace UnityGoogleDrive
         public class UpdateRequest : GoogleDriveUploadRequest<Data.TeamDrive, Data.TeamDrive>
         {
             public UpdateRequest (string teamDriveId, Data.TeamDrive teamDrive)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), "PATCH", teamDrive) { }
+                : base(string.Concat("https://www.googleapis.com/drive/v3/teamdrives/", teamDriveId), "PATCH", teamDrive) { }
         }
 
         /// <summary>

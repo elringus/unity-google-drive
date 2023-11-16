@@ -1,4 +1,4 @@
-﻿using UnityEngine.Networking;
+using UnityEngine.Networking;
 
 namespace UnityGoogleDrive
 {
@@ -30,7 +30,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public virtual string TeamDriveId { get; set; }
 
             public GetStartPageTokenRequest ()
-                : base(@"https://www.googleapis.com/drive/v3/changes/startPageToken", UnityWebRequest.kHttpVerbGET) { }
+                : base("https://www.googleapis.com/drive/v3/changes/startPageToken", UnityWebRequest.kHttpVerbGET) { }
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public virtual string TeamDriveId { get; set; }
 
             public ListRequest (string pageToken)
-                : base(@"https://www.googleapis.com/drive/v3/changes", UnityWebRequest.kHttpVerbGET)
+                : base("https://www.googleapis.com/drive/v3/changes", UnityWebRequest.kHttpVerbGET)
             {
                 PageToken = pageToken;
             }
@@ -146,7 +146,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public virtual string TeamDriveId { get; set; }
 
             public WatchRequest (string pageToken, Data.Channel channel)
-                : base(@"https://www.googleapis.com/drive/v3/changes/watch", UnityWebRequest.kHttpVerbPOST, channel)
+                : base("https://www.googleapis.com/drive/v3/changes/watch", UnityWebRequest.kHttpVerbPOST, channel)
             {
                 PageToken = pageToken;
             }

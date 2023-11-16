@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using UnityEngine;
 
@@ -28,8 +28,7 @@ namespace UnityGoogleDrive
                     AuthorizationCode = authorizationCode
                 };
 
-                if (OnAuthResponse != null)
-                    OnAuthResponse.Invoke(response);
+                OnAuthResponse?.Invoke(response);
             }
 
             private void onAuthorizationResponse (bool isError, AndroidJavaObject error, string codeVerifier, string redirectUri, string authorizationCode)
@@ -43,10 +42,10 @@ namespace UnityGoogleDrive
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
 
-        private SynchronizationContext unitySyncContext;
-        private GoogleDriveSettings settings;
-        private AccessTokenRefresher accessTokenRefresher;
-        private AuthCodeExchanger authCodeExchanger;
+        private readonly SynchronizationContext unitySyncContext;
+        private readonly GoogleDriveSettings settings;
+        private readonly AccessTokenRefresher accessTokenRefresher;
+        private readonly AuthCodeExchanger authCodeExchanger;
 
         public AndroidAccessTokenProvider (GoogleDriveSettings googleDriveSettings)
         {
@@ -79,8 +78,7 @@ namespace UnityGoogleDrive
         {
             IsError = error;
             IsDone = true;
-            if (OnDone != null)
-                OnDone.Invoke(this);
+            OnDone?.Invoke(this);
         }
 
         private void HandleAccessTokenRefreshed (AccessTokenRefresher refresher)

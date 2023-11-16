@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace UnityGoogleDrive
@@ -10,8 +10,7 @@ namespace UnityGoogleDrive
 
         protected void InvokeOnDoneNonGeneric ()
         {
-            if (OnDoneNonGeneric != null)
-                OnDoneNonGeneric.Invoke();
+            OnDoneNonGeneric?.Invoke();
         }
     }
 
@@ -41,8 +40,7 @@ namespace UnityGoogleDrive
         private void HandleRequestDone (TResponse responseData)
         {
             GoogleDriveRequest.OnDone -= HandleRequestDone;
-            if (OnDone != null)
-                OnDone.Invoke(responseData);
+            OnDone?.Invoke(responseData);
             InvokeOnDoneNonGeneric();
         }
     }

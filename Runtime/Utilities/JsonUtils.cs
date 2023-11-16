@@ -1,4 +1,4 @@
-﻿using UnityGoogleDrive.Newtonsoft.Json;
+using UnityGoogleDrive.Newtonsoft.Json;
 using UnityGoogleDrive.Newtonsoft.Json.Serialization;
 using System.Reflection;
 

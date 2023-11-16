@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -140,7 +140,7 @@ namespace UnityGoogleDrive
 
                         await listRequest.Send();
 
-                        if (listRequest == null || listRequest.IsError) return null;
+                        if (listRequest.IsError) throw new Error(listRequest.Error);
 
                         // Next folder at the current level is missing; create it.
                         if (listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
@@ -154,7 +154,7 @@ namespace UnityGoogleDrive
                                 continue;
                             }
                         } // Next folder exists; use it's ID and travers higher.
-                        else parentId = listRequest.ResponseData.Files[0].Id;
+                        parentId = listRequest.ResponseData.Files[0].Id;
                     }
                 }
 
@@ -198,7 +198,8 @@ namespace UnityGoogleDrive
 
                     await listRequest.Send();
 
-                    if (listRequest == null || listRequest.IsError || listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
+                    if (listRequest.IsError) throw new Error(listRequest.Error);
+                    if (listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
                         return null;
 
                     // When at the top level, add all the folder's IDs.
@@ -219,7 +220,7 @@ namespace UnityGoogleDrive
                         }
                         break;
                     } // Only one folder found, use it's ID to travers higher.
-                    else parentId = listRequest.ResponseData.Files[0].Id;
+                    parentId = listRequest.ResponseData.Files[0].Id;
                 }
             }
 
