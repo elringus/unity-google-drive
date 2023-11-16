@@ -140,7 +140,7 @@ namespace UnityGoogleDrive
 
                         await listRequest.Send();
 
-                        if (listRequest == null || listRequest.IsError) return null;
+                        if (listRequest.IsError) throw new Error(listRequest.Error);
 
                         // Next folder at the current level is missing; create it.
                         if (listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
@@ -198,7 +198,8 @@ namespace UnityGoogleDrive
 
                     await listRequest.Send();
 
-                    if (listRequest == null || listRequest.IsError || listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
+                    if (listRequest.IsError) throw new Error(listRequest.Error);
+                    if (listRequest.ResponseData.Files == null || listRequest.ResponseData.Files.Count == 0)
                         return null;
 
                     // When at the top level, add all the folder's IDs.
