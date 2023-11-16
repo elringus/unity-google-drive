@@ -32,8 +32,6 @@ public class TestFilesCreate : AdaptiveWindowGUI
     private void Upload (bool toAppData)
     {
         var content = File.ReadAllBytes(UploadFilePath);
-        if (content == null) return;
-
         var file = new UnityGoogleDrive.Data.File() { Name = Path.GetFileName(UploadFilePath), Content = content };
         if (toAppData) file.Parents = new List<string> { "appDataFolder" };
         request = GoogleDriveFiles.Create(file);
