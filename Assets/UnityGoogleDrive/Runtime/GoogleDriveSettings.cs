@@ -30,7 +30,7 @@ namespace UnityGoogleDrive
         /// </summary>
         public string AccessScope => string.Join(" ", AccessScopes.ToArray());
         /// <summary>
-        /// A web address for the loopback authentication requests. Defult is 'localhost'.
+        /// A web address for the loopback authentication requests. Default is 'localhost'.
         /// </summary>
         /// <see href="https://forum.unity.com/threads/515360/page-2#post-3504547"/>
         public string LoopbackUri => loopbackUri;

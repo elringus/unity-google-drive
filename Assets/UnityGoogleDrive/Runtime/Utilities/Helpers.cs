@@ -154,7 +154,7 @@ namespace UnityGoogleDrive
                                 continue;
                             }
                         } // Next folder exists; use it's ID and travers higher.
-                        else parentId = listRequest.ResponseData.Files[0].Id;
+                        parentId = listRequest.ResponseData.Files[0].Id;
                     }
                 }
 
@@ -220,7 +220,7 @@ namespace UnityGoogleDrive
                         }
                         break;
                     } // Only one folder found, use it's ID to travers higher.
-                    else parentId = listRequest.ResponseData.Files[0].Id;
+                    parentId = listRequest.ResponseData.Files[0].Id;
                 }
             }
 

@@ -37,7 +37,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
-            public CopyRequest (Data.File file) : base($@"https://www.googleapis.com/drive/v3/files/{file.Id}/copy",
+            public CopyRequest (Data.File file) : base($"https://www.googleapis.com/drive/v3/files/{file.Id}/copy",
                 UnityWebRequest.kHttpVerbPOST, file)
             {
                 // API don't like receiving ID in the request body.
@@ -75,8 +75,8 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
 
-            public CreateRequest (Data.File file, string uploadMimeType = null) : base(file.Content != null ? @"https://www.googleapis.com/upload/drive/v3/files" :
-                @"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbPOST, file, file.Content, uploadMimeType ?? file.MimeType) { }
+            public CreateRequest (Data.File file, string uploadMimeType = null) : base(file.Content != null ? "https://www.googleapis.com/upload/drive/v3/files" :
+                "https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbPOST, file, file.Content, uploadMimeType ?? file.MimeType) { }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
 
-            public ResumableCreateRequest (Data.File file, string resumableSessionUri = null, string uploadMimeType = null) : base(@"https://www.googleapis.com/upload/drive/v3/files",
+            public ResumableCreateRequest (Data.File file, string resumableSessionUri = null, string uploadMimeType = null) : base("https://www.googleapis.com/upload/drive/v3/files",
                 UnityWebRequest.kHttpVerbPOST, file, file.Content, uploadMimeType ?? file.MimeType, resumableSessionUri) { }
         }
 
@@ -126,7 +126,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
             public DeleteRequest (string fileId)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbDELETE) { }
+                : base(string.Concat("https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbDELETE) { }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace UnityGoogleDrive
         public class EmptyTrashRequest : GoogleDriveRequest<string>
         {
             public EmptyTrashRequest ()
-                : base(@"https://www.googleapis.com/drive/v3/files/trash", UnityWebRequest.kHttpVerbDELETE) { }
+                : base("https://www.googleapis.com/drive/v3/files/trash", UnityWebRequest.kHttpVerbDELETE) { }
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public string MimeType { get; private set; }
 
             public ExportRequest (string fileId, string mimeType)
-                : base($@"https://www.googleapis.com/drive/v3/files/{fileId}/export", UnityWebRequest.kHttpVerbGET)
+                : base($"https://www.googleapis.com/drive/v3/files/{fileId}/export", UnityWebRequest.kHttpVerbGET)
             {
                 MimeType = mimeType;
                 ResponseData = new Data.File { Id = fileId };
@@ -179,7 +179,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public string Space { get; private set; }
 
             public GenerateIdsRequest (int? count = null, string space = null)
-                : base(@"https://www.googleapis.com/drive/v3/files/generateIds", UnityWebRequest.kHttpVerbGET)
+                : base("https://www.googleapis.com/drive/v3/files/generateIds", UnityWebRequest.kHttpVerbGET)
             {
                 Count = count;
                 Space = space;
@@ -197,7 +197,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
             public GetRequest (string fileId)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
+                : base(string.Concat("https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
             {
                 Debug.Assert(!string.IsNullOrEmpty(fileId), "Missing file ID.");
             }
@@ -268,7 +268,7 @@ namespace UnityGoogleDrive
             public AudioType AudioType { get; private set; }
 
             public DownloadAudioRequest (string fileId, AudioType audioType)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
+                : base(string.Concat("https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
             {
                 Alt = "media";
                 AudioType = audioType;
@@ -315,7 +315,7 @@ namespace UnityGoogleDrive
             public bool NonReadable { get; set; }
 
             public DownloadTextureRequest (string fileId, bool nonReadable = false)
-                : base(string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
+                : base(string.Concat("https://www.googleapis.com/drive/v3/files/", fileId), UnityWebRequest.kHttpVerbGET)
             {
                 Alt = "media";
                 NonReadable = nonReadable;
@@ -397,7 +397,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public string TeamDriveId { get; set; }
 
             public ListRequest ()
-                : base(@"https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbGET) { }
+                : base("https://www.googleapis.com/drive/v3/files", UnityWebRequest.kHttpVerbGET) { }
         }
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? SupportsTeamDrives { get; set; }
 
-            public WatchRequest (string fileId, Data.Channel channel) : base($@"https://www.googleapis.com/drive/v3/files/{fileId}/watch",
+            public WatchRequest (string fileId, Data.Channel channel) : base($"https://www.googleapis.com/drive/v3/files/{fileId}/watch",
                 UnityWebRequest.kHttpVerbPOST, channel) { }
         }
 
@@ -450,8 +450,8 @@ namespace UnityGoogleDrive
             /// </summary>
             [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
 
-            public UpdateRequest (string fileId, Data.File file, string uploadMimeType = null) : base(file.Content != null ? string.Concat(@"https://www.googleapis.com/upload/drive/v3/files/", fileId) :
-                string.Concat(@"https://www.googleapis.com/drive/v3/files/", fileId), "PATCH", file, file.Content, uploadMimeType ?? file.MimeType) { }
+            public UpdateRequest (string fileId, Data.File file, string uploadMimeType = null) : base(file.Content != null ? string.Concat("https://www.googleapis.com/upload/drive/v3/files/", fileId) :
+                string.Concat("https://www.googleapis.com/drive/v3/files/", fileId), "PATCH", file, file.Content, uploadMimeType ?? file.MimeType) { }
         }
 
         /// <summary>
@@ -486,7 +486,7 @@ namespace UnityGoogleDrive
             [QueryParameter] public bool? UseContentAsIndexableText { get; set; }
 
             public ResumableUpdateRequest (string fileId, Data.File file, string resumableSessionUri = null, string uploadMimeType = null)
-                : base(string.Concat(@"https://www.googleapis.com/upload/drive/v3/files/", fileId), "PATCH", file, file.Content, uploadMimeType ?? file.MimeType, resumableSessionUri) { }
+                : base(string.Concat("https://www.googleapis.com/upload/drive/v3/files/", fileId), "PATCH", file, file.Content, uploadMimeType ?? file.MimeType, resumableSessionUri) { }
         }
 
         /// <summary>

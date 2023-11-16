@@ -66,7 +66,11 @@ namespace UnityGoogleDrive
         protected override void HandleWebRequestDone (AsyncOperation requestYield)
         {
             base.HandleWebRequestDone(requestYield);
-            if (IsError) { CompleteRequest(); return; }
+            if (IsError)
+            {
+                CompleteRequest();
+                return;
+            }
             ResumableSessionUri = WebRequest.GetResponseHeader("Location");
             // New resumable upload session initiated and we have the payload, so start uploading.
             if (HasPayload) ResumeUpload();
@@ -110,7 +114,11 @@ namespace UnityGoogleDrive
             // The upload was completed, no further action is necessary.
             if (statusRequest.responseCode == 200 || statusRequest.responseCode == 201) CompleteRequest();
             // The upload session has expired and the upload needs to be restarted from the beginning.
-            else if (statusRequest.responseCode == 404) { ResumeOffset = 0; ResumeUpload(); }
+            else if (statusRequest.responseCode == 404)
+            {
+                ResumeOffset = 0;
+                ResumeUpload();
+            }
             // The upload wasn't completed and should be resumed.
             else if (statusRequest.responseCode == 308)
             {

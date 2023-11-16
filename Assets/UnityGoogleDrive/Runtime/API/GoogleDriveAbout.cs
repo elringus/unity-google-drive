@@ -14,7 +14,7 @@ namespace UnityGoogleDrive
         public class GetRequest : GoogleDriveRequest<Data.About>
         {
             public GetRequest ()
-                : base(@"https://www.googleapis.com/drive/v3/about", UnityWebRequest.kHttpVerbGET) { }
+                : base("https://www.googleapis.com/drive/v3/about", UnityWebRequest.kHttpVerbGET) { }
         }
 
         /// <summary>

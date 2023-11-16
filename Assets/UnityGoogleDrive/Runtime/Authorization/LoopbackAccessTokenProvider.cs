@@ -17,10 +17,10 @@ namespace UnityGoogleDrive
         public bool IsDone { get; private set; }
         public bool IsError { get; private set; }
 
-        private SynchronizationContext unitySyncContext;
-        private GoogleDriveSettings settings;
-        private AccessTokenRefresher accessTokenRefresher;
-        private AuthCodeExchanger authCodeExchanger;
+        private readonly SynchronizationContext unitySyncContext;
+        private readonly GoogleDriveSettings settings;
+        private readonly AccessTokenRefresher accessTokenRefresher;
+        private readonly AuthCodeExchanger authCodeExchanger;
         private string expectedState;
         private string codeVerifier;
         private string redirectUri;
@@ -57,8 +57,7 @@ namespace UnityGoogleDrive
         {
             IsError = error;
             IsDone = true;
-            if (OnDone != null)
-                OnDone.Invoke(this);
+            OnDone?.Invoke(this);
         }
 
         private void HandleAccessTokenRefreshed (AccessTokenRefresher refresher)
@@ -176,7 +175,7 @@ namespace UnityGoogleDrive
             authorizationCode = context.Request.QueryString.Get("code");
             var incomingState = context.Request.QueryString.Get("state");
 
-            // Compare the receieved state to the expected value, to ensure that
+            // Compare the received state to the expected value, to ensure that
             // this app made the request which resulted in authorization.
             if (incomingState != expectedState)
             {

@@ -18,8 +18,8 @@ namespace UnityGoogleDrive
         public static string AccessToken => settings.CachedAccessToken;
         public static bool IsRefreshingAccessToken { get; private set; }
 
-        private static GoogleDriveSettings settings;
-        private static IAccessTokenProvider accessTokenProvider;
+        private static readonly GoogleDriveSettings settings;
+        private static readonly IAccessTokenProvider accessTokenProvider;
 
         static AuthController ()
         {
@@ -62,8 +62,7 @@ namespace UnityGoogleDrive
 
             IsRefreshingAccessToken = false;
 
-            if (OnAccessTokenRefreshed != null)
-                OnAccessTokenRefreshed.Invoke(!authFailed);
+            OnAccessTokenRefreshed?.Invoke(!authFailed);
         }
     }
 }
