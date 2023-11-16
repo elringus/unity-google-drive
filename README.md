@@ -79,7 +79,7 @@ GoogleDriveFiles.Download(fileId).Send().OnDone += file => ...;
 var aboutData = await GoogleDriveAbout.Get().Send();
 ```
 
-For more examples take a look at [test scripts](https://github.com/Elringus/UnityGoogleDrive/tree/master/Assets/Scripts).
+For more examples take a look at [test scripts](https://github.com/Elringus/UnityGoogleDrive/tree/master/Assets/Runtime/Test).
 
 ## Implemented APIs
 The following [Google Drive APIs](https://developers.google.com/drive/api/v3/reference/) are currently implemented:
@@ -104,12 +104,12 @@ Majority of the response properties are null by default. Properties must be expl
 ### How to access a file using its path?
 A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path, the ID of the file’s parent folder must be found. To find ID of the file’s parent folder, the IDs of all folders in the chain must be retrieved. Thus, the entire hierarchy chain must be traversed using `GoogleDriveFiles.List` requests.
 
-The naive implementation of the aforementioned logic via Unity's coroutine can be found in the [example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/ExampleGetFileByPath.cs) and used as a reference for your own solution; also, take a look at the [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
+The naive implementation of the aforementioned logic via Unity's coroutine can be found in the [example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Runtime/Example/ExampleGetFileByPath.cs) and used as a reference for your own solution; also, take a look at the [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
 
 More information on the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
 ### Is it possible to download/upload large files in chunks to reduce memory usage?
-To perform a partial download you have to supply `downloadRange` argument for the `GoogleDriveFiles.Download` request specifying the bytes range you wish to get. Here is an [example script for a partial text file download](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Scripts/TestFilesDownloadRange.cs). More info on partial downloads can be found in the [API docs](https://developers.google.com/drive/api/v3/manage-downloads#partial_download).
+To perform a partial download you have to supply `downloadRange` argument for the `GoogleDriveFiles.Download` request specifying the bytes range you wish to get. Here is an [example script for a partial text file download](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Runtime/Test/TestFilesDownloadRange.cs). More info on partial downloads can be found in the [API docs](https://developers.google.com/drive/api/v3/manage-downloads#partial_download).
 
 For the chunked uploads you'll have to use resumable upload requests in a special manner. First, create a resumable upload request (via either `GoogleDriveFiles.CreateResumable` or `GoogleDriveFiles.UpdateResumable`), supply the file's metadata, but don't set the file's `Content` property (make sure it's `null`). Send the request and get a resumable session URI from the response. Now you can use the session URI to upload the file's content in chunks. See the [Drive API docs](https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable) for detailed instructions on how to perform a chunked upload using a resumable session URI.
 
