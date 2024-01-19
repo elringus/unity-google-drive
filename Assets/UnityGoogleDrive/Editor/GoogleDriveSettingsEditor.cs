@@ -14,7 +14,9 @@ namespace UnityGoogleDrive
         private SerializedProperty uriSchemeClientCredentials;
         private SerializedProperty accessScopes;
         private SerializedProperty loopbackUri;
-        private SerializedProperty loopbackResponseHtml;
+        private SerializedProperty useSpecificPort;
+        private SerializedProperty specificPort;
+        private SerializedProperty loopbackResponseHtml;        
         private SerializedProperty accessTokenPrefsKey;
         private SerializedProperty refreshTokenPrefsKey;
 
@@ -22,6 +24,8 @@ namespace UnityGoogleDrive
         private static readonly GUIContent uriSchemeClientCredentialsContent = new GUIContent("URI Scheme Credentials", "Google Drive API application credentials used to authorize requests via custom URI scheme.");
         private static readonly GUIContent accessScopesContent = new GUIContent("Access Scopes", "Scopes of access to the user's Google Drive the app will request.");
         private static readonly GUIContent loopbackUriContent = new GUIContent("Loopback URI", "A web address for the loopback authentication requests. Defult is 'localhost'.");
+        private static readonly GUIContent useSpecificPortContent = new GUIContent("Use Specific Port", "Field to wether use a specific port for loopbackUri or not. Default is a random unused port.");
+        private static readonly GUIContent specificPortContent = new GUIContent("Specific Port", "Set the specific port for ex: 8888.");
         private static readonly GUIContent loopbackResponseHtmlContent = new GUIContent("Loopback Response HTML", "HTML page shown to the user when loopback response is received.");
         private static readonly GUIContent accessTokenPrefsKeyContent = new GUIContent("Access Token Key", "PlayerPrefs key used to store access token.");
         private static readonly GUIContent refreshTokenPrefsKeyContent = new GUIContent("Refresh Token Key", "PlayerPrefs key used to store refresh token.");
@@ -59,6 +63,8 @@ namespace UnityGoogleDrive
             uriSchemeClientCredentials = serializedObject.FindProperty("uriSchemeClientCredentials");
             accessScopes = serializedObject.FindProperty("accessScopes");
             loopbackUri = serializedObject.FindProperty("loopbackUri");
+            useSpecificPort = serializedObject.FindProperty("useSpecificPort");
+            specificPort = serializedObject.FindProperty("specificPort");
             loopbackResponseHtml = serializedObject.FindProperty("loopbackResponseHtml");
             accessTokenPrefsKey = serializedObject.FindProperty("accessTokenPrefsKey");
             refreshTokenPrefsKey = serializedObject.FindProperty("refreshTokenPrefsKey");
@@ -76,9 +82,15 @@ namespace UnityGoogleDrive
             EditorGUILayout.PropertyField(uriSchemeClientCredentials, uriSchemeClientCredentialsContent, true);
             EditorGUILayout.PropertyField(accessScopes, accessScopesContent, true);
             EditorGUILayout.PropertyField(loopbackUri, loopbackUriContent);
+            EditorGUILayout.PropertyField(useSpecificPort, useSpecificPortContent);
+            if (TargetSettings.useSpecificPort)
+            {
+                EditorGUILayout.PropertyField(specificPort, specificPortContent);
+            }
+            
             EditorGUILayout.PropertyField(loopbackResponseHtml, loopbackResponseHtmlContent);
             EditorGUILayout.PropertyField(accessTokenPrefsKey, accessTokenPrefsKeyContent);
-            EditorGUILayout.PropertyField(refreshTokenPrefsKey, refreshTokenPrefsKeyContent);
+            EditorGUILayout.PropertyField(refreshTokenPrefsKey, refreshTokenPrefsKeyContent);        
 
             EditorGUILayout.Space();
 

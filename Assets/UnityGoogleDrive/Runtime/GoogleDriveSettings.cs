@@ -28,12 +28,20 @@ namespace UnityGoogleDrive
         /// <summary>
         /// Joined version of the <see cref="AccessScopes"/>.
         /// </summary>
-        public string AccessScope => string.Join(" ", AccessScopes.ToArray());
+        public string AccessScope => string.Join(" ", AccessScopes.ToArray());               
         /// <summary>
         /// A web address for the loopback authentication requests. Default is 'localhost'.
         /// </summary>
-        /// <see href="https://forum.unity.com/threads/515360/page-2#post-3504547"/>
+        /// <see href="https://forum.unity.com/threads/515360/page-2#post-3504547"/>        
         public string LoopbackUri => loopbackUri;
+        /// <summary>
+        /// Field to wether use a specific port for loopbackUri or not. Default is a random unused port.
+        /// </summary>
+        public bool useSpecificPort;
+        /// <summary>
+        /// Set the specific port for ex: 8888.
+        /// </summary>
+        public int specificPort;
         /// <summary>
         /// HTML page shown to the user when loopback response is received.
         /// </summary>

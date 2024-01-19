@@ -104,7 +104,14 @@ namespace UnityGoogleDrive
             var codeChallenge = CryptoUtils.Base64UriEncodeNoPadding(codeVerifierHash);
 
             // Creates a redirect URI using an available port on the loopback address.
-            redirectUri = $"{settings.LoopbackUri}:{GetRandomUnusedPort()}";
+            if (settings.useSpecificPort)
+            {
+                redirectUri = $"{settings.LoopbackUri}:{settings.specificPort}";
+            }
+            else
+            {
+                redirectUri = $"{settings.LoopbackUri}:{GetRandomUnusedPort()}";
+            }
 
             // Listen for requests on the redirect URI.
             var httpListener = new HttpListener();
