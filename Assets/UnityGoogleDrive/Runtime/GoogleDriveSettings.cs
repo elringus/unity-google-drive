@@ -35,6 +35,10 @@ namespace UnityGoogleDrive
         /// <see href="https://forum.unity.com/threads/515360/page-2#post-3504547"/>
         public string LoopbackUri => loopbackUri;
         /// <summary>
+        /// Specific port to use for loopback scheme. When empty find random unused port instead.
+        /// </summary>
+        public string LoopbackPort => loopbackPort;
+        /// <summary>
         /// HTML page shown to the user when loopback response is received.
         /// </summary>
         public string LoopbackResponseHtml { get => loopbackResponseHtml; set => loopbackResponseHtml = value; }
@@ -51,6 +55,7 @@ namespace UnityGoogleDrive
         [SerializeField] private UriSchemeClientCredentials uriSchemeClientCredentials;
         [SerializeField] private List<string> accessScopes = new List<string> { "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.appdata" };
         [SerializeField] private string loopbackUri = "http://localhost";
+        [SerializeField] private string loopbackPort = "";
         [SerializeField] private string loopbackResponseHtml = "<html><h1>Please return to the app.</h1></html>";
         [SerializeField] private string accessTokenPrefsKey = "GoogleDriveAccessToken";
         [SerializeField] private string refreshTokenPrefsKey = "GoogleDriveRefreshToken";
