@@ -1,17 +1,17 @@
 ## Installation
 
-Use [UPM](https://docs.unity3d.com/Manual/upm-ui.html) to install the package via the following git URL: `https://github.com/Elringus/UnityGoogleDrive.git#package` or download and import [UnityGoogleDrive.unitypackage](https://github.com/Elringus/UnityGoogleDrive/raw/master/UnityGoogleDrive.unitypackage) manually.
+Use [UPM](https://docs.unity3d.com/Manual/upm-ui.html) to install the package via the following git URL: `https://github.com/elringus/unity-google-drive.git#package` or download and import [UnityGoogleDrive.unitypackage](https://github.com/elringus/unity-google-drive/raw/main/UnityGoogleDrive.unitypackage) manually.
 
 ![](https://i.gyazo.com/b54e9daa9a483d9bf7f74f0e94b2d38a.gif)
 
-**In case you're not familiar with the Google Drive API, please read through the [official documentation](https://developers.google.com/drive/api/v3/about-sdk) and [FAQ](https://github.com/Elringus/UnityGoogleDrive#faq), before using this package or opening new issues.**
+**In case you're not familiar with the Google Drive API, please read through the [official documentation](https://developers.google.com/drive/api/v3/about-sdk) and [FAQ](https://github.com/elringus/unity-google-drive#faq), before using this package or opening new issues.**
 
 ## Description
 [Google Drive](https://www.google.com/drive/) API library for listing, searching, creating, uploading, editing, copying, downloading, deleting and exporting files on the user's drive from within [Unity game engine](https://unity3d.com/).
 
 Supports all the major platforms: Windows, Mac, Linux, iOS, Android and WebGL.
 
-[AppAuth-Android](https://github.com/openid/AppAuth-Android) and [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) native libraries are used to perform authentication on Android and iOS respectively for better user experience; accompanying native client sources: [UnityGoogleDriveAndroid](https://github.com/Elringus/UnityGoogleDrive/blob/master/Android), [UnityGoogleDriveIOS](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Plugins/com.elringus.unitygoogledriveios.mm). [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) dependency file is [provided in the distributed package](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Editor/Dependencies.xml) to automatically resolve dependencies.
+[AppAuth-Android](https://github.com/openid/AppAuth-Android) and [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) native libraries are used to perform authentication on Android and iOS respectively for better user experience; accompanying native client sources: [UnityGoogleDriveAndroid](https://github.com/elringus/unity-google-drive/blob/main/Android), [UnityGoogleDriveIOS](https://github.com/elringus/unity-google-drive/blob/main/Assets/UnityGoogleDrive/Plugins/com.elringus.unitygoogledriveios.mm). [PlayServicesResolver](https://github.com/googlesamples/unity-jar-resolver) dependency file is [provided in the distributed package](https://github.com/elringus/unity-google-drive/blob/main/Assets/UnityGoogleDrive/Editor/Dependencies.xml) to automatically resolve dependencies.
 
 Three authentication schemes are used: browser redirection for WebGL builds, custom URI for iOS/Android and local loopback requests for other platforms. All the credentials are stored in a scriptable object; editor script provides shortcuts to create and manage Google Console App, allows to parse credentials JSON to skip manual copy-pasting and edit common settings:
 
@@ -23,7 +23,7 @@ Automated integration tests cover the main features:
 
 ## Limitations
 
- - When under .NET 3.5 scripting runtime, make sure to set API compatibility level to the **full .NET 2.0 profile** (not subset) to prevent [JSON parsing issues](https://github.com/Elringus/UnityGoogleDrive/issues/6) on AOT platforms.
+ - When under .NET 3.5 scripting runtime, make sure to set API compatibility level to the **full .NET 2.0 profile** (not subset) to prevent [JSON parsing issues](https://github.com/elringus/unity-google-drive/issues/6) on AOT platforms.
  - Make sure ['Managed Stripping Level'](https://docs.unity3d.com/Manual/ManagedCodeStripping.html) in no higher than `Low`; otherwise, necessary JSON parsing will not work and the plugin may misbehave in builds while working fine in the editor.
 
 ## Setup (editor, standalones and WebGL)
@@ -51,7 +51,7 @@ Automated integration tests cover the main features:
 - Click **Create credentials** -> **OAuth client ID** to add a new OAuth client to be used when authenticating on iOS and Android;
 - Select **iOS** for the `Application type` (it'll still work for both iOS and Android);
 - Enter anything you like for the `Name` field (eg, `URI Scheme Client`);
-- Enter your Unity's **application ID** for the `Bundle ID` field (eg, `com.elringus.unitygoogledrive`). Make sure your application ID is **lower-cased** (both in the editor and in the credentials). In case you're unable to change Application ID (eg, app is already published), see [FAQ for available workarounds](https://github.com/Elringus/UnityGoogleDrive#my-application-id-andriodios-is-mixed-cased-and-i-cant-change-it);
+- Enter your Unity's **application ID** for the `Bundle ID` field (eg, `com.elringus.unitygoogledrive`). Make sure your application ID is **lower-cased** (both in the editor and in the credentials). In case you're unable to change Application ID (eg, app is already published), see [FAQ for available workarounds](https://github.com/elringus/unity-google-drive#my-application-id-andriodios-is-mixed-cased-and-i-cant-change-it);
 - Leave the remaining fields blank and click **Create** button;
 - Download the credentials file by clicking the **Download plist** button;
 - Return to Unity editor, open Google Drive settings and click **Parse URI scheme credentials PLIST file**; select the downloaded credentials plist file;
@@ -79,7 +79,7 @@ GoogleDriveFiles.Download(fileId).Send().OnDone += file => ...;
 var aboutData = await GoogleDriveAbout.Get().Send();
 ```
 
-For more examples take a look at [test scripts](https://github.com/Elringus/UnityGoogleDrive/tree/master/Assets/Runtime/Test).
+For more examples take a look at [test scripts](https://github.com/elringus/unity-google-drive/tree/main/Assets/Runtime/Test).
 
 ## Implemented APIs
 The following [Google Drive APIs](https://developers.google.com/drive/api/v3/reference/) are currently implemented:
@@ -104,12 +104,12 @@ Majority of the response properties are null by default. Properties must be expl
 ### How to access a file using its path?
 A folder in Google Drive is actually a file with the MIME type `application/vnd.google-apps.folder`. Hierarchy relationship is implemented via file's `Parents` property. To get the actual file using its path, the ID of the file’s parent folder must be found. To find ID of the file’s parent folder, the IDs of all folders in the chain must be retrieved. Thus, the entire hierarchy chain must be traversed using `GoogleDriveFiles.List` requests.
 
-The naive implementation of the aforementioned logic via Unity's coroutine can be found in the [example script](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Runtime/Example/ExampleGetFileByPath.cs) and used as a reference for your own solution; also, take a look at the [built-in async helpers](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
+The naive implementation of the aforementioned logic via Unity's coroutine can be found in the [example script](https://github.com/elringus/unity-google-drive/blob/main/Assets/Runtime/Example/ExampleGetFileByPath.cs) and used as a reference for your own solution; also, take a look at the [built-in async helpers](https://github.com/elringus/unity-google-drive/blob/main/Assets/UnityGoogleDrive/Runtime/Utilities/Helpers.cs) `FindFilesByPathAsync` and `CreateOrUpdateFileAtPathAsync` (requires .NET 4.x).
 
 More information on the Google Drive folders: https://developers.google.com/drive/v3/web/folder.
 
 ### Is it possible to download/upload large files in chunks to reduce memory usage?
-To perform a partial download you have to supply `downloadRange` argument for the `GoogleDriveFiles.Download` request specifying the bytes range you wish to get. Here is an [example script for a partial text file download](https://github.com/Elringus/UnityGoogleDrive/blob/master/Assets/Runtime/Test/TestFilesDownloadRange.cs). More info on partial downloads can be found in the [API docs](https://developers.google.com/drive/api/v3/manage-downloads#partial_download).
+To perform a partial download you have to supply `downloadRange` argument for the `GoogleDriveFiles.Download` request specifying the bytes range you wish to get. Here is an [example script for a partial text file download](https://github.com/elringus/unity-google-drive/blob/main/Assets/Runtime/Test/TestFilesDownloadRange.cs). More info on partial downloads can be found in the [API docs](https://developers.google.com/drive/api/v3/manage-downloads#partial_download).
 
 For the chunked uploads you'll have to use resumable upload requests in a special manner. First, create a resumable upload request (via either `GoogleDriveFiles.CreateResumable` or `GoogleDriveFiles.UpdateResumable`), supply the file's metadata, but don't set the file's `Content` property (make sure it's `null`). Send the request and get a resumable session URI from the response. Now you can use the session URI to upload the file's content in chunks. See the [Drive API docs](https://developers.google.com/drive/api/v3/resumable-upload#upload-resumable) for detailed instructions on how to perform a chunked upload using a resumable session URI.
 
@@ -134,4 +134,4 @@ Application ID (aka bundle ID, package name) is used as a custom URI scheme on A
 - iOS: add your application’s ID (lower-cased) to the [Supported URL schemes](https://i.gyazo.com/efafe276a3d566d7563e83005873746b.png) list in the iOS player settings.
 
 ### UWP authentication fails on redirect.
-UWP dropped support for local loopback scheme. Custom URI scheme is expected to be used instead. If you're interested in adding support for that, check out the [related issue](https://github.com/Elringus/UnityGoogleDrive/issues/54).
+UWP dropped support for local loopback scheme. Custom URI scheme is expected to be used instead. If you're interested in adding support for that, check out the [related issue](https://github.com/elringus/unity-google-drive/issues/54).
